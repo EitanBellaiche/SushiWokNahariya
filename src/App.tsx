@@ -129,14 +129,14 @@ type MenuSection = {
 
 const menuSections: MenuSection[] = [
   {
-    title: 'מנות פתיחה',
+    title: '🥢 מנות פתיחה',
     subtitle: 'מנות קטנות שפותחות את הארוחה בצורה מדויקת.',
     badge: 'Starters',
     items: [
       {
         title: (
           <>
-            קימצ׳י{' '}
+            🥬 קימצ׳י{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (חמוצים יפניים בתיבול ביתי)
             </Box>
@@ -148,7 +148,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            אגרול ירקות{' '}
+            🫔 אגרול ירקות{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (3 יחידות קריספיות)
             </Box>
@@ -160,7 +160,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            8 יחידות כנפיים{' '}
+            🍗 8 יחידות כנפיים{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (ברוטב צ׳ילי פיקנטי)
             </Box>
@@ -169,19 +169,19 @@ const menuSections: MenuSection[] = [
         description: '',
         price: '₪25',
       },
-      { title: 'אורז מאודה', description: '', price: '₪15' },
-      { title: 'צ׳יפס גדול', description: '', price: '₪20' },
+      { title: '🍚 אורז מאודה', description: '', price: '₪15' },
+      { title: '🍟 צ׳יפס גדול', description: '', price: '₪20' },
     ],
   },
   {
-    title: 'הרכבה עצמית',
+    title: '🍣 הרכבה עצמית',
     subtitle: 'בחירה בין דג לצמחוני, לפי הסגנון שמתאים לכם.',
     badge: 'Customize',
     items: [
       {
         title: (
           <>
-            i/o{' '}
+            🍙 i/o{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (אורז בחוץ)
             </Box>
@@ -193,7 +193,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            פוטומאקי{' '}
+            🌿 פוטומאקי{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (אצה בחוץ)
             </Box>
@@ -202,8 +202,8 @@ const menuSections: MenuSection[] = [
         description: 'דג 45 ₪ | צמחוני 39 ₪',
         price: '₪45 / ₪39',
       },
-      { title: 'סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
-      { title: 'מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
+      { title: '🥪 סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
+      { title: '🌀 מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
     ],
     note: (
       <>
@@ -216,7 +216,7 @@ const menuSections: MenuSection[] = [
     ),
   },
   {
-    title: 'Signature Sushi',
+    title: '✨ Signature Sushi',
     subtitle: 'רולים מיוחדים עם שילובים מדויקים, חומרי גלם טובים ונוכחות חזקה בצלחת.',
     badge: 'Signature',
     items: [
@@ -239,12 +239,12 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
-    title: 'קומבינציות השף',
+    title: '🍱 קומבינציות השף',
     subtitle: '',
     badge: 'Combos',
     items: [
       {
-        title: 'קומבינציית סלמון (24 יח׳)',
+        title: '🐟 קומבינציית סלמון (24 יח׳)',
         description: (
           <>
             8 יח׳ i/o סלמון צלוי, אבוקדו, בטטה.
@@ -257,7 +257,7 @@ const menuSections: MenuSection[] = [
         price: '₪90',
       },
       {
-        title: 'קומבינציה מטוגנת (12 יח׳)',
+        title: '🔥 קומבינציה מטוגנת (12 יח׳)',
         description: (
           <>
             8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופאנקו.
@@ -268,7 +268,7 @@ const menuSections: MenuSection[] = [
         price: '₪80',
       },
       {
-        title: 'קומבינציה צמחונית (24 יח׳)',
+        title: '🥑 קומבינציה צמחונית (24 יח׳)',
         description: (
           <>
             8 יח׳ i/o בטטה, מלפפון, אבוקדו במעטפת בצל ירוק.
@@ -283,14 +283,14 @@ const menuSections: MenuSection[] = [
     ],
   },
   {
-    title: 'סלטי פוקי (POKE)',
+    title: '🥗 סלטי פוקי (POKE)',
     subtitle: 'על מצע אורז סושי, מוגש עם ספייסי מיונז וסויה.',
     badge: 'Fresh',
     items: [
       {
         title: (
           <>
-            פוקי סלמון{' '}
+            🐟 פוקי סלמון{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (נא/אפוי)
             </Box>
@@ -299,13 +299,13 @@ const menuSections: MenuSection[] = [
         description: '(טרטר סלמון, אבוקדו, בטטה, מלפפון, בצל ירוק ושומשום)',
         price: '₪49',
       },
-      { title: 'פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
+      { title: '🍣 פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
     ],
   },
   {
     title: (
       <>
-        מן הווק{' '}
+        🍜 מן הווק{' '}
         <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
           (Stir-Fry)
         </Box>
@@ -314,26 +314,26 @@ const menuSections: MenuSection[] = [
     subtitle: 'בחירה בין: עוף / בקר / צמחוני',
     badge: 'Wok',
     items: [
-      { title: 'פאד תאי', description: '(אטריות אורז, נטיפי ביצה, כרוב, גזר, נבטים, בצל ירוק ולימון)', price: '₪46' },
-      { title: 'סמוקי נודלס', description: '(אטריות חיטה, פטריות, כרוב, גזר, בצל ירוק ובוטנים)', price: '₪49' },
-      { title: 'פרייד רייס', description: '(אורז אסייתי מוקפץ, פטריות, ביצה, בצל ירוק, כרוב וגזר)', price: '₪44' },
+      { title: '🍋 פאד תאי', description: '(אטריות אורז, נטיפי ביצה, כרוב, גזר, נבטים, בצל ירוק ולימון)', price: '₪46' },
+      { title: '🥜 סמוקי נודלס', description: '(אטריות חיטה, פטריות, כרוב, גזר, בצל ירוק ובוטנים)', price: '₪49' },
+      { title: '🍚 פרייד רייס', description: '(אורז אסייתי מוקפץ, פטריות, ביצה, בצל ירוק, כרוב וגזר)', price: '₪44' },
     ],
   },
   {
-    title: 'ארוחות ילדים',
+    title: '🧒 ארוחות ילדים',
     subtitle: 'כולל שתייה קלה.',
     badge: 'Family',
     items: [
-      { title: 'ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
+      { title: '🍽️ ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
     ],
   },
   {
-    title: 'שתייה קלה',
+    title: '🥤 שתייה קלה',
     subtitle: '',
     badge: 'Drinks',
     items: [
-      { title: 'מים / סודה', description: '', price: '₪8' },
-      { title: 'קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: '', price: '₪10' },
+      { title: '💧 מים / סודה', description: '', price: '₪8' },
+      { title: '🥤 קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: '', price: '₪10' },
     ],
   },
 ];
@@ -446,17 +446,6 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
         <Stack spacing={3}>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start" gap={1.5}>
             <Stack spacing={1}>
-              <Chip
-                label={badge}
-                size="small"
-                sx={{
-                  alignSelf: 'flex-start',
-                  bgcolor: alpha('#8f2d1f', 0.08),
-                  color: 'primary.main',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
-                }}
-              />
               <Typography variant="h5" component="h2" sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' } }}>
                 {title}
               </Typography>
@@ -575,6 +564,16 @@ function App() {
           overflow: 'hidden',
           py: { xs: 2, md: 8 },
           pb: { xs: 34, md: 8 },
+          background:
+            'radial-gradient(circle at top left, rgba(255,240,206,0.88) 0%, rgba(255,240,206,0) 28%), radial-gradient(circle at 85% 18%, rgba(196,138,58,0.16) 0%, rgba(196,138,58,0) 22%), linear-gradient(180deg, #f7f0e3 0%, #f1e6d5 46%, #eee1cf 100%)',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(135deg, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 40%), repeating-linear-gradient(135deg, rgba(94,60,34,0.028) 0px, rgba(94,60,34,0.028) 1px, transparent 1px, transparent 18px)',
+            pointerEvents: 'none',
+          },
         }}
       >
         <Box
@@ -667,50 +666,31 @@ function App() {
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: { xs: '1fr', md: '1.15fr 0.85fr' },
-                  gap: { xs: 2, md: 4 },
+                  gap: { xs: 2.5, md: 4.5 },
                   alignItems: 'center',
                 }}
               >
                 <Stack spacing={{ xs: 2.5, md: 4 }} sx={{ order: { xs: 2, md: 1 } }}>
-                  <Stack spacing={2} sx={{ maxWidth: 700 }}>
-                    <Stack direction="row" spacing={3} alignItems="center">
-                      <Avatar
-                        src={logoImage}
-                        alt={BUSINESS.name}
-                        sx={{
-                          width: { xs: 64, md: 72 },
-                          height: { xs: 64, md: 72 },
-                          p: 0.75,
-                          bgcolor: '#f7ecd7',
-                          border: '2px solid',
-                          borderColor: alpha('#fffaf4', 0.5),
-                          boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
-                        }}
-                      />
-                      <Chip
-                        label="SUSHI WOK NAHARIYA"
-                        sx={{
-                          alignSelf: 'flex-start',
-                          bgcolor: alpha('#ffffff', 0.1),
-                          color: '#fff8f1',
-                          fontWeight: 700,
-                          letterSpacing: { xs: '0.08em', md: '0.12em' },
-                          height: { xs: 34, md: 38 },
-                          '& .MuiChip-label': {
-                            px: { xs: 1.5, md: 2 },
-                            fontSize: { xs: '0.72rem', md: '0.82rem' },
-                          },
-                        }}
-                      />
-                    </Stack>
+                  <Stack spacing={{ xs: 1.75, md: 2.5 }} sx={{ maxWidth: 700 }}>
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        color: alpha('#fff8f1', 0.72),
+                        letterSpacing: '0.16em',
+                        fontWeight: 800,
+                      }}
+                    >
+                      נהריה | משלוחים ואיסוף עצמי
+                    </Typography>
 
                     <Typography
                       variant="h2"
                       component="h1"
                       sx={{
-                        fontSize: { xs: '2.15rem', sm: '2.7rem', md: '4.2rem' },
-                        lineHeight: { xs: 1.05, md: 0.98 },
+                        fontSize: { xs: '2rem', sm: '2.65rem', md: '4.05rem' },
+                        lineHeight: { xs: 1.08, md: 1.01 },
                         textWrap: 'balance',
+                        maxWidth: 12 * 40,
                       }}
                     >
                       {BUSINESS.heroTitle}
@@ -720,9 +700,9 @@ function App() {
                       variant="h5"
                       sx={{
                         color: alpha('#fff8f1', 0.84),
-                        maxWidth: 620,
-                        lineHeight: 1.6,
-                        fontSize: { xs: '1rem', md: '1.35rem' },
+                        maxWidth: 560,
+                        lineHeight: 1.5,
+                        fontSize: { xs: '0.98rem', md: '1.2rem' },
                       }}
                     >
                       {BUSINESS.heroSubtitle}
@@ -769,7 +749,7 @@ function App() {
                 <Box
                   sx={{
                     position: 'relative',
-                    minHeight: { xs: 300, sm: 360, md: 520 },
+                    minHeight: { xs: 320, sm: 400, md: 540 },
                     order: { xs: 1, md: 2 },
                     px: { xs: 0.5, md: 0 },
                   }}
@@ -780,14 +760,12 @@ function App() {
                     alt="מגש סושי"
                     sx={{
                       width: '100%',
-                      height: { xs: 250, sm: 300, md: 430 },
+                      height: { xs: 240, sm: 300, md: 420 },
                       objectFit: 'cover',
                       borderRadius: { xs: '28px', md: '38px' },
-                      clipPath: {
-                        xs: 'polygon(0 8%, 100% 0, 100% 90%, 7% 100%, 0 88%)',
-                        md: 'polygon(0 6%, 100% 0, 100% 92%, 8% 100%, 0 88%)',
-                      },
                       boxShadow: '0 26px 70px rgba(0,0,0,0.28)',
+                      border: '1px solid',
+                      borderColor: alpha('#fffaf4', 0.12),
                     }}
                   />
                   <Box
@@ -796,42 +774,70 @@ function App() {
                     alt="רול סושי"
                     sx={{
                       position: 'absolute',
-                      left: { xs: 6, md: -18 },
-                      bottom: { xs: 6, md: 14 },
-                      width: { xs: '42%', sm: '38%', md: '44%' },
-                      height: { xs: 132, sm: 160, md: 210 },
+                      display: { xs: 'none', sm: 'block' },
+                      left: { sm: 10, md: -18 },
+                      bottom: { sm: 10, md: 18 },
+                      width: { sm: '34%', md: '40%' },
+                      height: { sm: 150, md: 200 },
                       objectFit: 'cover',
-                      borderRadius: { xs: '24px', md: '32px' },
-                      clipPath: 'polygon(12% 0, 100% 0, 88% 100%, 0 100%)',
+                      borderRadius: { sm: '24px', md: '30px' },
                       border: '4px solid',
                       borderColor: alpha('#fffaf4', 0.9),
                       boxShadow: '0 22px 50px rgba(0,0,0,0.28)',
                     }}
                   />
-                  <Box
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    spacing={1.5}
                     sx={{
-                      position: 'absolute',
-                      right: { xs: 8, md: -8 },
-                      bottom: { xs: 16, md: 24 },
-                      width: { xs: '58%', sm: '50%', md: '48%' },
-                      p: { xs: 1.4, md: 2.5 },
-                      borderRadius: { xs: '24px', md: '32px' },
-                      backgroundColor: alpha('#fffaf4', 0.1),
-                      border: '1px solid',
-                      borderColor: alpha('#fffaf4', 0.16),
-                      backdropFilter: 'blur(14px)',
-                      boxShadow: '0 18px 40px rgba(0,0,0,0.2)',
+                      mt: { xs: 2, md: 2.5 },
+                      px: { xs: 1, md: 1.5 },
                     }}
                   >
-                    <Stack spacing={1}>
-                      <Typography variant="overline" sx={{ color: alpha('#fff8f1', 0.72), letterSpacing: '0.12em', fontSize: { xs: '0.56rem', md: '0.75rem' } }}>
-                        {BUSINESS.promoTitle}
-                      </Typography>
-                      <Typography variant="h5" sx={{ fontSize: { xs: '0.98rem', md: '1.3rem' }, lineHeight: 1.25 }}>
-                        {BUSINESS.promoText}
-                      </Typography>
-                    </Stack>
-                  </Box>
+                    <Box
+                      sx={{
+                        flex: 1,
+                        height: 1,
+                        maxWidth: 84,
+                        background: `linear-gradient(90deg, transparent 0%, ${alpha('#fffaf4', 0.42)} 100%)`,
+                      }}
+                    />
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        color: alpha('#fff8f1', 0.9),
+                        fontWeight: 800,
+                        letterSpacing: '0.18em',
+                        fontSize: { xs: '0.68rem', md: '0.78rem' },
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      SUSHI WOK NAHARIYA
+                    </Typography>
+                    <Avatar
+                      src={logoImage}
+                      alt={BUSINESS.name}
+                      sx={{
+                        width: { xs: 52, md: 62 },
+                        height: { xs: 52, md: 62 },
+                        p: { xs: 0.45, md: 0.6 },
+                        bgcolor: '#f7ecd7',
+                        border: '2px solid',
+                        borderColor: alpha('#fffaf4', 0.5),
+                        boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        flex: 1,
+                        height: 1,
+                        maxWidth: 84,
+                        background: `linear-gradient(90deg, ${alpha('#fffaf4', 0.42)} 0%, transparent 100%)`,
+                      }}
+                    />
+                  </Stack>
                 </Box>
               </Box>
             </Card>
@@ -839,9 +845,6 @@ function App() {
             <Box>
               <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={2} sx={{ mb: 3 }}>
                 <Box>
-                  <Typography variant="overline" color="primary" sx={{ letterSpacing: '0.14em', fontWeight: 800 }}>
-                    Gallery
-                  </Typography>
                   <Typography variant="h3" sx={{ mt: 0.5 }}>
                     מה מחכה לכם בתפריט
                   </Typography>
@@ -913,8 +916,7 @@ function App() {
                       {item.images?.length ? (
                         <Typography
                           variant="caption"
-                          color="primary"
-                          sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem' }}
+                          sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem', color: 'text.secondary' }}
                         >
                           לחצו לצפייה בעוד תמונות
                         </Typography>
@@ -926,18 +928,43 @@ function App() {
             </Box>
 
             <Box>
-              <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={2} sx={{ mb: 3 }}>
-                <Box>
-                  <Typography variant="overline" color="primary" sx={{ letterSpacing: '0.14em', fontWeight: 800 }}>
-                    Menu Overview
+              <Stack alignItems="center" sx={{ mb: 4, textAlign: 'center' }}>
+                <Box sx={{ maxWidth: 520 }}>
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      display: 'block',
+                      color: alpha('#8f2d1f', 0.72),
+                      letterSpacing: '0.18em',
+                      fontWeight: 800,
+                    }}
+                  >
+                    Sushi Wok Nahariya
                   </Typography>
-                  <Typography variant="h3" sx={{ mt: 0.5 }}>
-                    תפריט ראשי
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      mt: 0.75,
+                      fontSize: { xs: '2.5rem', md: '3.6rem' },
+                      lineHeight: 1,
+                      letterSpacing: '-0.03em',
+                    }}
+                  >
+                    Menu
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      mt: 1,
+                      fontSize: { xs: '0.95rem', md: '1rem' },
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Sushi Wok Nahariya
                   </Typography>
                 </Box>
-                <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 520 }}>
-                  חלוקה ברורה לקטגוריות כדי לאפשר בחירה מהירה והזמנה נוחה.
-                </Typography>
               </Stack>
 
               <Box
@@ -966,9 +993,6 @@ function App() {
             >
               <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={3}>
                 <Box sx={{ maxWidth: 620 }}>
-                  <Typography variant="overline" color="primary" sx={{ letterSpacing: '0.14em', fontWeight: 800 }}>
-                    Order Now
-                  </Typography>
                   <Typography variant="h4" sx={{ mt: 1, mb: 1 }}>
                     להזמנות, משלוחים ואיסוף עצמי
                   </Typography>
