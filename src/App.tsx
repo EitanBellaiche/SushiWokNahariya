@@ -10,6 +10,8 @@ import {
   Container,
   CssBaseline,
   Divider,
+  Dialog,
+  IconButton,
   Stack,
   ThemeProvider,
   Typography,
@@ -21,6 +23,9 @@ import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import RoomServiceIcon from '@mui/icons-material/RoomService';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
 const BUSINESS = {
   name: 'Sushi Wok נהריה',
@@ -38,129 +43,297 @@ const BUSINESS = {
 const logoImage = new URL('../photos/logo.png', import.meta.url).href;
 const heroPrimaryImage = new URL('../photos/sushi party platter.jpeg', import.meta.url).href;
 const heroSecondaryImage = new URL('../photos/susiRoll.jpeg', import.meta.url).href;
+const magashSushiImage = new URL('../photos/magashsushi.jpeg', import.meta.url).href;
+const magashSushiImage2 = new URL('../photos/magashsushi2.jpeg', import.meta.url).href;
+const pokeBowlImage = new URL('../photos/poki123.jpeg', import.meta.url).href;
+const pokeTunaImage = new URL('../photos/pokituna.jpeg', import.meta.url).href;
+const mokpatzImage = new URL('../photos/mokpatz123.jpeg', import.meta.url).href;
+const mokpatzImage2 = new URL('../photos/mokpatz45.jpeg', import.meta.url).href;
 
-const galleryImages = [
+type GalleryItem = {
+  title: string;
+  description: string;
+  image: string;
+  images?: string[];
+  imagePositions?: string[];
+  modalImageFits?: ('cover' | 'contain')[];
+  imageFit?: 'cover' | 'contain';
+  imagePosition?: string;
+  imagePadding?: number;
+};
+
+const galleryImages: GalleryItem[] = [
   {
-    title: 'מגשי סושי',
-    description: 'מגוון מגשים להזמנה זוגית, משפחתית ואירוח.',
-    image: new URL('../photos/sushi party platter.jpeg', import.meta.url).href,
+    title: 'מגשי מסיבה',
+    description: 'מגוון מגשי סושי לאירוח, משפחה וחגיגה.',
+    image: magashSushiImage2,
+    images: [
+      magashSushiImage2,
+      new URL('../photos/sushi party platter.jpeg', import.meta.url).href,
+      magashSushiImage,
+    ],
+    imagePositions: ['center bottom', 'center 38%', 'center bottom'],
+    modalImageFits: ['contain', 'cover', 'contain'],
   },
   {
-    title: 'פוקי טרי',
-    description: 'קערות טריות עם חומרי גלם איכותיים.',
-    image: new URL('../photos/sushiANDpoke.jpeg', import.meta.url).href,
+    title: 'Poke Bowl',
+    description: 'סלטי פוקי בול העשויים מחומרי גלם איכותיים.',
+    image: pokeBowlImage,
+    images: [pokeBowlImage, pokeTunaImage],
+    imagePositions: ['center', 'center'],
+    modalImageFits: ['contain', 'contain'],
+    imageFit: 'cover',
+    imagePosition: 'center center',
+    imagePadding: 0,
   },
   {
     title: 'ווק ומנות חמות',
     description: 'נודלס, אורז ומנות מוקפצות בהכנה במקום.',
-    image: new URL('../photos/chicken noodle bowl.jpeg', import.meta.url).href,
+    image: mokpatzImage,
+    images: [
+      mokpatzImage,
+      new URL('../photos/chicken noodle bowl.jpeg', import.meta.url).href,
+      mokpatzImage2,
+    ],
+    imagePositions: ['center', 'center', 'center'],
+    modalImageFits: ['contain', 'contain', 'contain'],
   },
   {
-    title: 'רולים וספיישלים',
-    description: 'רולים מיוחדים עם נראות חזקה וטעם בולט.',
-    image: new URL('../photos/friedSushi.jpeg', import.meta.url).href,
+    title: 'ספיישלים',
+    description: 'ספיישל רולים מיוחדים.',
+    image: new URL('../photos/spacial10.jpeg', import.meta.url).href,
+    images: [
+      new URL('../photos/spacial10.jpeg', import.meta.url).href,
+      new URL('../photos/spacialroll.jpeg', import.meta.url).href,
+      new URL('../photos/spacial1.jpeg', import.meta.url).href,
+      new URL('../photos/spacial2.jpeg', import.meta.url).href,
+    ],
+    imagePositions: ['center', 'center', 'center', 'center'],
+    modalImageFits: ['contain', 'contain', 'contain', 'contain'],
   },
 ];
 
 type MenuItem = {
-  title: string;
-  description: string;
+  title: React.ReactNode;
+  description: React.ReactNode;
   price: string;
 };
 
 type MenuSection = {
-  title: string;
+  title: React.ReactNode;
   subtitle: string;
   badge: string;
   items: MenuItem[];
-  note?: string;
+  note?: React.ReactNode;
 };
 
 const menuSections: MenuSection[] = [
-  {
-    title: 'הרכבה עצמית',
-    subtitle: 'בחירה בין דג לצמחוני, לפי הסגנון שמתאים לכם.',
-    badge: 'Customize',
-    items: [
-      { title: 'אורז', description: 'דג 39 ₪ | צמחוני 35 ₪', price: '₪39 / ₪35' },
-      { title: 'פוטומאקי', description: 'דג 45 ₪ | צמחוני 39 ₪', price: '₪45 / ₪39' },
-      { title: 'סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
-      { title: 'מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
-    ],
-    note: 'תוספות לבחירה: אבוקדו, בטטה, מלפפון, גזר, בצל ירוק, עירית ועוד. סוגי דגים: סלמון, סלמון צלוי, טונה אדומה ודג לבן.',
-  },
-  {
-    title: 'סושי ספיישל',
-    subtitle: 'רולים בולטים מתוך התפריט, עם שילובים חזקים ומדויקים.',
-    badge: 'Signature',
-    items: [
-      { title: 'קריספי רול', description: 'סלמון, אבוקדו ובטטה בציפוי טמפורה ופקאן.', price: '₪42' },
-      { title: 'ספייסי סלמון', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית.', price: '₪49' },
-      { title: 'דגמון רול', description: 'סלמון נא, אבוקדו ובטטה במעטפת אבוקדו וספייסי מיונז.', price: '₪42' },
-      { title: 'ריינבו דגים', description: 'אבוקדו, מלפפון וגזר במעטפת סלמון, טונה ודג לבן.', price: '₪48' },
-      { title: 'סן רול', description: 'סלמון בטמפורה ואבוקדו במעטפת סלמון, אבוקדו ובצל ירוק.', price: '₪49' },
-    ],
-  },
-  {
-    title: 'קומבינציות',
-    subtitle: 'מבחר קומבינציות מוכנות להזמנה נוחה ומהירה.',
-    badge: 'Combos',
-    items: [
-      {
-        title: 'קומבינציית סלמון (24 יח׳)',
-        description: 'סלמון צלוי, פוטומאקי סלמון ומאקי סלמון.',
-        price: '₪90',
-      },
-      {
-        title: 'קומבינציה מטוגנת (12 יח׳)',
-        description: 'רול מטוגן וסנדוויץ׳ סושי בטמפורה ופקאן.',
-        price: '₪80',
-      },
-      {
-        title: 'קומבינציה צמחונית (24 יח׳)',
-        description: 'רולים צמחוניים עם אבוקדו, בטטה, מלפפון וגזר.',
-        price: '₪70',
-      },
-    ],
-  },
   {
     title: 'מנות פתיחה',
     subtitle: 'מנות קטנות שפותחות את הארוחה בצורה מדויקת.',
     badge: 'Starters',
     items: [
-      { title: 'קמפי', description: 'חמוצים יפנים בתיבול ביתי.', price: '₪18' },
-      { title: 'אגרול ירקות', description: '3 יחידות קריספיות.', price: '₪29' },
-      { title: '8 יחידות כנפיים', description: 'ברוטב צ׳ילי פיקנטי.', price: '₪25' },
-      { title: 'אורז מאודה', description: 'תוספת שמתאימה לצד כל מנה.', price: '₪15' },
+      {
+        title: (
+          <>
+            קימצ׳י{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (חמוצים יפניים בתיבול ביתי)
+            </Box>
+          </>
+        ),
+        description: '',
+        price: '₪18',
+      },
+      {
+        title: (
+          <>
+            אגרול ירקות{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (3 יחידות קריספיות)
+            </Box>
+          </>
+        ),
+        description: '',
+        price: '₪29',
+      },
+      {
+        title: (
+          <>
+            8 יחידות כנפיים{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (ברוטב צ׳ילי פיקנטי)
+            </Box>
+          </>
+        ),
+        description: '',
+        price: '₪25',
+      },
+      { title: 'אורז מאודה', description: '', price: '₪15' },
+      { title: 'צ׳יפס גדול', description: '', price: '₪20' },
     ],
   },
   {
-    title: 'פוקי',
-    subtitle: 'על בסיס אורז סושי, עם רטבים ותוספות נבחרות.',
+    title: 'הרכבה עצמית',
+    subtitle: 'בחירה בין דג לצמחוני, לפי הסגנון שמתאים לכם.',
+    badge: 'Customize',
+    items: [
+      {
+        title: (
+          <>
+            i/o{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (אורז בחוץ)
+            </Box>
+          </>
+        ),
+        description: 'דג 39 ₪ | צמחוני 35 ₪',
+        price: '₪39 / ₪35',
+      },
+      {
+        title: (
+          <>
+            פוטומאקי{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (אצה בחוץ)
+            </Box>
+          </>
+        ),
+        description: 'דג 45 ₪ | צמחוני 39 ₪',
+        price: '₪45 / ₪39',
+      },
+      { title: 'סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
+      { title: 'מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
+    ],
+    note: (
+      <>
+        תוספות ודגים לבחירה:
+        <br />
+        ירקות: אבוקדו, בטטה, מלפפון, גזר, בצל ירוק, עירית, קנפיו.
+        <br />
+        דגים: סלמון, סלמון צלוי, טונה אדומה ודג לבן.
+      </>
+    ),
+  },
+  {
+    title: 'Signature Sushi',
+    subtitle: 'רולים מיוחדים עם שילובים מדויקים, חומרי גלם טובים ונוכחות חזקה בצלחת.',
+    badge: 'Signature',
+    items: [
+      {
+        title: (
+          <>
+            🔥 קריספי רול{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (רול מטוגן)
+            </Box>
+          </>
+        ),
+        description: 'סלמון, אבוקדו ובטטה במעטפת טמפורה ופאנקו.',
+        price: '₪42',
+      },
+      { title: '🌶️ ספייסי סלמון', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית עם טוויסט פיקנטי.', price: '₪49' },
+      { title: '🥑 דרגון רול', description: 'סלמון נא, אבוקדו ובטטה במעטפת אבוקדו וספייסי מיונז למרקם עשיר.', price: '₪42' },
+      { title: '🌈 ריינבו דגים', description: 'אבוקדו, מלפפון וגזר במעטפת סלמון, טונה ודג לבן.', price: '₪48' },
+      { title: '✨ סאן רול', description: 'סלמון בטמפורה ואבוקדו במעטפת סלמון, אבוקדו ובצל ירוק עם נוכחות מרשימה.', price: '₪49' },
+    ],
+  },
+  {
+    title: 'קומבינציות השף',
+    subtitle: '',
+    badge: 'Combos',
+    items: [
+      {
+        title: 'קומבינציית סלמון (24 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o סלמון צלוי, אבוקדו, בטטה.
+            <br />
+            8 יח׳ פוטומאקי סלמון נא, בטטה, מלפפון, גזר ובצל ירוק.
+            <br />
+            8 יח׳ מאקי סלמון.
+          </>
+        ),
+        price: '₪90',
+      },
+      {
+        title: 'קומבינציה מטוגנת (12 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופאנקו.
+            <br />
+            4 יח׳ סנדוויץ׳ סושי סלמון אבוקדו בטמפורה ופאנקו.
+          </>
+        ),
+        price: '₪80',
+      },
+      {
+        title: 'קומבינציה צמחונית (24 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o בטטה, מלפפון, אבוקדו במעטפת בצל ירוק.
+            <br />
+            8 יח׳ פוטומאקי מלפפון, אבוקדו, גזר, עירית.
+            <br />
+            8 יח׳ מאקי אבוקדו.
+          </>
+        ),
+        price: '₪70',
+      },
+    ],
+  },
+  {
+    title: 'סלטי פוקי (POKE)',
+    subtitle: 'על מצע אורז סושי, מוגש עם ספייסי מיונז וסויה.',
     badge: 'Fresh',
     items: [
-      { title: 'פוקי סלמון', description: 'סלמון נא או אפוי עם אבוקדו, בטטה, מלפפון, בצל ירוק ושומשום.', price: '₪49' },
-      { title: 'פוקי טונה אדומה', description: 'טונה עם אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום.', price: '₪49' },
+      {
+        title: (
+          <>
+            פוקי סלמון{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (נא/אפוי)
+            </Box>
+          </>
+        ),
+        description: '(טרטר סלמון, אבוקדו, בטטה, מלפפון, בצל ירוק ושומשום)',
+        price: '₪49',
+      },
+      { title: 'פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
     ],
   },
   {
-    title: 'מן הווק',
-    subtitle: 'מנות חמות בבחירה בין עוף, בקר או צמחוני.',
+    title: (
+      <>
+        מן הווק{' '}
+        <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+          (Stir-Fry)
+        </Box>
+      </>
+    ),
+    subtitle: 'בחירה בין: עוף / בקר / צמחוני',
     badge: 'Wok',
     items: [
-      { title: 'פאד תאי', description: 'אטריות אורז, נבטים, גזר, כרוב, בצל ירוק ולימון.', price: '₪46' },
-      { title: 'סמוקי נודלס', description: 'אטריות, פטריות, כרוב, גזר, בצל ירוק ובוטנים.', price: '₪49' },
-      { title: 'פרייד רייס', description: 'אורז מוקפץ עם פטריות, ביצה, בצל ירוק, כרוב וגזר.', price: '₪44' },
+      { title: 'פאד תאי', description: '(אטריות אורז, נטיפי ביצה, כרוב, גזר, נבטים, בצל ירוק ולימון)', price: '₪46' },
+      { title: 'סמוקי נודלס', description: '(אטריות חיטה, פטריות, כרוב, גזר, בצל ירוק ובוטנים)', price: '₪49' },
+      { title: 'פרייד רייס', description: '(אורז אסייתי מוקפץ, פטריות, ביצה, בצל ירוק, כרוב וגזר)', price: '₪44' },
     ],
   },
   {
-    title: 'ילדים ושתייה',
-    subtitle: 'אפשרויות נוחות למשפחות ולהשלמת ההזמנה.',
+    title: 'ארוחות ילדים',
+    subtitle: 'כולל שתייה קלה.',
     badge: 'Family',
     items: [
-      { title: 'ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי או שניצלונים עם צ׳יפס או אורז מאודה, כולל שתייה קלה.', price: '₪39' },
-      { title: 'מים / סודה', description: 'שתייה קלה בסיסית.', price: '₪8' },
-      { title: 'קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: 'מבחר שתייה קלה לבחירה.', price: '₪10' },
+      { title: 'ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
+    ],
+  },
+  {
+    title: 'שתייה קלה',
+    subtitle: '',
+    badge: 'Drinks',
+    items: [
+      { title: 'מים / סודה', description: '', price: '₪8' },
+      { title: 'קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: '', price: '₪10' },
     ],
   },
 ];
@@ -308,7 +481,7 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
 
           <Stack spacing={1.5}>
             {items.map((item, index) => (
-              <Box key={`${title}-${item.title}`}>
+              <Box key={`${title}-${index}`}>
                 <Stack direction="row" justifyContent="space-between" gap={1.5} alignItems="flex-start">
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ mb: 0.5, fontSize: { xs: '1rem', md: '1.25rem' } }}>
@@ -354,6 +527,44 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
 }
 
 function App() {
+  const [selectedGallery, setSelectedGallery] = React.useState<GalleryItem | null>(null);
+  const [selectedGalleryIndex, setSelectedGalleryIndex] = React.useState(0);
+
+  const selectedGalleryImages = selectedGallery?.images ?? [];
+  const hasGalleryImages = selectedGalleryImages.length > 0;
+  const selectedGalleryImagePosition = selectedGallery?.imagePositions?.[selectedGalleryIndex] ?? 'center';
+  const selectedGalleryImageFit = selectedGallery?.modalImageFits?.[selectedGalleryIndex] ?? 'contain';
+
+  const openGallery = (item: GalleryItem) => {
+    if (!item.images?.length) {
+      return;
+    }
+
+    setSelectedGallery(item);
+    setSelectedGalleryIndex(0);
+  };
+
+  const closeGallery = () => {
+    setSelectedGallery(null);
+    setSelectedGalleryIndex(0);
+  };
+
+  const showPreviousImage = () => {
+    if (!hasGalleryImages) {
+      return;
+    }
+
+    setSelectedGalleryIndex((currentIndex) => (currentIndex === 0 ? selectedGalleryImages.length - 1 : currentIndex - 1));
+  };
+
+  const showNextImage = () => {
+    if (!hasGalleryImages) {
+      return;
+    }
+
+    setSelectedGalleryIndex((currentIndex) => (currentIndex === selectedGalleryImages.length - 1 ? 0 : currentIndex + 1));
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -363,9 +574,81 @@ function App() {
           minHeight: '100vh',
           overflow: 'hidden',
           py: { xs: 2, md: 8 },
-          pb: { xs: 13, md: 8 },
+          pb: { xs: 34, md: 8 },
         }}
       >
+        <Box
+          sx={{
+            position: 'fixed',
+            right: { xs: 12, md: 24 },
+            left: { xs: 12, md: 'auto' },
+            bottom: { xs: 84, md: 24 },
+            zIndex: 25,
+            maxWidth: { xs: 'none', md: 360 },
+            pointerEvents: 'none',
+          }}
+        >
+          <Card
+            elevation={0}
+            sx={{
+              pointerEvents: 'auto',
+              overflow: 'hidden',
+              borderRadius: { xs: 3, md: 4 },
+              border: '1px solid',
+              borderColor: alpha('#f7d27a', 0.48),
+              background:
+                'linear-gradient(135deg, rgba(255,236,178,0.98) 0%, rgba(232,186,78,0.98) 52%, rgba(184,126,24,0.98) 100%)',
+              boxShadow: '0 20px 45px rgba(133, 83, 8, 0.28)',
+              animation: 'promoFloat 2.8s ease-in-out infinite',
+              '@keyframes promoFloat': {
+                '0%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-6px)' },
+                '100%': { transform: 'translateY(0px)' },
+              },
+            }}
+          >
+            <Box
+              sx={{
+                px: { xs: 2, md: 2.5 },
+                py: { xs: 1.5, md: 1.75 },
+                color: '#2f1b04',
+                background:
+                  'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 100%)',
+              }}
+            >
+              <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1.5}>
+                <Box>
+                  <Typography variant="overline" sx={{ display: 'block', fontWeight: 900, letterSpacing: '0.14em', color: alpha('#2f1b04', 0.86) }}>
+                    {BUSINESS.promoTitle}
+                  </Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 900, lineHeight: 1.15, fontSize: { xs: '1rem', md: '1.12rem' } }}>
+                    {BUSINESS.promoText}
+                  </Typography>
+                </Box>
+                <Button
+                  variant="contained"
+                  href={BUSINESS.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    flexShrink: 0,
+                    minWidth: 0,
+                    px: 1.5,
+                    py: 0.9,
+                    borderRadius: 999,
+                    bgcolor: '#2f1b04',
+                    color: '#fff8f1',
+                    boxShadow: 'none',
+                    '&:hover': { bgcolor: '#1d1104', boxShadow: 'none' },
+                  }}
+                >
+                  להזמין
+                </Button>
+              </Stack>
+            </Box>
+          </Card>
+        </Box>
+
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, sm: 2, md: 3 } }}>
           <Stack spacing={{ xs: 3, md: 5 }}>
             <Card
@@ -564,7 +847,7 @@ function App() {
                   </Typography>
                 </Box>
                 <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 520 }}>
-                  מנות נבחרות מהתפריט שלנו, כדי שתוכלו לבחור מהר ולהזמין בלי להתלבט.
+                  מגשי מסיבה נבחרים להשראה, כדי שתוכלו לבחור מהר ולהזמין את החגיגה הבאה שלכם בלי להתלבט.
                 </Typography>
               </Stack>
 
@@ -579,15 +862,47 @@ function App() {
                   <Card
                     key={item.title}
                     elevation={0}
+                    onClick={() => openGallery(item)}
                     sx={{
                       overflow: 'hidden',
                       border: '1px solid',
                       borderColor: 'rgba(36, 25, 21, 0.08)',
                       backgroundColor: 'rgba(255, 250, 244, 0.92)',
                       boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
+                      cursor: item.images?.length ? 'pointer' : 'default',
+                      transition: 'transform 220ms ease, box-shadow 220ms ease',
+                      '&:hover': {
+                        transform: item.images?.length ? 'translateY(-4px)' : 'none',
+                        boxShadow: item.images?.length ? '0 30px 60px rgba(36, 25, 21, 0.12)' : '0 24px 50px rgba(36, 25, 21, 0.08)',
+                      },
                     }}
                   >
-                    <Box component="img" src={item.image} alt={item.title} sx={{ width: '100%', height: { xs: 220, sm: 240 }, objectFit: 'cover' }} />
+                    <Box
+                      sx={{
+                        display: 'grid',
+                        placeItems: 'center',
+                        width: '100%',
+                        height: { xs: 220, sm: 240 },
+                        p: item.imagePadding ?? 0,
+                        overflow: 'hidden',
+                        backgroundColor: item.imageFit === 'contain' ? alpha('#f4ede3', 0.72) : 'transparent',
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src={item.image}
+                        alt={item.title}
+                        sx={{
+                          display: 'block',
+                          width: item.imageFit === 'contain' ? 'auto' : '100%',
+                          height: item.imageFit === 'contain' ? 'auto' : '100%',
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                          objectFit: item.imageFit ?? 'cover',
+                          objectPosition: item.imagePosition ?? 'center',
+                        }}
+                      />
+                    </Box>
                     <CardContent>
                       <Typography variant="h6" sx={{ mb: 0.5 }}>
                         {item.title}
@@ -595,6 +910,15 @@ function App() {
                       <Typography variant="body2" color="text.secondary">
                         {item.description}
                       </Typography>
+                      {item.images?.length ? (
+                        <Typography
+                          variant="caption"
+                          color="primary"
+                          sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem' }}
+                        >
+                          לחצו לצפייה בעוד תמונות
+                        </Typography>
+                      ) : null}
                     </CardContent>
                   </Card>
                 ))}
@@ -623,8 +947,8 @@ function App() {
                   gap: 3,
                 }}
               >
-                {menuSections.map((section) => (
-                  <SectionCard key={section.title} {...section} />
+                {menuSections.map((section, index) => (
+                  <SectionCard key={`section-${index}`} {...section} />
                 ))}
               </Box>
             </Box>
@@ -739,6 +1063,163 @@ function App() {
             </Button>
           </Box>
         </Box>
+
+        <Dialog
+          open={Boolean(selectedGallery)}
+          onClose={closeGallery}
+          maxWidth="md"
+          fullWidth
+          PaperProps={{
+            sx: {
+              overflow: 'hidden',
+              borderRadius: { xs: 3, md: 5 },
+              bgcolor: '#1b120f',
+              color: '#fff8f1',
+            },
+          }}
+        >
+          {selectedGallery && hasGalleryImages ? (
+            <Box sx={{ position: 'relative' }}>
+              <IconButton
+                onClick={closeGallery}
+                sx={{
+                  position: 'absolute',
+                  top: 12,
+                  left: 12,
+                  zIndex: 3,
+                  bgcolor: alpha('#241915', 0.72),
+                  color: '#fff8f1',
+                  boxShadow: '0 10px 24px rgba(0,0,0,0.24)',
+                  '&:hover': { bgcolor: alpha('#241915', 0.88) },
+                }}
+              >
+                <CloseRoundedIcon />
+              </IconButton>
+
+              <Box
+                sx={{
+                  px: { xs: 1, sm: 2, md: 3 },
+                  pt: { xs: 6, sm: 7 },
+                  pb: { xs: 1.5, md: 2 },
+                  background: 'linear-gradient(180deg, #201310 0%, #1b120f 100%)',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'grid',
+                    placeItems: 'center',
+                    minHeight: { xs: '52vh', md: '68vh' },
+                    maxHeight: { xs: '52vh', md: '68vh' },
+                    borderRadius: { xs: 3, md: 4 },
+                    overflow: 'hidden',
+                    bgcolor: alpha('#fff8f1', 0.04),
+                    boxShadow: 'inset 0 0 0 1px rgba(255,248,241,0.06)',
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={selectedGalleryImages[selectedGalleryIndex]}
+                    alt={`${selectedGallery.title} ${selectedGalleryIndex + 1}`}
+                    sx={{
+                      display: 'block',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: selectedGalleryImageFit,
+                      objectPosition: selectedGalleryImagePosition,
+                    }}
+                  />
+                </Box>
+              </Box>
+
+              <Box sx={{ p: { xs: 2, md: 3 }, pt: { xs: 1.5, md: 2 }, borderTop: '1px solid', borderColor: alpha('#fff8f1', 0.08) }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} gap={2}>
+                  <Box>
+                    <Typography variant="h5" sx={{ mb: 0.5 }}>
+                      {selectedGallery.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: alpha('#fff8f1', 0.72) }}>
+                      {selectedGallery.description}
+                    </Typography>
+                  </Box>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Button
+                      variant="contained"
+                      onClick={showPreviousImage}
+                      startIcon={<ChevronRightRoundedIcon />}
+                      disabled={selectedGalleryImages.length < 2}
+                      sx={{
+                        borderRadius: 999,
+                        px: 2,
+                        minWidth: 0,
+                        bgcolor: alpha('#fff8f1', 0.1),
+                        color: '#fff8f1',
+                        boxShadow: 'none',
+                        '& .MuiButton-startIcon': { ml: 0.75, mr: 0 },
+                        '&:hover': { bgcolor: alpha('#fff8f1', 0.16), boxShadow: 'none' },
+                      }}
+                    >
+                      קודם
+                    </Button>
+                    <Typography variant="body2" sx={{ color: alpha('#fff8f1', 0.72), whiteSpace: 'nowrap', minWidth: 48, textAlign: 'center' }}>
+                      {selectedGalleryIndex + 1} / {selectedGalleryImages.length}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={showNextImage}
+                      endIcon={<ChevronLeftRoundedIcon />}
+                      disabled={selectedGalleryImages.length < 2}
+                      sx={{
+                        borderRadius: 999,
+                        px: 2,
+                        minWidth: 0,
+                        bgcolor: alpha('#c48a3a', 0.88),
+                        color: '#241915',
+                        boxShadow: 'none',
+                        '& .MuiButton-endIcon': { mr: 0.75, ml: 0 },
+                        '&:hover': { bgcolor: '#d59c4b', boxShadow: 'none' },
+                      }}
+                    >
+                      הבא
+                    </Button>
+                  </Stack>
+                </Stack>
+
+                {selectedGalleryImages.length > 1 ? (
+                  <Stack direction="row" spacing={1} sx={{ mt: 2, overflowX: 'auto', pb: 0.5 }}>
+                    {selectedGalleryImages.map((image, imageIndex) => (
+                      <Box
+                        key={`${selectedGallery.title}-${imageIndex}`}
+                        component="button"
+                        type="button"
+                        onClick={() => setSelectedGalleryIndex(imageIndex)}
+                        sx={{
+                          flex: '0 0 auto',
+                          width: { xs: 72, md: 84 },
+                          height: { xs: 72, md: 84 },
+                          p: 0,
+                          borderRadius: 2.5,
+                          overflow: 'hidden',
+                          border: '2px solid',
+                          borderColor: imageIndex === selectedGalleryIndex ? 'secondary.main' : alpha('#fff8f1', 0.14),
+                          backgroundColor: alpha('#fff8f1', 0.04),
+                          cursor: 'pointer',
+                          boxShadow: imageIndex === selectedGalleryIndex ? '0 0 0 3px rgba(196,138,58,0.18)' : 'none',
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={image}
+                          alt={`${selectedGallery.title} ממוזערת ${imageIndex + 1}`}
+                          sx={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </Box>
+                    ))}
+                  </Stack>
+                ) : null}
+              </Box>
+            </Box>
+          ) : null}
+        </Dialog>
       </Box>
     </ThemeProvider>
   );
