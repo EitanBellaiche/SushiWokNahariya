@@ -35,9 +35,10 @@ const BUSINESS = {
     'https://wa.me/972528205470?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A6%D7%A2%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%9E%D7%A1%D7%95%D7%A9%D7%99%20%D7%95%D7%95%D7%A7%20%D7%A0%D7%94%D7%A8%D7%99%D7%94',
   address: 'כליל החורש 7, נהריה',
   hours: 'א׳-ה׳ 12:00-23:00 | מוצ״ש 12:00-19:00',
+  promoTitle: '🎁 מבצע הבית',
+  promoText: 'מוקפץ לבחירה + רול סושי בהרכבה ב־69 ₪ בלבד!',
 };
 
-const logoImage = new URL('../photos/logo.png', import.meta.url).href;
 const magashSushiImage = new URL('../photos/magashsushi.jpeg', import.meta.url).href;
 const magashSushiImage2 = new URL('../photos/magashsushi2.jpeg', import.meta.url).href;
 const pokeBowlImage = new URL('../photos/poki123.jpeg', import.meta.url).href;
@@ -254,9 +255,9 @@ const menuSections: MenuSection[] = [
         title: 'קומבינציה מטוגנת (12 יח׳)',
         description: (
           <>
-            8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופאנקו.
+            8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופנקו.
             <br />
-            4 יח׳ סנדוויץ׳ סושי סלמון אבוקדו בטמפורה ופאנקו.
+            4 יח׳ סנדוויץ׳ סושי סלמון אבוקדו בטמפורה ופנקו.
           </>
         ),
         price: '₪80',
@@ -655,6 +656,111 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+
+      <Box
+        sx={{
+          position: 'fixed',
+          left: { xs: 12, md: '50%' },
+          transform: { xs: 'none', md: 'translateX(-50%)' },
+          right: { xs: 12, md: 'auto' },
+          bottom: { xs: 84, md: 24 },
+          zIndex: 26,
+          width: { xs: 'auto', md: 'fit-content' },
+          maxWidth: { xs: 'calc(100% - 24px)', md: 'min(92vw, 760px)' },
+          pointerEvents: 'none',
+        }}
+      >
+        <Card
+          elevation={0}
+          sx={{
+            pointerEvents: 'auto',
+            overflow: 'hidden',
+            borderRadius: 0,
+            border: '1px solid',
+            borderColor: alpha('#b58a2f', 0.55),
+            background: 'linear-gradient(90deg, #b98a2b 0%, #e1bc58 50%, #b98a2b 100%)',
+            boxShadow: '0 16px 38px rgba(120, 88, 20, 0.22)',
+          }}
+        >
+          <Box
+            sx={{
+              px: { xs: 1.5, md: 2.5 },
+              py: { xs: 1, md: 1.15 },
+              color: '#241915',
+            }}
+          >
+            <Typography
+              sx={{
+                fontWeight: 900,
+                textAlign: 'center',
+                fontSize: { xs: '0.92rem', md: '1.12rem' },
+                lineHeight: 1.25,
+                letterSpacing: '-0.01em',
+              }}
+            >
+              <Box component="span" sx={{ fontWeight: 900 }}>
+                {BUSINESS.promoTitle}:
+              </Box>{' '}
+              {BUSINESS.promoText}
+            </Typography>
+          </Box>
+        </Card>
+      </Box>
+
+      <Box
+        sx={{
+          position: 'fixed',
+          top: { xs: 12, md: 18 },
+          left: { xs: 12, md: 18 },
+          zIndex: 27,
+        }}
+      >
+        <IconButton
+          onClick={openNavMenu}
+          aria-label="פתח תפריט"
+          sx={{
+            color: '#241915',
+            bgcolor: 'transparent',
+            boxShadow: 'none',
+            borderRadius: 999,
+            '&:hover': {
+              bgcolor: alpha('#241915', 0.06),
+            },
+          }}
+        >
+          <MenuRoundedIcon sx={{ fontSize: { xs: 30, md: 34 } }} />
+        </IconButton>
+
+        <Menu
+          anchorEl={navAnchorEl}
+          open={Boolean(navAnchorEl)}
+          onClose={closeNavMenu}
+          PaperProps={{
+            sx: {
+              mt: 1,
+              minWidth: 240,
+              maxHeight: 420,
+              borderRadius: 3,
+              border: '1px solid',
+              borderColor: alpha('#241915', 0.08),
+              boxShadow: '0 18px 40px rgba(36, 25, 21, 0.12)',
+            },
+          }}
+        >
+          {navItems.map((item) => (
+            <MenuItem
+              key={item.href}
+              component="a"
+              href={item.href}
+              onClick={closeNavMenu}
+              sx={{ justifyContent: 'flex-end', textAlign: 'right' }}
+            >
+              {item.label}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Box>
+
       <Box
         sx={{
           position: 'relative',
@@ -676,128 +782,10 @@ function App() {
       >
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, sm: 2, md: 3 } }}>
           <Stack spacing={{ xs: 3, md: 5 }}>
-            <Reveal delay={20} y={16}>
-              <Box
-                sx={{
-                  position: 'sticky',
-                  top: { xs: 10, md: 18 },
-                  zIndex: 20,
-                }}
-              >
-                <Card
-                  elevation={0}
-                  sx={{
-                    borderRadius: 999,
-                    border: '1px solid',
-                    borderColor: alpha('#241915', 0.08),
-                    backgroundColor: alpha('#fffaf4', 0.82),
-                    boxShadow: '0 18px 40px rgba(36, 25, 21, 0.08)',
-                    backdropFilter: 'blur(14px)',
-                    px: { xs: 1, md: 1.25 },
-                    py: 0.75,
-                  }}
-                >
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1}>
-                    <Stack direction="row" alignItems="center" spacing={1.25} sx={{ minWidth: 0 }}>
-                      <Box
-                        component="img"
-                        src={logoImage}
-                        alt="Sushi Wok Nahariya Logo"
-                        sx={{
-                          width: { xs: 42, md: 50 },
-                          height: { xs: 42, md: 50 },
-                          borderRadius: '50%',
-                          objectFit: 'cover',
-                          border: '1px solid',
-                          borderColor: alpha('#241915', 0.08),
-                          bgcolor: '#fff',
-                          flexShrink: 0,
-                        }}
-                      />
-                      <Box sx={{ minWidth: 0 }}>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{
-                            fontWeight: 900,
-                            lineHeight: 1.1,
-                            fontSize: { xs: '0.95rem', md: '1.05rem' },
-                          }}
-                        >
-                          Sushi Wok Nahariya
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: '0.12em' }}>
-                          MENU
-                        </Typography>
-                      </Box>
-                    </Stack>
-
-                    <Button
-                      onClick={openNavMenu}
-                      startIcon={<MenuRoundedIcon />}
-                      sx={{
-                        borderRadius: 999,
-                        px: { xs: 1.4, md: 1.75 },
-                        py: 0.9,
-                        color: 'text.primary',
-                        bgcolor: alpha('#8f2d1f', 0.05),
-                        whiteSpace: 'nowrap',
-                        '& .MuiButton-startIcon': { ml: 0.5, mr: 0 },
-                        '&:hover': {
-                          bgcolor: alpha('#8f2d1f', 0.1),
-                        },
-                      }}
-                    >
-                      תפריט
-                    </Button>
-
-                    <Menu
-                      anchorEl={navAnchorEl}
-                      open={Boolean(navAnchorEl)}
-                      onClose={closeNavMenu}
-                      PaperProps={{
-                        sx: {
-                          mt: 1,
-                          minWidth: 240,
-                          maxHeight: 420,
-                          borderRadius: 3,
-                          border: '1px solid',
-                          borderColor: alpha('#241915', 0.08),
-                          boxShadow: '0 18px 40px rgba(36, 25, 21, 0.12)',
-                        },
-                      }}
-                    >
-                      {navItems.map((item) => (
-                        <MenuItem
-                          key={item.href}
-                          component="a"
-                          href={item.href}
-                          onClick={closeNavMenu}
-                          sx={{ justifyContent: 'flex-end', textAlign: 'right' }}
-                        >
-                          {item.label}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  </Stack>
-                </Card>
-              </Box>
-            </Reveal>
-
             <Reveal delay={50} y={18}>
-              <Box id="menu-top" sx={{ scrollMarginTop: { xs: '90px', md: '110px' } }}>
+              <Box id="menu-top" sx={{ scrollMarginTop: { xs: '90px', md: '110px' }, pt: { xs: 4, md: 3 } }}>
                 <Stack alignItems="center" sx={{ mb: 4, textAlign: 'center' }}>
                   <Box sx={{ maxWidth: 520 }}>
-                    <Typography
-                      variant="overline"
-                      sx={{
-                        display: 'block',
-                        color: alpha('#8f2d1f', 0.72),
-                        letterSpacing: '0.18em',
-                        fontWeight: 800,
-                      }}
-                    >
-                      Sushi Wok Nahariya
-                    </Typography>
                     <Typography
                       variant="h2"
                       sx={{
@@ -807,19 +795,31 @@ function App() {
                         letterSpacing: '-0.03em',
                       }}
                     >
-                      Full Menu
+                      Menu
                     </Typography>
+
                     <Typography
-                      variant="body2"
-                      color="text.secondary"
                       sx={{
-                        mt: 1,
-                        fontSize: { xs: '0.95rem', md: '1rem' },
-                        letterSpacing: '0.06em',
+                        mt: 1.1,
+                        fontSize: { xs: '1rem', md: '1.18rem' },
+                        fontWeight: 800,
+                        letterSpacing: '0.18em',
                         textTransform: 'uppercase',
+                        color: '#8f2d1f',
                       }}
                     >
-                      Fresh Sushi • Wok • Poke • Combos
+                      Sushi Wok Nahariya
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        mt: 0.65,
+                        fontSize: { xs: '0.95rem', md: '1.05rem' },
+                        color: 'text.secondary',
+                        letterSpacing: '0.08em',
+                      }}
+                    >
+                      Fresh sushi in Nahariya
                     </Typography>
                   </Box>
                 </Stack>
@@ -840,99 +840,6 @@ function App() {
                   ))}
                 </Box>
               </Box>
-            </Reveal>
-
-            <Reveal delay={90}>
-              <Card
-                elevation={0}
-                sx={{
-                  p: { xs: 2.2, sm: 3, md: 4 },
-                  borderRadius: { xs: 4, md: 5 },
-                  border: '1px solid',
-                  borderColor: 'rgba(36, 25, 21, 0.08)',
-                  background: 'linear-gradient(135deg, rgba(255,250,244,0.98) 0%, rgba(250,242,233,0.98) 100%)',
-                  boxShadow: '0 24px 60px rgba(36, 25, 21, 0.08)',
-                }}
-              >
-                <Stack spacing={2.5} alignItems="center" textAlign="center">
-                  <Box
-                    component="img"
-                    src={logoImage}
-                    alt="Sushi Wok Nahariya"
-                    sx={{
-                      width: { xs: 88, md: 110 },
-                      height: { xs: 88, md: 110 },
-                      borderRadius: '50%',
-                      objectFit: 'cover',
-                      boxShadow: '0 18px 40px rgba(36, 25, 21, 0.12)',
-                      border: '3px solid',
-                      borderColor: alpha('#fffaf4', 0.92),
-                      bgcolor: '#fff',
-                    }}
-                  />
-
-                  <Box>
-                    <Typography
-                      variant="overline"
-                      sx={{
-                        display: 'block',
-                        color: alpha('#8f2d1f', 0.72),
-                        letterSpacing: '0.22em',
-                        fontWeight: 800,
-                      }}
-                    >
-                      SUSHI WOK
-                    </Typography>
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        mt: 0.5,
-                        lineHeight: 1,
-                        letterSpacing: '-0.02em',
-                      }}
-                    >
-                      Sushi Wok Nahariya
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="text.secondary"
-                      sx={{
-                        mt: 1.25,
-                        fontSize: { xs: '0.98rem', md: '1.08rem' },
-                      }}
-                    >
-                      משלוחים, איסוף עצמי וסושי טרי בנהריה
-                    </Typography>
-                  </Box>
-
-                  <Stack
-                    direction={{ xs: 'column', sm: 'row' }}
-                    spacing={1.25}
-                    sx={{ width: '100%', justifyContent: 'center' }}
-                  >
-                    {highlights.map((item) => (
-                      <Chip
-                        key={item.label}
-                        icon={item.icon}
-                        label={item.label}
-                        sx={{
-                          maxWidth: '100%',
-                          height: { xs: 46, md: 42 },
-                          bgcolor: alpha('#8f2d1f', 0.04),
-                          border: '1px solid',
-                          borderColor: alpha('#241915', 0.08),
-                          '& .MuiChip-label': {
-                            display: 'block',
-                            whiteSpace: 'normal',
-                            textAlign: 'right',
-                            py: 0.75,
-                          },
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                </Stack>
-              </Card>
             </Reveal>
 
             <Reveal delay={120}>
@@ -1068,6 +975,29 @@ function App() {
                 <ActionButtons />
               </Stack>
             </Card>
+
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ justifyContent: 'center' }}>
+              {highlights.map((item) => (
+                <Chip
+                  key={item.label}
+                  icon={item.icon}
+                  label={item.label}
+                  sx={{
+                    maxWidth: '100%',
+                    height: { xs: 46, md: 42 },
+                    bgcolor: alpha('#8f2d1f', 0.04),
+                    border: '1px solid',
+                    borderColor: alpha('#241915', 0.08),
+                    '& .MuiChip-label': {
+                      display: 'block',
+                      whiteSpace: 'normal',
+                      textAlign: 'right',
+                      py: 0.75,
+                    },
+                  }}
+                />
+              ))}
+            </Stack>
           </Stack>
         </Container>
 
