@@ -130,13 +130,13 @@ type MenuSection = {
 const menuSections: MenuSection[] = [
   {
     title: '🥢 מנות פתיחה',
-    subtitle: 'מנות קטנות שפותחות את הארוחה בצורה מדויקת.',
+    subtitle: '',
     badge: 'Starters',
     items: [
       {
         title: (
           <>
-            🥬 קימצ׳י{' '}
+            קימצ׳י{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (חמוצים יפניים בתיבול ביתי)
             </Box>
@@ -148,7 +148,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            🫔 אגרול ירקות{' '}
+            אגרול ירקות{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (3 יחידות קריספיות)
             </Box>
@@ -160,7 +160,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            🍗 8 יחידות כנפיים{' '}
+            8 יחידות כנפיים{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (ברוטב צ׳ילי פיקנטי)
             </Box>
@@ -169,117 +169,8 @@ const menuSections: MenuSection[] = [
         description: '',
         price: '₪25',
       },
-      { title: '🍚 אורז מאודה', description: '', price: '₪15' },
-      { title: '🍟 צ׳יפס גדול', description: '', price: '₪20' },
-    ],
-  },
-  {
-    title: '🍣 הרכבה עצמית',
-    subtitle: 'בחירה בין דג לצמחוני, לפי הסגנון שמתאים לכם.',
-    badge: 'Customize',
-    items: [
-      {
-        title: (
-          <>
-            🍙 i/o{' '}
-            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
-              (אורז בחוץ)
-            </Box>
-          </>
-        ),
-        description: 'דג 39 ₪ | צמחוני 35 ₪',
-        price: '₪39 / ₪35',
-      },
-      {
-        title: (
-          <>
-            🌿 פוטומאקי{' '}
-            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
-              (אצה בחוץ)
-            </Box>
-          </>
-        ),
-        description: 'דג 45 ₪ | צמחוני 39 ₪',
-        price: '₪45 / ₪39',
-      },
-      { title: '🥪 סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
-      { title: '🌀 מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
-    ],
-    note: (
-      <>
-        תוספות ודגים לבחירה:
-        <br />
-        ירקות: אבוקדו, בטטה, מלפפון, גזר, בצל ירוק, עירית, קנפיו.
-        <br />
-        דגים: סלמון, סלמון צלוי, טונה אדומה ודג לבן.
-      </>
-    ),
-  },
-  {
-    title: '✨ Signature Sushi',
-    subtitle: 'רולים מיוחדים עם שילובים מדויקים, חומרי גלם טובים ונוכחות חזקה בצלחת.',
-    badge: 'Signature',
-    items: [
-      {
-        title: (
-          <>
-            🔥 קריספי רול{' '}
-            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
-              (רול מטוגן)
-            </Box>
-          </>
-        ),
-        description: 'סלמון, אבוקדו ובטטה במעטפת טמפורה ופאנקו.',
-        price: '₪42',
-      },
-      { title: '🌶️ ספייסי סלמון', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית עם טוויסט פיקנטי.', price: '₪49' },
-      { title: '🥑 דרגון רול', description: 'סלמון נא, אבוקדו ובטטה במעטפת אבוקדו וספייסי מיונז למרקם עשיר.', price: '₪42' },
-      { title: '🌈 ריינבו דגים', description: 'אבוקדו, מלפפון וגזר במעטפת סלמון, טונה ודג לבן.', price: '₪48' },
-      { title: '✨ סאן רול', description: 'סלמון בטמפורה ואבוקדו במעטפת סלמון, אבוקדו ובצל ירוק עם נוכחות מרשימה.', price: '₪49' },
-    ],
-  },
-  {
-    title: '🍱 קומבינציות השף',
-    subtitle: '',
-    badge: 'Combos',
-    items: [
-      {
-        title: '🐟 קומבינציית סלמון (24 יח׳)',
-        description: (
-          <>
-            8 יח׳ i/o סלמון צלוי, אבוקדו, בטטה.
-            <br />
-            8 יח׳ פוטומאקי סלמון נא, בטטה, מלפפון, גזר ובצל ירוק.
-            <br />
-            8 יח׳ מאקי סלמון.
-          </>
-        ),
-        price: '₪90',
-      },
-      {
-        title: '🔥 קומבינציה מטוגנת (12 יח׳)',
-        description: (
-          <>
-            8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופאנקו.
-            <br />
-            4 יח׳ סנדוויץ׳ סושי סלמון אבוקדו בטמפורה ופאנקו.
-          </>
-        ),
-        price: '₪80',
-      },
-      {
-        title: '🥑 קומבינציה צמחונית (24 יח׳)',
-        description: (
-          <>
-            8 יח׳ i/o בטטה, מלפפון, אבוקדו במעטפת בצל ירוק.
-            <br />
-            8 יח׳ פוטומאקי מלפפון, אבוקדו, גזר, עירית.
-            <br />
-            8 יח׳ מאקי אבוקדו.
-          </>
-        ),
-        price: '₪70',
-      },
+      { title: 'אורז מאודה', description: '', price: '₪15' },
+      { title: 'צ׳יפס גדול', description: '', price: '₪20' },
     ],
   },
   {
@@ -290,7 +181,7 @@ const menuSections: MenuSection[] = [
       {
         title: (
           <>
-            🐟 פוקי סלמון{' '}
+            פוקי סלמון{' '}
             <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
               (נא/אפוי)
             </Box>
@@ -299,7 +190,7 @@ const menuSections: MenuSection[] = [
         description: '(טרטר סלמון, אבוקדו, בטטה, מלפפון, בצל ירוק ושומשום)',
         price: '₪49',
       },
-      { title: '🍣 פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
+      { title: 'פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
     ],
   },
   {
@@ -314,17 +205,126 @@ const menuSections: MenuSection[] = [
     subtitle: 'בחירה בין: עוף / בקר / צמחוני',
     badge: 'Wok',
     items: [
-      { title: '🍋 פאד תאי', description: '(אטריות אורז, נטיפי ביצה, כרוב, גזר, נבטים, בצל ירוק ולימון)', price: '₪46' },
-      { title: '🥜 סמוקי נודלס', description: '(אטריות חיטה, פטריות, כרוב, גזר, בצל ירוק ובוטנים)', price: '₪49' },
-      { title: '🍚 פרייד רייס', description: '(אורז אסייתי מוקפץ, פטריות, ביצה, בצל ירוק, כרוב וגזר)', price: '₪44' },
+      { title: 'פאד תאי', description: '(אטריות אורז, נטיפי ביצה, כרוב, גזר, נבטים, בצל ירוק ולימון)', price: '₪46' },
+      { title: 'סמוקי נודלס', description: '(אטריות חיטה, פטריות, כרוב, גזר, בצל ירוק ובוטנים)', price: '₪49' },
+      { title: 'פרייד רייס', description: '(אורז אסייתי מוקפץ, פטריות, ביצה, בצל ירוק, כרוב וגזר)', price: '₪44' },
     ],
+  },
+  {
+    title: '✨ Signature Sushi',
+    subtitle: '',
+    badge: 'Signature',
+    items: [
+      {
+        title: (
+          <>
+            🔥 קריספי רול{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (רול מטוגן)
+            </Box>
+          </>
+        ),
+        description: 'סלמון, אבוקדו ובטטה במעטפת טמפורה ופנקו.',
+        price: '₪42',
+      },
+      { title: '🌶️ ספייסי סלמון', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית.', price: '₪49' },
+      { title: '🥑 דרגון רול', description: 'סלמון נא, אבוקדו ובטטה במעטפת אבוקדו וספייסי מיונז.', price: '₪42' },
+      { title: '🌈 ריינבו דגים', description: 'אבוקדו, מלפפון וגזר במעטפת סלמון, טונה ודג לבן.', price: '₪48' },
+      { title: '✨ סאן רול', description: 'סלמון בטמפורה ואבוקדו במעטפת סלמון, אבוקדו ובצל ירוק.', price: '₪49' },
+    ],
+  },
+  {
+    title: '🍱 קומבינציות השף',
+    subtitle: '',
+    badge: 'Combos',
+    items: [
+      {
+        title: 'קומבינציית סלמון (24 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o סלמון צלוי, אבוקדו, בטטה.
+            <br />
+            8 יח׳ פוטומאקי סלמון נא, בטטה, מלפפון, גזר ובצל ירוק.
+            <br />
+            8 יח׳ מאקי סלמון.
+          </>
+        ),
+        price: '₪90',
+      },
+      {
+        title: 'קומבינציה מטוגנת (12 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o סלמון, אבוקדו, בטטה בטמפורה ופאנקו.
+            <br />
+            4 יח׳ סנדוויץ׳ סושי סלמון אבוקדו בטמפורה ופאנקו.
+          </>
+        ),
+        price: '₪80',
+      },
+      {
+        title: 'קומבינציה צמחונית (24 יח׳)',
+        description: (
+          <>
+            8 יח׳ i/o בטטה, מלפפון, אבוקדו במעטפת בצל ירוק.
+            <br />
+            8 יח׳ פוטומאקי מלפפון, אבוקדו, גזר, עירית.
+            <br />
+            8 יח׳ מאקי אבוקדו.
+          </>
+        ),
+        price: '₪70',
+      },
+    ],
+  },
+  {
+    title: '🍣 הרכבה עצמית',
+    subtitle: '',
+    badge: 'Customize',
+    items: [
+      {
+        title: (
+          <>
+            i/o{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (אורז בחוץ)
+            </Box>
+          </>
+        ),
+        description: 'דג 39 ₪ | צמחוני 35 ₪',
+        price: '₪39 / ₪35',
+      },
+      {
+        title: (
+          <>
+            פוטומאקי{' '}
+            <Box component="span" sx={{ fontSize: '0.72em', color: 'text.secondary', fontWeight: 500 }}>
+              (אצה בחוץ)
+            </Box>
+          </>
+        ),
+        description: 'דג 45 ₪ | צמחוני 39 ₪',
+        price: '₪45 / ₪39',
+      },
+      { title: 'סנדוויץ׳ סושי', description: 'דג 40 ₪ | צמחוני 35 ₪', price: '₪40 / ₪35' },
+      { title: 'מאקי', description: 'דג 25 ₪ | צמחוני 20 ₪', price: '₪25 / ₪20' },
+    ],
+    note: (
+      <>
+        תוספות ודגים לבחירה:
+        <br />
+        ירקות: אבוקדו, בטטה, מלפפון, גזר, בצל ירוק, עירית, קנפיו.
+        <br />
+        דגים: סלמון, סלמון צלוי, טונה אדומה ודג לבן.
+      </>
+    ),
   },
   {
     title: '🧒 ארוחות ילדים',
     subtitle: 'כולל שתייה קלה.',
     badge: 'Family',
     items: [
-      { title: '🍽️ ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
+      { title: 'ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
     ],
   },
   {
@@ -332,8 +332,8 @@ const menuSections: MenuSection[] = [
     subtitle: '',
     badge: 'Drinks',
     items: [
-      { title: '💧 מים / סודה', description: '', price: '₪8' },
-      { title: '🥤 קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: '', price: '₪10' },
+      { title: 'מים / סודה', description: '', price: '₪8' },
+      { title: 'קולה / זירו / ספרייט / פאנטה / ענבים / תפוזים', description: '', price: '₪10' },
     ],
   },
 ];
@@ -376,6 +376,61 @@ const theme = createTheme({
 });
 
 type SectionCardProps = MenuSection;
+type RevealProps = {
+  children: React.ReactNode;
+  delay?: number;
+  y?: number;
+};
+
+function Reveal({ children, delay = 0, y = 28 }: RevealProps) {
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      setVisible(true);
+      return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVisible(true);
+      return;
+    }
+
+    const node = ref.current;
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.14, rootMargin: '0px 0px -10% 0px' },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0px)' : `translateY(${y}px)`,
+        transition: 'opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionDelay: `${delay}ms`,
+        willChange: 'opacity, transform',
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
 
 function ActionButtons() {
   return (
@@ -518,11 +573,14 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
 function App() {
   const [selectedGallery, setSelectedGallery] = React.useState<GalleryItem | null>(null);
   const [selectedGalleryIndex, setSelectedGalleryIndex] = React.useState(0);
+  const [scrollY, setScrollY] = React.useState(0);
 
   const selectedGalleryImages = selectedGallery?.images ?? [];
   const hasGalleryImages = selectedGalleryImages.length > 0;
   const selectedGalleryImagePosition = selectedGallery?.imagePositions?.[selectedGalleryIndex] ?? 'center';
   const selectedGalleryImageFit = selectedGallery?.modalImageFits?.[selectedGalleryIndex] ?? 'contain';
+  const heroPrimaryParallax = Math.min(scrollY * 0.06, 22);
+  const heroSecondaryParallax = Math.min(scrollY * 0.09, 28);
 
   const openGallery = (item: GalleryItem) => {
     if (!item.images?.length) {
@@ -553,6 +611,30 @@ function App() {
 
     setSelectedGalleryIndex((currentIndex) => (currentIndex === selectedGalleryImages.length - 1 ? 0 : currentIndex + 1));
   };
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    let ticking = false;
+
+    const updateScroll = () => {
+      setScrollY(window.scrollY);
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScroll);
+        ticking = true;
+      }
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -650,198 +732,166 @@ function App() {
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, sm: 2, md: 3 } }}>
           <Stack spacing={{ xs: 3, md: 5 }}>
-            <Card
-              elevation={0}
-              sx={{
-                p: { xs: 1.5, sm: 2.5, md: 5 },
-                borderRadius: { xs: 4, md: 6 },
-                color: '#fff8f1',
-                background:
-                  'radial-gradient(circle at top right, rgba(196,138,58,0.26) 0%, rgba(196,138,58,0) 28%), linear-gradient(135deg, #1f1511 0%, #3d241c 55%, #8f2d1f 100%)',
-                boxShadow: '0 30px 80px rgba(36, 25, 21, 0.35)',
-                overflow: 'hidden',
-              }}
-            >
-              <Box
+            <Reveal delay={40} y={20}>
+              <Card
+                elevation={0}
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', md: '1.15fr 0.85fr' },
-                  gap: { xs: 2.5, md: 4.5 },
-                  alignItems: 'center',
+                  p: { xs: 1.5, sm: 2.5, md: 5 },
+                  borderRadius: { xs: 4, md: 6 },
+                  color: '#fff8f1',
+                  background:
+                    'radial-gradient(circle at top right, rgba(196,138,58,0.26) 0%, rgba(196,138,58,0) 28%), linear-gradient(135deg, #1f1511 0%, #3d241c 55%, #8f2d1f 100%)',
+                  boxShadow: '0 30px 80px rgba(36, 25, 21, 0.35)',
+                  overflow: 'hidden',
                 }}
               >
-                <Stack spacing={{ xs: 2.5, md: 4 }} sx={{ order: { xs: 2, md: 1 } }}>
-                  <Stack spacing={{ xs: 1.75, md: 2.5 }} sx={{ maxWidth: 700 }}>
-                    <Typography
-                      variant="overline"
-                      sx={{
-                        color: alpha('#fff8f1', 0.72),
-                        letterSpacing: '0.16em',
-                        fontWeight: 800,
-                      }}
-                    >
-                      נהריה | משלוחים ואיסוף עצמי
-                    </Typography>
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: '1.15fr 0.85fr' },
+                    gap: { xs: 2.5, md: 4.5 },
+                    alignItems: 'center',
+                  }}
+                >
+                  <Stack spacing={{ xs: 2.5, md: 4 }} sx={{ order: { xs: 2, md: 1 } }}>
+                    <Stack spacing={{ xs: 1.75, md: 2.5 }} sx={{ maxWidth: 700 }}>
+                      <Typography
+                        variant="overline"
+                        sx={{
+                          color: alpha('#fff8f1', 0.72),
+                          letterSpacing: '0.16em',
+                          fontWeight: 800,
+                        }}
+                      >
+                        נהריה | משלוחים ואיסוף עצמי
+                      </Typography>
 
-                    <Typography
-                      variant="h2"
-                      component="h1"
-                      sx={{
-                        fontSize: { xs: '2rem', sm: '2.65rem', md: '4.05rem' },
-                        lineHeight: { xs: 1.08, md: 1.01 },
-                        textWrap: 'balance',
-                        maxWidth: 12 * 40,
-                      }}
-                    >
-                      {BUSINESS.heroTitle}
-                    </Typography>
+                      <Typography
+                        variant="h2"
+                        component="h1"
+                        sx={{
+                          fontSize: { xs: '2rem', sm: '2.65rem', md: '4.05rem' },
+                          lineHeight: { xs: 1.08, md: 1.01 },
+                          textWrap: 'balance',
+                          maxWidth: 12 * 40,
+                        }}
+                      >
+                        {BUSINESS.heroTitle}
+                      </Typography>
 
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        color: alpha('#fff8f1', 0.84),
-                        maxWidth: 560,
-                        lineHeight: 1.5,
-                        fontSize: { xs: '0.98rem', md: '1.2rem' },
-                      }}
-                    >
-                      {BUSINESS.heroSubtitle}
-                    </Typography>
-                  </Stack>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: alpha('#fff8f1', 0.84),
+                          maxWidth: 560,
+                          lineHeight: 1.5,
+                          fontSize: { xs: '0.98rem', md: '1.2rem' },
+                        }}
+                      >
+                        {BUSINESS.heroSubtitle}
+                      </Typography>
+                    </Stack>
 
                   <ActionButtons />
 
-                  <Box
+                  <Typography
+                    variant="body2"
                     sx={{
-                      display: 'grid',
-                      gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
-                      gap: 1.25,
+                      color: alpha('#fff8f1', 0.68),
+                      fontSize: { xs: '0.82rem', md: '0.9rem' },
+                      letterSpacing: '0.04em',
                     }}
                   >
-                    {highlights.map((item) => (
-                      <Chip
-                        key={item.label}
-                        icon={item.icon}
-                        label={item.label}
-                        sx={{
-                          justifyContent: 'flex-start',
-                          px: 1,
-                          height: { xs: 46, md: 42 },
-                          width: '100%',
-                          bgcolor: alpha('#fffaf4', 0.08),
-                          color: '#fff8f1',
-                          border: '1px solid',
-                          borderColor: alpha('#fffaf4', 0.12),
-                          backdropFilter: 'blur(10px)',
-                          '& .MuiChip-label': {
-                            display: 'block',
-                            whiteSpace: 'normal',
-                            textAlign: 'right',
-                            lineHeight: 1.25,
-                            py: 0.75,
-                          },
-                        }}
-                      />
-                    ))}
-                  </Box>
-                </Stack>
+                    {BUSINESS.name} | {BUSINESS.address} | {BUSINESS.hours}
+                  </Typography>
 
-                <Box
-                  sx={{
-                    position: 'relative',
-                    minHeight: { xs: 320, sm: 400, md: 540 },
-                    order: { xs: 1, md: 2 },
-                    px: { xs: 0.5, md: 0 },
-                  }}
-                >
                   <Box
-                    component="img"
-                    src={heroPrimaryImage}
-                    alt="מגש סושי"
                     sx={{
-                      width: '100%',
-                      height: { xs: 240, sm: 300, md: 420 },
-                      objectFit: 'cover',
-                      borderRadius: { xs: '28px', md: '38px' },
-                      boxShadow: '0 26px 70px rgba(0,0,0,0.28)',
-                      border: '1px solid',
-                      borderColor: alpha('#fffaf4', 0.12),
-                    }}
-                  />
-                  <Box
-                    component="img"
-                    src={heroSecondaryImage}
-                    alt="רול סושי"
-                    sx={{
-                      position: 'absolute',
-                      display: { xs: 'none', sm: 'block' },
-                      left: { sm: 10, md: -18 },
-                      bottom: { sm: 10, md: 18 },
-                      width: { sm: '34%', md: '40%' },
-                      height: { sm: 150, md: 200 },
-                      objectFit: 'cover',
-                      borderRadius: { sm: '24px', md: '30px' },
-                      border: '4px solid',
-                      borderColor: alpha('#fffaf4', 0.9),
-                      boxShadow: '0 22px 50px rgba(0,0,0,0.28)',
-                    }}
-                  />
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="center"
-                    spacing={1.5}
-                    sx={{
-                      mt: { xs: 2, md: 2.5 },
-                      px: { xs: 1, md: 1.5 },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        flex: 1,
-                        height: 1,
-                        maxWidth: 84,
-                        background: `linear-gradient(90deg, transparent 0%, ${alpha('#fffaf4', 0.42)} 100%)`,
-                      }}
-                    />
-                    <Typography
-                      variant="overline"
-                      sx={{
-                        color: alpha('#fff8f1', 0.9),
-                        fontWeight: 800,
-                        letterSpacing: '0.18em',
-                        fontSize: { xs: '0.68rem', md: '0.78rem' },
-                        whiteSpace: 'nowrap',
+                        display: 'grid',
+                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
+                        gap: 1.25,
                       }}
                     >
-                      SUSHI WOK NAHARIYA
-                    </Typography>
-                    <Avatar
-                      src={logoImage}
-                      alt={BUSINESS.name}
+                      {highlights.map((item) => (
+                        <Chip
+                          key={item.label}
+                          icon={item.icon}
+                          label={item.label}
+                          sx={{
+                            justifyContent: 'flex-start',
+                            px: 1,
+                            height: { xs: 46, md: 42 },
+                            width: '100%',
+                            bgcolor: alpha('#fffaf4', 0.08),
+                            color: '#fff8f1',
+                            border: '1px solid',
+                            borderColor: alpha('#fffaf4', 0.12),
+                            backdropFilter: 'blur(10px)',
+                            '& .MuiChip-label': {
+                              display: 'block',
+                              whiteSpace: 'normal',
+                              textAlign: 'right',
+                              lineHeight: 1.25,
+                              py: 0.75,
+                            },
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Stack>
+
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      minHeight: { xs: 320, sm: 400, md: 540 },
+                      order: { xs: 1, md: 2 },
+                      px: { xs: 0.5, md: 0 },
+                    }}
+                  >
+                    <Box
+                      component="img"
+                      src={heroPrimaryImage}
+                      alt="מגש סושי"
                       sx={{
-                        width: { xs: 52, md: 62 },
-                        height: { xs: 52, md: 62 },
-                        p: { xs: 0.45, md: 0.6 },
-                        bgcolor: '#f7ecd7',
-                        border: '2px solid',
-                        borderColor: alpha('#fffaf4', 0.5),
-                        boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                        width: '100%',
+                        height: { xs: 240, sm: 300, md: 420 },
+                        objectFit: 'cover',
+                        borderRadius: { xs: '28px', md: '38px' },
+                        boxShadow: '0 26px 70px rgba(0,0,0,0.28)',
+                        border: '1px solid',
+                        borderColor: alpha('#fffaf4', 0.12),
+                        transform: `translateY(${heroPrimaryParallax}px) scale(1.01)`,
+                        transition: 'transform 140ms linear',
+                        willChange: 'transform',
                       }}
                     />
                     <Box
+                      component="img"
+                      src={heroSecondaryImage}
+                      alt="רול סושי"
                       sx={{
-                        flex: 1,
-                        height: 1,
-                        maxWidth: 84,
-                        background: `linear-gradient(90deg, ${alpha('#fffaf4', 0.42)} 0%, transparent 100%)`,
+                        position: 'absolute',
+                        display: { xs: 'none', sm: 'block' },
+                        left: { sm: 10, md: -18 },
+                        bottom: { sm: 10, md: 18 },
+                        width: { sm: '34%', md: '40%' },
+                        height: { sm: 150, md: 200 },
+                        objectFit: 'cover',
+                        borderRadius: { sm: '24px', md: '30px' },
+                        border: '4px solid',
+                        borderColor: alpha('#fffaf4', 0.9),
+                        boxShadow: '0 22px 50px rgba(0,0,0,0.28)',
+                        transform: `translateY(${heroSecondaryParallax}px)`,
+                        transition: 'transform 140ms linear',
+                        willChange: 'transform',
                       }}
                     />
-                  </Stack>
                 </Box>
               </Box>
             </Card>
+            </Reveal>
 
+            <Reveal delay={90}>
             <Box>
               <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={2} sx={{ mb: 3 }}>
                 <Box>
@@ -861,72 +911,75 @@ function App() {
                   gap: 2.5,
                 }}
               >
-                {galleryImages.map((item) => (
-                  <Card
-                    key={item.title}
-                    elevation={0}
-                    onClick={() => openGallery(item)}
-                    sx={{
-                      overflow: 'hidden',
-                      border: '1px solid',
-                      borderColor: 'rgba(36, 25, 21, 0.08)',
-                      backgroundColor: 'rgba(255, 250, 244, 0.92)',
-                      boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
-                      cursor: item.images?.length ? 'pointer' : 'default',
-                      transition: 'transform 220ms ease, box-shadow 220ms ease',
-                      '&:hover': {
-                        transform: item.images?.length ? 'translateY(-4px)' : 'none',
-                        boxShadow: item.images?.length ? '0 30px 60px rgba(36, 25, 21, 0.12)' : '0 24px 50px rgba(36, 25, 21, 0.08)',
-                      },
-                    }}
-                  >
-                    <Box
+                {galleryImages.map((item, index) => (
+                  <Reveal key={item.title} delay={index * 90} y={24}>
+                    <Card
+                      elevation={0}
+                      onClick={() => openGallery(item)}
                       sx={{
-                        display: 'grid',
-                        placeItems: 'center',
-                        width: '100%',
-                        height: { xs: 220, sm: 240 },
-                        p: item.imagePadding ?? 0,
                         overflow: 'hidden',
-                        backgroundColor: item.imageFit === 'contain' ? alpha('#f4ede3', 0.72) : 'transparent',
+                        border: '1px solid',
+                        borderColor: 'rgba(36, 25, 21, 0.08)',
+                        backgroundColor: 'rgba(255, 250, 244, 0.92)',
+                        boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
+                        cursor: item.images?.length ? 'pointer' : 'default',
+                        transition: 'transform 220ms ease, box-shadow 220ms ease',
+                        '&:hover': {
+                          transform: item.images?.length ? 'translateY(-4px)' : 'none',
+                          boxShadow: item.images?.length ? '0 30px 60px rgba(36, 25, 21, 0.12)' : '0 24px 50px rgba(36, 25, 21, 0.08)',
+                        },
                       }}
                     >
                       <Box
-                        component="img"
-                        src={item.image}
-                        alt={item.title}
                         sx={{
-                          display: 'block',
-                          width: item.imageFit === 'contain' ? 'auto' : '100%',
-                          height: item.imageFit === 'contain' ? 'auto' : '100%',
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: item.imageFit ?? 'cover',
-                          objectPosition: item.imagePosition ?? 'center',
+                          display: 'grid',
+                          placeItems: 'center',
+                          width: '100%',
+                          height: { xs: 220, sm: 240 },
+                          p: item.imagePadding ?? 0,
+                          overflow: 'hidden',
+                          backgroundColor: item.imageFit === 'contain' ? alpha('#f4ede3', 0.72) : 'transparent',
                         }}
-                      />
-                    </Box>
-                    <CardContent>
-                      <Typography variant="h6" sx={{ mb: 0.5 }}>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.description}
-                      </Typography>
-                      {item.images?.length ? (
-                        <Typography
-                          variant="caption"
-                          sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem', color: 'text.secondary' }}
-                        >
-                          לחצו לצפייה בעוד תמונות
+                      >
+                        <Box
+                          component="img"
+                          src={item.image}
+                          alt={item.title}
+                          sx={{
+                            display: 'block',
+                            width: item.imageFit === 'contain' ? 'auto' : '100%',
+                            height: item.imageFit === 'contain' ? 'auto' : '100%',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: item.imageFit ?? 'cover',
+                            objectPosition: item.imagePosition ?? 'center',
+                          }}
+                        />
+                      </Box>
+                      <CardContent>
+                        <Typography variant="h6" sx={{ mb: 0.5 }}>
+                          {item.title}
                         </Typography>
-                      ) : null}
-                    </CardContent>
-                  </Card>
+                        <Typography variant="body2" color="text.secondary">
+                          {item.description}
+                        </Typography>
+                        {item.images?.length ? (
+                          <Typography
+                            variant="caption"
+                            sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem', color: 'text.secondary' }}
+                          >
+                            לחצו לצפייה בעוד תמונות
+                          </Typography>
+                        ) : null}
+                      </CardContent>
+                    </Card>
+                  </Reveal>
                 ))}
               </Box>
             </Box>
+            </Reveal>
 
+            <Reveal delay={130}>
             <Box>
               <Stack alignItems="center" sx={{ mb: 4, textAlign: 'center' }}>
                 <Box sx={{ maxWidth: 520 }}>
@@ -975,10 +1028,13 @@ function App() {
                 }}
               >
                 {menuSections.map((section, index) => (
-                  <SectionCard key={`section-${index}`} {...section} />
+                  <Reveal key={`section-${index}`} delay={index * 70} y={26}>
+                    <SectionCard {...section} />
+                  </Reveal>
                 ))}
               </Box>
             </Box>
+            </Reveal>
 
             <Card
               elevation={0}
