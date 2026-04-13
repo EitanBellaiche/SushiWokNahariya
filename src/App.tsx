@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   alpha,
-  Avatar,
   Box,
   Button,
   Card,
@@ -9,9 +8,11 @@ import {
   Chip,
   Container,
   CssBaseline,
-  Divider,
   Dialog,
+  Divider,
   IconButton,
+  Menu,
+  MenuItem,
   Stack,
   ThemeProvider,
   Typography,
@@ -20,29 +21,23 @@ import {
 import PhoneEnabledIcon from '@mui/icons-material/PhoneEnabled';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
-import RoomServiceIcon from '@mui/icons-material/RoomService';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
 const BUSINESS = {
-  name: 'Sushi Wok נהריה',
+  name: 'Sushi Wok Nahariya',
   phone: '+972528205470',
-  whatsapp: 'https://wa.me/972528205470?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A6%D7%A2%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%9E%D7%A1%D7%95%D7%A9%D7%99%20%D7%95%D7%95%D7%A7%20%D7%A0%D7%94%D7%A8%D7%99%D7%94',
+  whatsapp:
+    'https://wa.me/972528205470?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%91%D7%A6%D7%A2%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%D7%9E%D7%A1%D7%95%D7%A9%D7%99%20%D7%95%D7%95%D7%A7%20%D7%A0%D7%94%D7%A8%D7%99%D7%94',
   address: 'כליל החורש 7, נהריה',
   hours: 'א׳-ה׳ 12:00-23:00 | מוצ״ש 12:00-19:00',
-  heroTitle: 'סושי, פוקי ומנות ווק להזמנה מהירה בנהריה',
-  heroSubtitle:
-    'משלוחים ואיסוף עצמי, מנות טריות ושירות מהיר .',
-  promoTitle: 'מבצע הבית',
-  promoText: 'מוקפץ לבחירה + רול סושי בהרכבה ב־69 ₪',
 };
 
 const logoImage = new URL('../photos/logo.png', import.meta.url).href;
-const heroPrimaryImage = new URL('../photos/sushi party platter.jpeg', import.meta.url).href;
-const heroSecondaryImage = new URL('../photos/susiRoll.jpeg', import.meta.url).href;
 const magashSushiImage = new URL('../photos/magashsushi.jpeg', import.meta.url).href;
 const magashSushiImage2 = new URL('../photos/magashsushi2.jpeg', import.meta.url).href;
 const pokeBowlImage = new URL('../photos/poki123.jpeg', import.meta.url).href;
@@ -113,7 +108,7 @@ const galleryImages: GalleryItem[] = [
   },
 ];
 
-type MenuItem = {
+type MenuItemType = {
   title: React.ReactNode;
   description: React.ReactNode;
   price: string;
@@ -123,7 +118,7 @@ type MenuSection = {
   title: React.ReactNode;
   subtitle: string;
   badge: string;
-  items: MenuItem[];
+  items: MenuItemType[];
   note?: React.ReactNode;
 };
 
@@ -190,7 +185,11 @@ const menuSections: MenuSection[] = [
         description: '(טרטר סלמון, אבוקדו, בטטה, מלפפון, בצל ירוק ושומשום)',
         price: '₪49',
       },
-      { title: 'פוקי טונה אדומה', description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)', price: '₪49' },
+      {
+        title: 'פוקי טונה אדומה',
+        description: '(טרטר טונה, אבוקדו, בטטה, מלפפון, גזר, בצל ירוק ושומשום)',
+        price: '₪49',
+      },
     ],
   },
   {
@@ -324,7 +323,11 @@ const menuSections: MenuSection[] = [
     subtitle: 'כולל שתייה קלה.',
     badge: 'Family',
     items: [
-      { title: 'ארוחת ילדים', description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.', price: '₪39' },
+      {
+        title: 'ארוחת ילדים',
+        description: 'נודלס עוף ברוטב טריאקי מתקתק. שניצלונים פריכים עם צ׳יפס או אורז מאודה.',
+        price: '₪39',
+      },
     ],
   },
   {
@@ -338,8 +341,18 @@ const menuSections: MenuSection[] = [
   },
 ];
 
+const menuNavLabels = [
+  'מנות פתיחה',
+  'סלטי פוקי',
+  'מן הווק',
+  'Signature Sushi',
+  'קומבינציות',
+  'הרכבה עצמית',
+  'ארוחות ילדים',
+  'שתייה קלה',
+];
+
 const highlights = [
-  { icon: <RoomServiceIcon />, label: 'משלוחים ואיסוף עצמי' },
   { icon: <PlaceOutlinedIcon />, label: BUSINESS.address },
   { icon: <AccessTimeFilledIcon />, label: BUSINESS.hours },
 ];
@@ -398,9 +411,7 @@ function Reveal({ children, delay = 0, y = 28 }: RevealProps) {
     }
 
     const node = ref.current;
-    if (!node) {
-      return;
-    }
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -422,7 +433,8 @@ function Reveal({ children, delay = 0, y = 28 }: RevealProps) {
       sx={{
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0px)' : `translateY(${y}px)`,
-        transition: 'opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1)',
+        transition:
+          'opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1)',
         transitionDelay: `${delay}ms`,
         willChange: 'opacity, transform',
       }}
@@ -465,12 +477,12 @@ function ActionButtons() {
           py: 1.5,
           width: { xs: '100%', sm: 'auto' },
           borderRadius: 999,
-          borderColor: alpha('#fff8f1', 0.3),
-          color: 'inherit',
+          borderColor: alpha('#8f2d1f', 0.2),
+          color: 'text.primary',
           '& .MuiButton-startIcon': { ml: 1.25, mr: 0 },
           '&:hover': {
-            borderColor: 'currentColor',
-            backgroundColor: alpha('#fff8f1', 0.06),
+            borderColor: 'primary.main',
+            backgroundColor: alpha('#8f2d1f', 0.04),
           },
         }}
       >
@@ -508,24 +520,36 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
                 {subtitle}
               </Typography>
             </Stack>
-            <Box
-              sx={{
-                display: { xs: 'none', sm: 'grid' },
-                placeItems: 'center',
-                width: 52,
-                height: 52,
-                borderRadius: '16px',
-                bgcolor: alpha('#c48a3a', 0.12),
-                color: 'secondary.main',
-              }}
-            >
-              <LocalDiningIcon />
-            </Box>
+
+            <Stack alignItems="flex-end" spacing={1}>
+              <Chip
+                label={badge}
+                size="small"
+                sx={{
+                  fontWeight: 800,
+                  bgcolor: alpha('#c48a3a', 0.14),
+                  color: 'secondary.dark',
+                }}
+              />
+              <Box
+                sx={{
+                  display: { xs: 'none', sm: 'grid' },
+                  placeItems: 'center',
+                  width: 52,
+                  height: 52,
+                  borderRadius: '16px',
+                  bgcolor: alpha('#c48a3a', 0.12),
+                  color: 'secondary.main',
+                }}
+              >
+                <LocalDiningIcon />
+              </Box>
+            </Stack>
           </Stack>
 
           <Stack spacing={1.5}>
             {items.map((item, index) => (
-              <Box key={`${title}-${index}`}>
+              <Box key={`${badge}-${index}`}>
                 <Stack direction="row" justifyContent="space-between" gap={1.5} alignItems="flex-start">
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h6" sx={{ mb: 0.5, fontSize: { xs: '1rem', md: '1.25rem' } }}>
@@ -538,7 +562,12 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
                   <Typography
                     variant="h6"
                     color="primary"
-                    sx={{ whiteSpace: 'nowrap', fontWeight: 800, letterSpacing: '-0.02em', fontSize: { xs: '1rem', md: '1.25rem' } }}
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      fontWeight: 800,
+                      letterSpacing: '-0.02em',
+                      fontSize: { xs: '1rem', md: '1.25rem' },
+                    }}
                   >
                     {item.price}
                   </Typography>
@@ -573,20 +602,15 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
 function App() {
   const [selectedGallery, setSelectedGallery] = React.useState<GalleryItem | null>(null);
   const [selectedGalleryIndex, setSelectedGalleryIndex] = React.useState(0);
-  const [scrollY, setScrollY] = React.useState(0);
+  const [navAnchorEl, setNavAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const selectedGalleryImages = selectedGallery?.images ?? [];
   const hasGalleryImages = selectedGalleryImages.length > 0;
   const selectedGalleryImagePosition = selectedGallery?.imagePositions?.[selectedGalleryIndex] ?? 'center';
   const selectedGalleryImageFit = selectedGallery?.modalImageFits?.[selectedGalleryIndex] ?? 'contain';
-  const heroPrimaryParallax = Math.min(scrollY * 0.06, 22);
-  const heroSecondaryParallax = Math.min(scrollY * 0.09, 28);
 
   const openGallery = (item: GalleryItem) => {
-    if (!item.images?.length) {
-      return;
-    }
-
+    if (!item.images?.length) return;
     setSelectedGallery(item);
     setSelectedGalleryIndex(0);
   };
@@ -597,44 +621,36 @@ function App() {
   };
 
   const showPreviousImage = () => {
-    if (!hasGalleryImages) {
-      return;
-    }
-
-    setSelectedGalleryIndex((currentIndex) => (currentIndex === 0 ? selectedGalleryImages.length - 1 : currentIndex - 1));
+    if (!hasGalleryImages) return;
+    setSelectedGalleryIndex((currentIndex) =>
+      currentIndex === 0 ? selectedGalleryImages.length - 1 : currentIndex - 1,
+    );
   };
 
   const showNextImage = () => {
-    if (!hasGalleryImages) {
-      return;
-    }
-
-    setSelectedGalleryIndex((currentIndex) => (currentIndex === selectedGalleryImages.length - 1 ? 0 : currentIndex + 1));
+    if (!hasGalleryImages) return;
+    setSelectedGalleryIndex((currentIndex) =>
+      currentIndex === selectedGalleryImages.length - 1 ? 0 : currentIndex + 1,
+    );
   };
 
-  React.useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
+  const openNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setNavAnchorEl(event.currentTarget);
+  };
 
-    let ticking = false;
+  const closeNavMenu = () => {
+    setNavAnchorEl(null);
+  };
 
-    const updateScroll = () => {
-      setScrollY(window.scrollY);
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateScroll);
-        ticking = true;
-      }
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const navItems = [
+    { label: 'ראש התפריט', href: '#menu-top' },
+    ...menuSections.map((_, index) => ({
+      label: menuNavLabels[index] ?? `קטגוריה ${index + 1}`,
+      href: `#menu-section-${index}`,
+    })),
+    { label: 'תמונות', href: '#gallery' },
+    { label: 'יצירת קשר', href: '#contact' },
+  ];
 
   return (
     <ThemeProvider theme={theme}>
@@ -644,7 +660,7 @@ function App() {
           position: 'relative',
           minHeight: '100vh',
           overflow: 'hidden',
-          py: { xs: 2, md: 8 },
+          py: { xs: 2, md: 4 },
           pb: { xs: 34, md: 8 },
           background:
             'radial-gradient(circle at top left, rgba(255,240,206,0.88) 0%, rgba(255,240,206,0) 28%), radial-gradient(circle at 85% 18%, rgba(196,138,58,0.16) 0%, rgba(196,138,58,0) 22%), linear-gradient(180deg, #f7f0e3 0%, #f1e6d5 46%, #eee1cf 100%)',
@@ -658,385 +674,372 @@ function App() {
           },
         }}
       >
-        <Box
-          sx={{
-            position: 'fixed',
-            right: { xs: 12, md: 24 },
-            left: { xs: 12, md: 'auto' },
-            bottom: { xs: 84, md: 24 },
-            zIndex: 25,
-            maxWidth: { xs: 'none', md: 360 },
-            pointerEvents: 'none',
-          }}
-        >
-          <Card
-            elevation={0}
-            sx={{
-              pointerEvents: 'auto',
-              overflow: 'hidden',
-              borderRadius: { xs: 3, md: 4 },
-              border: '1px solid',
-              borderColor: alpha('#f7d27a', 0.48),
-              background:
-                'linear-gradient(135deg, rgba(255,236,178,0.98) 0%, rgba(232,186,78,0.98) 52%, rgba(184,126,24,0.98) 100%)',
-              boxShadow: '0 20px 45px rgba(133, 83, 8, 0.28)',
-              animation: 'promoFloat 2.8s ease-in-out infinite',
-              '@keyframes promoFloat': {
-                '0%': { transform: 'translateY(0px)' },
-                '50%': { transform: 'translateY(-6px)' },
-                '100%': { transform: 'translateY(0px)' },
-              },
-            }}
-          >
-            <Box
-              sx={{
-                px: { xs: 2, md: 2.5 },
-                py: { xs: 1.5, md: 1.75 },
-                color: '#2f1b04',
-                background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 100%)',
-              }}
-            >
-              <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Box>
-                  <Typography variant="overline" sx={{ display: 'block', fontWeight: 900, letterSpacing: '0.14em', color: alpha('#2f1b04', 0.86) }}>
-                    {BUSINESS.promoTitle}
-                  </Typography>
-                  <Typography variant="h6" sx={{ fontWeight: 900, lineHeight: 1.15, fontSize: { xs: '1rem', md: '1.12rem' } }}>
-                    {BUSINESS.promoText}
-                  </Typography>
-                </Box>
-                <Button
-                  variant="contained"
-                  href={BUSINESS.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    flexShrink: 0,
-                    minWidth: 0,
-                    px: 1.5,
-                    py: 0.9,
-                    borderRadius: 999,
-                    bgcolor: '#2f1b04',
-                    color: '#fff8f1',
-                    boxShadow: 'none',
-                    '&:hover': { bgcolor: '#1d1104', boxShadow: 'none' },
-                  }}
-                >
-                  להזמין
-                </Button>
-              </Stack>
-            </Box>
-          </Card>
-        </Box>
-
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, px: { xs: 1.5, sm: 2, md: 3 } }}>
           <Stack spacing={{ xs: 3, md: 5 }}>
-            <Reveal delay={40} y={20}>
-              <Card
-                elevation={0}
-                sx={{
-                  p: { xs: 1.5, sm: 2.5, md: 5 },
-                  borderRadius: { xs: 4, md: 6 },
-                  color: '#fff8f1',
-                  background:
-                    'radial-gradient(circle at top right, rgba(196,138,58,0.26) 0%, rgba(196,138,58,0) 28%), linear-gradient(135deg, #1f1511 0%, #3d241c 55%, #8f2d1f 100%)',
-                  boxShadow: '0 30px 80px rgba(36, 25, 21, 0.35)',
-                  overflow: 'hidden',
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', md: '1.15fr 0.85fr' },
-                    gap: { xs: 2.5, md: 4.5 },
-                    alignItems: 'center',
-                  }}
-                >
-                  <Stack spacing={{ xs: 2.5, md: 4 }} sx={{ order: { xs: 2, md: 1 } }}>
-                    <Stack spacing={{ xs: 1.75, md: 2.5 }} sx={{ maxWidth: 700 }}>
-                      <Typography
-                        variant="overline"
-                        sx={{
-                          color: alpha('#fff8f1', 0.72),
-                          letterSpacing: '0.16em',
-                          fontWeight: 800,
-                        }}
-                      >
-                        נהריה | משלוחים ואיסוף עצמי
-                      </Typography>
-
-                      <Typography
-                        variant="h2"
-                        component="h1"
-                        sx={{
-                          fontSize: { xs: '2rem', sm: '2.65rem', md: '4.05rem' },
-                          lineHeight: { xs: 1.08, md: 1.01 },
-                          textWrap: 'balance',
-                          maxWidth: 12 * 40,
-                        }}
-                      >
-                        {BUSINESS.heroTitle}
-                      </Typography>
-
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          color: alpha('#fff8f1', 0.84),
-                          maxWidth: 560,
-                          lineHeight: 1.5,
-                          fontSize: { xs: '0.98rem', md: '1.2rem' },
-                        }}
-                      >
-                        {BUSINESS.heroSubtitle}
-                      </Typography>
-                    </Stack>
-
-                  <ActionButtons />
-
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: alpha('#fff8f1', 0.68),
-                      fontSize: { xs: '0.82rem', md: '0.9rem' },
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {BUSINESS.name} | {BUSINESS.address} | {BUSINESS.hours}
-                  </Typography>
-
-                  <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' },
-                        gap: 1.25,
-                      }}
-                    >
-                      {highlights.map((item) => (
-                        <Chip
-                          key={item.label}
-                          icon={item.icon}
-                          label={item.label}
-                          sx={{
-                            justifyContent: 'flex-start',
-                            px: 1,
-                            height: { xs: 46, md: 42 },
-                            width: '100%',
-                            bgcolor: alpha('#fffaf4', 0.08),
-                            color: '#fff8f1',
-                            border: '1px solid',
-                            borderColor: alpha('#fffaf4', 0.12),
-                            backdropFilter: 'blur(10px)',
-                            '& .MuiChip-label': {
-                              display: 'block',
-                              whiteSpace: 'normal',
-                              textAlign: 'right',
-                              lineHeight: 1.25,
-                              py: 0.75,
-                            },
-                          }}
-                        />
-                      ))}
-                    </Box>
-                  </Stack>
-
-                  <Box
-                    sx={{
-                      position: 'relative',
-                      minHeight: { xs: 320, sm: 400, md: 540 },
-                      order: { xs: 1, md: 2 },
-                      px: { xs: 0.5, md: 0 },
-                    }}
-                  >
-                    <Box
-                      component="img"
-                      src={heroPrimaryImage}
-                      alt="מגש סושי"
-                      sx={{
-                        width: '100%',
-                        height: { xs: 240, sm: 300, md: 420 },
-                        objectFit: 'cover',
-                        borderRadius: { xs: '28px', md: '38px' },
-                        boxShadow: '0 26px 70px rgba(0,0,0,0.28)',
-                        border: '1px solid',
-                        borderColor: alpha('#fffaf4', 0.12),
-                        transform: `translateY(${heroPrimaryParallax}px) scale(1.01)`,
-                        transition: 'transform 140ms linear',
-                        willChange: 'transform',
-                      }}
-                    />
-                    <Box
-                      component="img"
-                      src={heroSecondaryImage}
-                      alt="רול סושי"
-                      sx={{
-                        position: 'absolute',
-                        display: { xs: 'none', sm: 'block' },
-                        left: { sm: 10, md: -18 },
-                        bottom: { sm: 10, md: 18 },
-                        width: { sm: '34%', md: '40%' },
-                        height: { sm: 150, md: 200 },
-                        objectFit: 'cover',
-                        borderRadius: { sm: '24px', md: '30px' },
-                        border: '4px solid',
-                        borderColor: alpha('#fffaf4', 0.9),
-                        boxShadow: '0 22px 50px rgba(0,0,0,0.28)',
-                        transform: `translateY(${heroSecondaryParallax}px)`,
-                        transition: 'transform 140ms linear',
-                        willChange: 'transform',
-                      }}
-                    />
-                </Box>
-              </Box>
-            </Card>
-            </Reveal>
-
-            <Reveal delay={90}>
-            <Box>
-              <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={2} sx={{ mb: 3 }}>
-                <Box>
-                  <Typography variant="h3" sx={{ mt: 0.5 }}>
-                    מה מחכה לכם בתפריט
-                  </Typography>
-                </Box>
-                <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 520 }}>
-                  מגשי מסיבה נבחרים להשראה, כדי שתוכלו לבחור מהר ולהזמין את החגיגה הבאה שלכם בלי להתלבט.
-                </Typography>
-              </Stack>
-
+            <Reveal delay={20} y={16}>
               <Box
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(4, 1fr)' },
-                  gap: 2.5,
+                  position: 'sticky',
+                  top: { xs: 10, md: 18 },
+                  zIndex: 20,
                 }}
               >
-                {galleryImages.map((item, index) => (
-                  <Reveal key={item.title} delay={index * 90} y={24}>
-                    <Card
-                      elevation={0}
-                      onClick={() => openGallery(item)}
+                <Card
+                  elevation={0}
+                  sx={{
+                    borderRadius: 999,
+                    border: '1px solid',
+                    borderColor: alpha('#241915', 0.08),
+                    backgroundColor: alpha('#fffaf4', 0.82),
+                    boxShadow: '0 18px 40px rgba(36, 25, 21, 0.08)',
+                    backdropFilter: 'blur(14px)',
+                    px: { xs: 1, md: 1.25 },
+                    py: 0.75,
+                  }}
+                >
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1}>
+                    <Stack direction="row" alignItems="center" spacing={1.25} sx={{ minWidth: 0 }}>
+                      <Box
+                        component="img"
+                        src={logoImage}
+                        alt="Sushi Wok Nahariya Logo"
+                        sx={{
+                          width: { xs: 42, md: 50 },
+                          height: { xs: 42, md: 50 },
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          border: '1px solid',
+                          borderColor: alpha('#241915', 0.08),
+                          bgcolor: '#fff',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography
+                          variant="subtitle1"
+                          sx={{
+                            fontWeight: 900,
+                            lineHeight: 1.1,
+                            fontSize: { xs: '0.95rem', md: '1.05rem' },
+                          }}
+                        >
+                          Sushi Wok Nahariya
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: '0.12em' }}>
+                          MENU
+                        </Typography>
+                      </Box>
+                    </Stack>
+
+                    <Button
+                      onClick={openNavMenu}
+                      startIcon={<MenuRoundedIcon />}
                       sx={{
-                        overflow: 'hidden',
-                        border: '1px solid',
-                        borderColor: 'rgba(36, 25, 21, 0.08)',
-                        backgroundColor: 'rgba(255, 250, 244, 0.92)',
-                        boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
-                        cursor: item.images?.length ? 'pointer' : 'default',
-                        transition: 'transform 220ms ease, box-shadow 220ms ease',
+                        borderRadius: 999,
+                        px: { xs: 1.4, md: 1.75 },
+                        py: 0.9,
+                        color: 'text.primary',
+                        bgcolor: alpha('#8f2d1f', 0.05),
+                        whiteSpace: 'nowrap',
+                        '& .MuiButton-startIcon': { ml: 0.5, mr: 0 },
                         '&:hover': {
-                          transform: item.images?.length ? 'translateY(-4px)' : 'none',
-                          boxShadow: item.images?.length ? '0 30px 60px rgba(36, 25, 21, 0.12)' : '0 24px 50px rgba(36, 25, 21, 0.08)',
+                          bgcolor: alpha('#8f2d1f', 0.1),
                         },
                       }}
                     >
-                      <Box
+                      תפריט
+                    </Button>
+
+                    <Menu
+                      anchorEl={navAnchorEl}
+                      open={Boolean(navAnchorEl)}
+                      onClose={closeNavMenu}
+                      PaperProps={{
+                        sx: {
+                          mt: 1,
+                          minWidth: 240,
+                          maxHeight: 420,
+                          borderRadius: 3,
+                          border: '1px solid',
+                          borderColor: alpha('#241915', 0.08),
+                          boxShadow: '0 18px 40px rgba(36, 25, 21, 0.12)',
+                        },
+                      }}
+                    >
+                      {navItems.map((item) => (
+                        <MenuItem
+                          key={item.href}
+                          component="a"
+                          href={item.href}
+                          onClick={closeNavMenu}
+                          sx={{ justifyContent: 'flex-end', textAlign: 'right' }}
+                        >
+                          {item.label}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Stack>
+                </Card>
+              </Box>
+            </Reveal>
+
+            <Reveal delay={50} y={18}>
+              <Box id="menu-top" sx={{ scrollMarginTop: { xs: '90px', md: '110px' } }}>
+                <Stack alignItems="center" sx={{ mb: 4, textAlign: 'center' }}>
+                  <Box sx={{ maxWidth: 520 }}>
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        display: 'block',
+                        color: alpha('#8f2d1f', 0.72),
+                        letterSpacing: '0.18em',
+                        fontWeight: 800,
+                      }}
+                    >
+                      Sushi Wok Nahariya
+                    </Typography>
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        mt: 0.75,
+                        fontSize: { xs: '2.35rem', md: '3.8rem' },
+                        lineHeight: 1,
+                        letterSpacing: '-0.03em',
+                      }}
+                    >
+                      Full Menu
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        mt: 1,
+                        fontSize: { xs: '0.95rem', md: '1rem' },
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Fresh Sushi • Wok • Poke • Combos
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' },
+                    gap: 3,
+                  }}
+                >
+                  {menuSections.map((section, index) => (
+                    <Reveal key={`section-${index}`} delay={index * 70} y={26}>
+                      <Box id={`menu-section-${index}`} sx={{ scrollMarginTop: { xs: '90px', md: '110px' } }}>
+                        <SectionCard {...section} />
+                      </Box>
+                    </Reveal>
+                  ))}
+                </Box>
+              </Box>
+            </Reveal>
+
+            <Reveal delay={90}>
+              <Card
+                elevation={0}
+                sx={{
+                  p: { xs: 2.2, sm: 3, md: 4 },
+                  borderRadius: { xs: 4, md: 5 },
+                  border: '1px solid',
+                  borderColor: 'rgba(36, 25, 21, 0.08)',
+                  background: 'linear-gradient(135deg, rgba(255,250,244,0.98) 0%, rgba(250,242,233,0.98) 100%)',
+                  boxShadow: '0 24px 60px rgba(36, 25, 21, 0.08)',
+                }}
+              >
+                <Stack spacing={2.5} alignItems="center" textAlign="center">
+                  <Box
+                    component="img"
+                    src={logoImage}
+                    alt="Sushi Wok Nahariya"
+                    sx={{
+                      width: { xs: 88, md: 110 },
+                      height: { xs: 88, md: 110 },
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      boxShadow: '0 18px 40px rgba(36, 25, 21, 0.12)',
+                      border: '3px solid',
+                      borderColor: alpha('#fffaf4', 0.92),
+                      bgcolor: '#fff',
+                    }}
+                  />
+
+                  <Box>
+                    <Typography
+                      variant="overline"
+                      sx={{
+                        display: 'block',
+                        color: alpha('#8f2d1f', 0.72),
+                        letterSpacing: '0.22em',
+                        fontWeight: 800,
+                      }}
+                    >
+                      SUSHI WOK
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{
+                        mt: 0.5,
+                        lineHeight: 1,
+                        letterSpacing: '-0.02em',
+                      }}
+                    >
+                      Sushi Wok Nahariya
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                      sx={{
+                        mt: 1.25,
+                        fontSize: { xs: '0.98rem', md: '1.08rem' },
+                      }}
+                    >
+                      משלוחים, איסוף עצמי וסושי טרי בנהריה
+                    </Typography>
+                  </Box>
+
+                  <Stack
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={1.25}
+                    sx={{ width: '100%', justifyContent: 'center' }}
+                  >
+                    {highlights.map((item) => (
+                      <Chip
+                        key={item.label}
+                        icon={item.icon}
+                        label={item.label}
                         sx={{
-                          display: 'grid',
-                          placeItems: 'center',
-                          width: '100%',
-                          height: { xs: 220, sm: 240 },
-                          p: item.imagePadding ?? 0,
+                          maxWidth: '100%',
+                          height: { xs: 46, md: 42 },
+                          bgcolor: alpha('#8f2d1f', 0.04),
+                          border: '1px solid',
+                          borderColor: alpha('#241915', 0.08),
+                          '& .MuiChip-label': {
+                            display: 'block',
+                            whiteSpace: 'normal',
+                            textAlign: 'right',
+                            py: 0.75,
+                          },
+                        }}
+                      />
+                    ))}
+                  </Stack>
+                </Stack>
+              </Card>
+            </Reveal>
+
+            <Reveal delay={120}>
+              <Box id="gallery" sx={{ scrollMarginTop: { xs: '90px', md: '110px' } }}>
+                <Stack
+                  direction={{ xs: 'column', md: 'row' }}
+                  justifyContent="space-between"
+                  alignItems={{ xs: 'flex-start', md: 'center' }}
+                  gap={2}
+                  sx={{ mb: 3 }}
+                >
+                  <Box>
+                    <Typography variant="h3" sx={{ mt: 0.5 }}>
+                      תמונות מהתפריט
+                    </Typography>
+                  </Box>
+                  <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 520 }}>
+                    מבחר תמונות של מגשים, פוקי, ווק וספיישלים כדי להמחיש את המנות שבאתר.
+                  </Typography>
+                </Stack>
+
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(4, 1fr)' },
+                    gap: 2.5,
+                  }}
+                >
+                  {galleryImages.map((item, index) => (
+                    <Reveal key={item.title} delay={index * 90} y={24}>
+                      <Card
+                        elevation={0}
+                        onClick={() => openGallery(item)}
+                        sx={{
                           overflow: 'hidden',
-                          backgroundColor: item.imageFit === 'contain' ? alpha('#f4ede3', 0.72) : 'transparent',
+                          border: '1px solid',
+                          borderColor: 'rgba(36, 25, 21, 0.08)',
+                          backgroundColor: 'rgba(255, 250, 244, 0.92)',
+                          boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
+                          cursor: item.images?.length ? 'pointer' : 'default',
+                          transition: 'transform 220ms ease, box-shadow 220ms ease',
+                          '&:hover': {
+                            transform: item.images?.length ? 'translateY(-4px)' : 'none',
+                            boxShadow: item.images?.length
+                              ? '0 30px 60px rgba(36, 25, 21, 0.12)'
+                              : '0 24px 50px rgba(36, 25, 21, 0.08)',
+                          },
                         }}
                       >
                         <Box
-                          component="img"
-                          src={item.image}
-                          alt={item.title}
                           sx={{
-                            display: 'block',
-                            width: item.imageFit === 'contain' ? 'auto' : '100%',
-                            height: item.imageFit === 'contain' ? 'auto' : '100%',
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            objectFit: item.imageFit ?? 'cover',
-                            objectPosition: item.imagePosition ?? 'center',
+                            display: 'grid',
+                            placeItems: 'center',
+                            width: '100%',
+                            height: { xs: 220, sm: 240 },
+                            p: item.imagePadding ?? 0,
+                            overflow: 'hidden',
+                            backgroundColor: item.imageFit === 'contain' ? alpha('#f4ede3', 0.72) : 'transparent',
                           }}
-                        />
-                      </Box>
-                      <CardContent>
-                        <Typography variant="h6" sx={{ mb: 0.5 }}>
-                          {item.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {item.description}
-                        </Typography>
-                        {item.images?.length ? (
-                          <Typography
-                            variant="caption"
-                            sx={{ display: 'block', mt: 1, fontWeight: 700, whiteSpace: 'nowrap', fontSize: '0.72rem', color: 'text.secondary' }}
-                          >
-                            לחצו לצפייה בעוד תמונות
+                        >
+                          <Box
+                            component="img"
+                            src={item.image}
+                            alt={item.title}
+                            sx={{
+                              display: 'block',
+                              width: item.imageFit === 'contain' ? 'auto' : '100%',
+                              height: item.imageFit === 'contain' ? 'auto' : '100%',
+                              maxWidth: '100%',
+                              maxHeight: '100%',
+                              objectFit: item.imageFit ?? 'cover',
+                              objectPosition: item.imagePosition ?? 'center',
+                            }}
+                          />
+                        </Box>
+                        <CardContent>
+                          <Typography variant="h6" sx={{ mb: 0.5 }}>
+                            {item.title}
                           </Typography>
-                        ) : null}
-                      </CardContent>
-                    </Card>
-                  </Reveal>
-                ))}
-              </Box>
-            </Box>
-            </Reveal>
-
-            <Reveal delay={130}>
-            <Box>
-              <Stack alignItems="center" sx={{ mb: 4, textAlign: 'center' }}>
-                <Box sx={{ maxWidth: 520 }}>
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      display: 'block',
-                      color: alpha('#8f2d1f', 0.72),
-                      letterSpacing: '0.18em',
-                      fontWeight: 800,
-                    }}
-                  >
-                    Sushi Wok Nahariya
-                  </Typography>
-                  <Typography
-                    variant="h3"
-                    sx={{
-                      mt: 0.75,
-                      fontSize: { xs: '2.5rem', md: '3.6rem' },
-                      lineHeight: 1,
-                      letterSpacing: '-0.03em',
-                    }}
-                  >
-                    Menu
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      mt: 1,
-                      fontSize: { xs: '0.95rem', md: '1rem' },
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    Sushi Wok Nahariya
-                  </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.description}
+                          </Typography>
+                          {item.images?.length ? (
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                display: 'block',
+                                mt: 1,
+                                fontWeight: 700,
+                                whiteSpace: 'nowrap',
+                                fontSize: '0.72rem',
+                                color: 'text.secondary',
+                              }}
+                            >
+                              לחצו לצפייה בעוד תמונות
+                            </Typography>
+                          ) : null}
+                        </CardContent>
+                      </Card>
+                    </Reveal>
+                  ))}
                 </Box>
-              </Stack>
-
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' },
-                  gap: 3,
-                }}
-              >
-                {menuSections.map((section, index) => (
-                  <Reveal key={`section-${index}`} delay={index * 70} y={26}>
-                    <SectionCard {...section} />
-                  </Reveal>
-                ))}
               </Box>
-            </Box>
             </Reveal>
 
             <Card
+              id="contact"
               elevation={0}
               sx={{
                 p: { xs: 3, md: 4 },
@@ -1045,9 +1048,15 @@ function App() {
                 borderColor: 'rgba(36, 25, 21, 0.08)',
                 background: 'linear-gradient(135deg, rgba(36,92,74,0.08) 0%, rgba(196,138,58,0.14) 100%)',
                 boxShadow: '0 24px 50px rgba(36, 25, 21, 0.08)',
+                scrollMarginTop: { xs: '90px', md: '110px' },
               }}
             >
-              <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={3}>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                justifyContent="space-between"
+                alignItems={{ xs: 'flex-start', md: 'center' }}
+                gap={3}
+              >
                 <Box sx={{ maxWidth: 620 }}>
                   <Typography variant="h4" sx={{ mt: 1, mb: 1 }}>
                     להזמנות, משלוחים ואיסוף עצמי
@@ -1056,30 +1065,7 @@ function App() {
                     אפשר להזמין עכשיו בטלפון או בוואטסאפ. {BUSINESS.name}, {BUSINESS.address}.
                   </Typography>
                 </Box>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} width={{ xs: '100%', md: 'auto' }}>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    size="large"
-                    startIcon={<PhoneEnabledIcon />}
-                    href={`tel:${BUSINESS.phone}`}
-                    sx={{ px: 3, py: 1.4, '& .MuiButton-startIcon': { ml: 1.25, mr: 0 } }}
-                  >
-                    התקשרו להזמנה
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    size="large"
-                    startIcon={<WhatsAppIcon />}
-                    href={BUSINESS.whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ px: 3, py: 1.4, '& .MuiButton-startIcon': { ml: 1.25, mr: 0 } }}
-                  >
-                    שלחו הודעה בוואטסאפ
-                  </Button>
-                </Stack>
+                <ActionButtons />
               </Stack>
             </Card>
           </Stack>
@@ -1211,8 +1197,20 @@ function App() {
                 </Box>
               </Box>
 
-              <Box sx={{ p: { xs: 2, md: 3 }, pt: { xs: 1.5, md: 2 }, borderTop: '1px solid', borderColor: alpha('#fff8f1', 0.08) }}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} gap={2}>
+              <Box
+                sx={{
+                  p: { xs: 2, md: 3 },
+                  pt: { xs: 1.5, md: 2 },
+                  borderTop: '1px solid',
+                  borderColor: alpha('#fff8f1', 0.08),
+                }}
+              >
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  justifyContent="space-between"
+                  alignItems={{ xs: 'flex-start', sm: 'center' }}
+                  gap={2}
+                >
                   <Box>
                     <Typography variant="h5" sx={{ mb: 0.5 }}>
                       {selectedGallery.title}
@@ -1240,7 +1238,15 @@ function App() {
                     >
                       קודם
                     </Button>
-                    <Typography variant="body2" sx={{ color: alpha('#fff8f1', 0.72), whiteSpace: 'nowrap', minWidth: 48, textAlign: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: alpha('#fff8f1', 0.72),
+                        whiteSpace: 'nowrap',
+                        minWidth: 48,
+                        textAlign: 'center',
+                      }}
+                    >
                       {selectedGalleryIndex + 1} / {selectedGalleryImages.length}
                     </Typography>
                     <Button
@@ -1280,10 +1286,12 @@ function App() {
                           borderRadius: 2.5,
                           overflow: 'hidden',
                           border: '2px solid',
-                          borderColor: imageIndex === selectedGalleryIndex ? 'secondary.main' : alpha('#fff8f1', 0.14),
+                          borderColor:
+                            imageIndex === selectedGalleryIndex ? 'secondary.main' : alpha('#fff8f1', 0.14),
                           backgroundColor: alpha('#fff8f1', 0.04),
                           cursor: 'pointer',
-                          boxShadow: imageIndex === selectedGalleryIndex ? '0 0 0 3px rgba(196,138,58,0.18)' : 'none',
+                          boxShadow:
+                            imageIndex === selectedGalleryIndex ? '0 0 0 3px rgba(196,138,58,0.18)' : 'none',
                         }}
                       >
                         <Box
