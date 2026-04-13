@@ -523,15 +523,6 @@ function SectionCard({ title, subtitle, badge, items, note }: SectionCardProps) 
             </Stack>
 
             <Stack alignItems="flex-end" spacing={1}>
-              <Chip
-                label={badge}
-                size="small"
-                sx={{
-                  fontWeight: 800,
-                  bgcolor: alpha('#c48a3a', 0.14),
-                  color: 'secondary.dark',
-                }}
-              />
               <Box
                 sx={{
                   display: { xs: 'none', sm: 'grid' },
