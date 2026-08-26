@@ -152,7 +152,7 @@ export const poke: MenuCategory = {
 // fallback. Keep it first in each list so it reads as the default, and never
 // give it a price: the existing עוף/בקר/סלמון supplements are unchanged.
 const NO_PROTEIN_CHOICE: MenuAddon = { name: 'צמחוני / ללא תוספת', price: 0 };
-const WOK_PROTEIN_CHOICES: MenuAddon[] = [
+export const WOK_PROTEIN_CHOICES: MenuAddon[] = [
   NO_PROTEIN_CHOICE,
   { name: 'עוף', price: 10 },
   { name: 'בקר', price: 15 },
@@ -201,7 +201,6 @@ export const specials: MenuCategory = {
   navLabel: 'ספיישלים',
   title: 'ספיישלים',
   icon: '🍣',
-  subtitle: 'רולי החתימה של Sushi Wok',
   items: [
     { id: 'crispy-roll', name: 'קריספי רול (מטוגן) (8 יח׳)', description: 'סלמון, אבוקדו ובטטה בציפוי טמפורה ופנקו', price: '₪42', numericPrice: 42, image: IMAGES.crispyRoll },
     { id: 'spicy-salmon', name: 'ספייסי סלמון (8 יח׳)', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית', price: '₪52', numericPrice: 52, image: IMAGES.spicySalmon },

@@ -1,15 +1,18 @@
+import React from 'react';
 import { Box, Button, Container, alpha } from '@mui/material';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { PROMO } from '../data/business';
-import { buildWhatsAppLink } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
+import { PromoBundleDialog } from './PromoBundleDialog';
 
 // Native size of the supplied promo video — the box is locked to this
 // aspect ratio so the footage is never cropped.
 const VIDEO_ASPECT = '1280 / 720';
 
 export function Promo() {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
   return (
     <Box component="section" aria-labelledby="promo-heading" sx={{ px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
       <Container maxWidth="lg" disableGutters>
@@ -78,10 +81,8 @@ export function Promo() {
                 color="primary"
                 fullWidth
                 size="large"
-                startIcon={<WhatsAppIcon />}
-                href={buildWhatsAppLink(`היי, אשמח להזמין את המבצע: ${PROMO.text} ב-${PROMO.price}₪`)}
-                target="_blank"
-                rel="noopener noreferrer"
+                startIcon={<AddRoundedIcon />}
+                onClick={() => setDialogOpen(true)}
                 sx={{
                   py: 1.3,
                   fontSize: '1rem',
@@ -95,6 +96,8 @@ export function Promo() {
           </Box>
         </Reveal>
       </Container>
+
+      <PromoBundleDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
     </Box>
   );
 }

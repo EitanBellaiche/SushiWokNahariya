@@ -28,6 +28,7 @@ export const PROMO = {
   text: 'מוקפץ לבחירה + רול בהרכבה עצמית',
   priceLabel: '₪ בלבד',
   price: '69',
+  numericPrice: 69,
 } as const;
 
 export function buildWhatsAppLink(message?: string) {
