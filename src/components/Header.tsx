@@ -37,7 +37,16 @@ export function Header() {
           borderColor: COLORS.surfaceBorder,
         }}
       >
-        <Toolbar sx={{ minHeight: { xs: 68, md: 82 }, px: { xs: 1.5, md: 3 }, gap: 1, flexDirection: 'row-reverse' }}>
+        <Toolbar
+          sx={{
+            minHeight: { xs: 68, md: 82 },
+            px: { xs: 1.5, md: 3 },
+            gap: 1,
+            position: 'relative',
+            flexDirection: 'row-reverse',
+            justifyContent: 'space-between',
+          }}
+        >
           <IconButton
             onClick={() => setDrawerOpen(true)}
             aria-label="פתיחת תפריט ניווט"
@@ -46,12 +55,22 @@ export function Header() {
             <MenuRoundedIcon />
           </IconButton>
 
-          <Box sx={{ flex: 1 }} />
-
+          {/* Absolutely centered over the whole header, so it stays visually
+              centered regardless of how wide the icon groups on each side are
+              (they're not symmetric: one icon on the left, two on the right,
+              plus the desktop nav) — a flex-spacer approach can't balance that. */}
           <Box
             component={RouterLink}
             to="/"
-            sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
+            sx={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+            }}
             aria-label="Sushi Wok Nahariya — לדף הבית"
           >
             <Box
@@ -62,38 +81,38 @@ export function Header() {
             />
           </Box>
 
-          <Box sx={{ flex: 1 }} />
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack direction="row" spacing={0.5} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} component="nav" aria-label="ניווט ראשי">
+              {navCategories.slice(0, 6).map((cat) => (
+                <Button
+                  key={cat.id}
+                  href={`/#${cat.id}`}
+                  sx={{ color: COLORS.white, px: 1.2, fontSize: '0.85rem', fontWeight: 600, '&:hover': { color: COLORS.red, bgcolor: 'transparent' } }}
+                >
+                  {cat.label}
+                </Button>
+              ))}
+            </Stack>
 
-          <Stack direction="row" spacing={0.5} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} component="nav" aria-label="ניווט ראשי">
-            {navCategories.slice(0, 6).map((cat) => (
-              <Button
-                key={cat.id}
-                href={`/#${cat.id}`}
-                sx={{ color: COLORS.white, px: 1.2, fontSize: '0.85rem', fontWeight: 600, '&:hover': { color: COLORS.red, bgcolor: 'transparent' } }}
-              >
-                {cat.label}
-              </Button>
-            ))}
+            <IconButton
+              onClick={openCart}
+              aria-label="פתיחת ההזמנה שלי"
+              sx={{ color: COLORS.white, border: '1px solid', borderColor: COLORS.surfaceBorder, width: 44, height: 44 }}
+            >
+              <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontWeight: 700 } }}>
+                <ShoppingCartRoundedIcon fontSize="small" />
+              </Badge>
+            </IconButton>
+
+            <IconButton
+              component="a"
+              href={`tel:${BUSINESS.phone}`}
+              aria-label={`התקשרות אל ${BUSINESS.phoneDisplay}`}
+              sx={{ color: COLORS.white, border: '1px solid', borderColor: COLORS.surfaceBorder, width: 44, height: 44 }}
+            >
+              <PhoneEnabledIcon fontSize="small" />
+            </IconButton>
           </Stack>
-
-          <IconButton
-            onClick={openCart}
-            aria-label="פתיחת ההזמנה שלי"
-            sx={{ color: COLORS.white, border: '1px solid', borderColor: COLORS.surfaceBorder, width: 44, height: 44 }}
-          >
-            <Badge badgeContent={totalItems} color="primary" sx={{ '& .MuiBadge-badge': { fontWeight: 700 } }}>
-              <ShoppingCartRoundedIcon fontSize="small" />
-            </Badge>
-          </IconButton>
-
-          <IconButton
-            component="a"
-            href={`tel:${BUSINESS.phone}`}
-            aria-label={`התקשרות אל ${BUSINESS.phoneDisplay}`}
-            sx={{ color: COLORS.white, border: '1px solid', borderColor: COLORS.surfaceBorder, width: 44, height: 44 }}
-          >
-            <PhoneEnabledIcon fontSize="small" />
-          </IconButton>
         </Toolbar>
       </AppBar>
 
