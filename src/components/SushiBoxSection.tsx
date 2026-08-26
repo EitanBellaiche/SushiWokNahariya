@@ -1,5 +1,6 @@
 import { Box, Container, Stack, Typography, alpha } from '@mui/material';
 import { sushiBox } from '../data/menu';
+import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { MenuImage } from './MenuImage';
@@ -24,7 +25,7 @@ export function SushiBoxSection() {
             }}
           >
             <Stack spacing={1} alignItems="center">
-              <MenuImage src={sushiBox.image} alt={sushiBox.title} size={96} rounded={2} />
+              <MenuImage src={sushiBox.image} alt={`${sushiBox.title} – ${BUSINESS.nameHe}`} size={96} rounded={2} />
               <Box component="span" aria-hidden="true" sx={{ fontSize: '1.4rem' }}>
                 {sushiBox.icon}
               </Box>

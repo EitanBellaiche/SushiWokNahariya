@@ -2,6 +2,7 @@ import { Box, Container, Divider, Stack, Typography } from '@mui/material';
 import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 import { combos } from '../data/menu';
 import type { ComboItem } from '../data/menu';
+import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
@@ -12,7 +13,7 @@ import { AddToCartButton } from './AddToCartButton';
 function ComboRow({ combo }: { combo: ComboItem }) {
   return (
     <Stack direction="row" gap={1.5} sx={{ py: 1.4 }}>
-      <MenuImage src={combo.image} alt={combo.name} size={64} />
+      <MenuImage src={combo.image} alt={`${combo.name} – ${BUSINESS.nameHe}`} size={64} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1}>
           <Typography component="h3" sx={{ fontSize: '0.98rem', fontWeight: 700, color: COLORS.white }}>

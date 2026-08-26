@@ -1,6 +1,7 @@
 import { Box, Container, Stack, Typography, alpha } from '@mui/material';
 import { partyTrays } from '../data/menu';
 import type { MenuItem } from '../data/menu';
+import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
@@ -19,7 +20,7 @@ function TrayCard({ tray, index }: { tray: MenuItem; index: number }) {
           bgcolor: COLORS.surface,
         }}
       >
-        <MenuImage src={tray.image} alt={tray.name} aspectRatio="16 / 10" rounded={0} eager={index === 0} />
+        <MenuImage src={tray.image} alt={`${tray.name} – ${BUSINESS.nameHe}`} aspectRatio="16 / 10" rounded={0} eager={index === 0} />
         <Stack spacing={0.5} sx={{ p: 2.25 }}>
           <Stack direction="row" justifyContent="space-between" alignItems="baseline" gap={1}>
             <Typography component="h3" sx={{ fontSize: '1.1rem', fontWeight: 800, color: COLORS.white }}>

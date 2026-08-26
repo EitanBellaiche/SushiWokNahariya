@@ -1,6 +1,6 @@
 export const BUSINESS = {
   name: 'Sushi Wok Nahariya',
-  nameHe: 'סושיווק נהריה',
+  nameHe: 'סושי ווק נהריה',
   phone: '+972528205470',
   phoneDisplay: '052-8205470',
   whatsappPhone: '972528205470',
@@ -10,7 +10,7 @@ export const BUSINESS = {
   serviceLine: 'משלוחים | איסוף עצמי',
   hoursWeekday: "א׳–ה׳: 11:00–23:00",
   hoursWeekend: 'שבת: חצי שעה לאחר צאת השבת ועד 23:30',
-  siteUrl: 'https://sushiwoknahariya.onrender.com',
+  siteUrl: 'https://www.sushiwoknahariya.com',
   /**
    * TODO(legal): no dedicated privacy/legal email exists in this project. The
    * legal pages therefore point customers to phone/WhatsApp instead of an

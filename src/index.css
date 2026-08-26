@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;500;700;800&display=swap');
+/* Heebo/Assistant are loaded via <link> in index.html (with preconnect) instead of
+   @import here — @import blocks CSSOM construction behind an extra round trip. */
 
 :root {
   color-scheme: dark;

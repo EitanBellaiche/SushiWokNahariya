@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, Container, Divider, Stack, Typography, alpha } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import type { MenuCategory, MenuItem } from '../data/menu';
+import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { MenuImage } from './MenuImage';
@@ -80,7 +81,7 @@ export function MenuRow({ item }: { item: MenuItem }) {
 
   return (
     <Stack direction="row" alignItems="center" gap={1.5} sx={{ py: 1.1 }}>
-      <MenuImage src={item.image} alt={item.name} size={64} />
+      <MenuImage src={item.image} alt={`${item.name} – ${BUSINESS.nameHe}`} size={64} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1}>
           <Typography component="h3" sx={{ fontSize: '0.96rem', fontWeight: 700, color: COLORS.white }}>
