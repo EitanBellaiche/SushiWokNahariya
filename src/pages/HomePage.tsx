@@ -31,19 +31,7 @@ export function HomePage() {
               lineHeight: 1.25,
             }}
           >
-            סושי ווק נהריה – סושי, אוכל אסייתי ומשלוחים בנהריה
-          </Typography>
-          <Typography
-            sx={{
-              textAlign: 'center',
-              color: COLORS.textSecondary,
-              fontSize: { xs: '0.88rem', md: '1rem' },
-              mt: 1,
-              maxWidth: 640,
-              mx: 'auto',
-            }}
-          >
-            סושי טרי, מוקפצים ונודלס, קומבינציות ומגשי מסיבה — משלוחים וטייק אווי בנהריה והסביבה.
+            סושי ווק נהריה | סושי, אוכל אסייתי ומשלוחים בנהריה
           </Typography>
         </Container>
       </Box>
