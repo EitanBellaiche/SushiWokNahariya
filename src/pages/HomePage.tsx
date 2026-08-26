@@ -1,6 +1,5 @@
 import { Box, Container, Typography } from '@mui/material';
 import { Promo } from '../components/Promo';
-import { DeliveryTimeNote } from '../components/DeliveryTimeNote';
 import { MenuNav } from '../components/MenuNav';
 import { CategoryShortcuts } from '../components/CategoryShortcuts';
 import { MenuSection } from '../components/MenuSection';
@@ -52,9 +51,6 @@ export function HomePage() {
           >
             סושי ווק נהריה | סושי, אוכל אסייתי ומשלוחים בנהריה
           </Typography>
-          <Box sx={{ mt: 1.5, maxWidth: 480, mx: 'auto' }}>
-            <DeliveryTimeNote />
-          </Box>
         </Container>
       </Box>
 

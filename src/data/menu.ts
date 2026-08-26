@@ -12,6 +12,8 @@ export type MenuItem = {
   image?: string;
   /** Set when the price already bundles a soft drink — the cart must ask which one. */
   includesDrinkChoice?: boolean;
+  /** Restricts the bundled drink choice to these drink names (must match `drinks.items` names); omit to offer the full drinks list. */
+  drinkChoices?: string[];
   /** Set when the price bundles a free side choice (e.g. rice vs. fries) — the cart must ask which one. */
   sideChoices?: string[];
   /** Paid add-ons that must be selected before the item is added to the cart. */
@@ -360,6 +362,7 @@ export const kids: MenuCategory = {
       numericPrice: 39,
       image: IMAGES.kidsNoodles,
       includesDrinkChoice: true,
+      drinkChoices: ['ענבים', 'תפוזים'],
     },
     {
       id: 'kids-schnitzel',
@@ -369,6 +372,7 @@ export const kids: MenuCategory = {
       numericPrice: 39,
       image: IMAGES.kidsSchnitzel,
       includesDrinkChoice: true,
+      drinkChoices: ['ענבים', 'תפוזים'],
       sideChoices: ['אורז מאודה', 'צ׳יפס'],
     },
   ],

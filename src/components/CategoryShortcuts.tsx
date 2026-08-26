@@ -27,7 +27,6 @@ const shortcutMeta: Record<string, { image?: string; icon: string }> = {
   [buildYourOwn.id]: { image: IMAGES.buildYourOwnHero, icon: buildYourOwn.icon },
   [wok.id]: { image: IMAGES.wokHero, icon: wok.icon },
   [poke.id]: { image: IMAGES.pokeHero, icon: poke.icon },
-  [sushiBox.id]: { image: IMAGES.sushiBoxPhoto, icon: sushiBox.icon },
   [combos.id]: { image: IMAGES.combosHero, icon: combos.icon },
   [nigiri.id]: { image: IMAGES.nigiriSalmon, icon: nigiri.icon },
   [partyTrays.id]: { image: IMAGES.partyTraysHero, icon: partyTrays.icon },
@@ -35,12 +34,16 @@ const shortcutMeta: Record<string, { image?: string; icon: string }> = {
   [drinks.id]: { image: IMAGES.drinksHero, icon: drinks.icon },
 };
 
-const shortcuts: Shortcut[] = navCategories.map((cat) => ({
-  id: cat.id,
-  label: cat.label,
-  image: shortcutMeta[cat.id]?.image,
-  icon: shortcutMeta[cat.id]?.icon ?? '🍣',
-}));
+// Sushi Box is a real nav category (pills, drawer, its own section) but the
+// client asked for it not to get a circular photo in this specific row.
+const shortcuts: Shortcut[] = navCategories
+  .filter((cat) => cat.id !== sushiBox.id)
+  .map((cat) => ({
+    id: cat.id,
+    label: cat.label,
+    image: shortcutMeta[cat.id]?.image,
+    icon: shortcutMeta[cat.id]?.icon ?? '🍣',
+  }));
 
 export function CategoryShortcuts() {
   return (

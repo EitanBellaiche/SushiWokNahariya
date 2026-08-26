@@ -27,20 +27,23 @@ type BundledChoiceDialogProps = {
   name: string;
   unitPrice: number;
   sideChoices?: string[];
+  /** Restricts the drink radio list to these names; omit to offer the full drinks menu. */
+  drinkChoices?: string[];
 };
 
 /** For menu items whose price already bundles a soft drink (and sometimes a side) — asks which one before adding to the cart. */
-export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice, sideChoices }: BundledChoiceDialogProps) {
+export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice, sideChoices, drinkChoices }: BundledChoiceDialogProps) {
   const { addLine } = useCart();
+  const availableDrinks = drinkChoices && drinkChoices.length > 0 ? drinks.items.filter((d) => drinkChoices.includes(d.name)) : drinks.items;
   const [side, setSide] = React.useState(sideChoices?.[0] ?? '');
-  const [drink, setDrink] = React.useState(drinks.items[0].name);
+  const [drink, setDrink] = React.useState(availableDrinks[0]?.name ?? '');
   const [quantity, setQuantity] = React.useState(1);
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
     if (open) {
       setSide(sideChoices?.[0] ?? '');
-      setDrink(drinks.items[0].name);
+      setDrink(availableDrinks[0]?.name ?? '');
       setQuantity(1);
       setError(false);
     }
@@ -97,7 +100,7 @@ export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice,
                 setError(false);
               }}
             >
-              {drinks.items.map((d) => (
+              {availableDrinks.map((d) => (
                 <FormControlLabel key={d.id} value={d.name} control={<Radio size="small" />} label={d.name} />
               ))}
             </RadioGroup>

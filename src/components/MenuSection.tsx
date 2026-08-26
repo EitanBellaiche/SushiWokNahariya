@@ -128,6 +128,7 @@ export function MenuRow({ item }: { item: MenuItem }) {
                 name={item.name}
                 unitPrice={item.numericPrice as number}
                 sideChoices={item.sideChoices}
+                drinkChoices={item.drinkChoices}
               />
             </>
           ) : needsPaidAddonChoice ? (

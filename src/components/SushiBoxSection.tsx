@@ -5,6 +5,7 @@ import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { MenuImage } from './MenuImage';
+import { SectionHeading } from './MenuSection';
 import { SushiBoxPickerDialog } from './SushiBoxPickerDialog';
 
 export function SushiBoxSection() {
@@ -14,6 +15,7 @@ export function SushiBoxSection() {
     <Box component="section" id={sushiBox.id} aria-labelledby="sushibox-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
+          <SectionHeading id="sushibox-heading" icon={sushiBox.icon} title={sushiBox.title} />
           <Box
             sx={{
               borderRadius: 3,
@@ -29,12 +31,6 @@ export function SushiBoxSection() {
           >
             <Stack spacing={1} alignItems="center">
               <MenuImage src={sushiBox.image} alt={`${sushiBox.title} – ${BUSINESS.nameHe}`} size={96} rounded={2} />
-              <Box component="span" aria-hidden="true" sx={{ fontSize: '1.4rem' }}>
-                {sushiBox.icon}
-              </Box>
-              <Typography id="sushibox-heading" component="h2" sx={{ fontSize: '1.3rem', fontWeight: 800, color: COLORS.white, lineHeight: 1.15 }}>
-                {sushiBox.title}
-              </Typography>
               <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: COLORS.textSecondary }}>{sushiBox.subtitleEn}</Typography>
               <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: COLORS.red, pt: 0.5 }}>{sushiBox.unitsLabel}</Typography>
               <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.5 }}>{sushiBox.description}</Typography>
