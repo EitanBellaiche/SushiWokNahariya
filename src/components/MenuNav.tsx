@@ -13,7 +13,7 @@ export function MenuNav({ activeId }: MenuNavProps) {
       aria-label="ניווט בין קטגוריות התפריט"
       sx={{
         position: 'sticky',
-        top: { xs: 68, md: 82 },
+        top: { xs: 80, md: 96 },
         zIndex: 15,
         bgcolor: alpha(COLORS.bg, 0.92),
         backdropFilter: 'blur(10px)',

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { CartLine, CheckoutStep, CustomerDetails, OrderSnapshot } from './types';
+import { getDeliveryFee } from './delivery';
 
 const CART_KEY = 'sushiwok:cart:v1';
 const ORDER_SEQ_KEY = 'sushiwok:orderSeq:v1';
@@ -168,12 +169,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       hasSubmittedRef.current = true;
       setSubmitting(true);
 
+      const deliveryFee = getDeliveryFee(customer.fulfillment, customer.deliveryZone);
       const order: OrderSnapshot = {
         orderNumber: nextOrderNumber(),
         createdAt: new Date().toISOString(),
         status: 'PENDING_CUSTOMER_SEND',
         items,
         subtotal: totalPrice,
+        deliveryFee,
+        total: totalPrice + deliveryFee,
         customer,
       };
 

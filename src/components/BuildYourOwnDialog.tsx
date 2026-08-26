@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -28,6 +29,24 @@ import { COLORS } from '../theme';
 
 const NONE = '__none__';
 
+/** A maki ingredient is either one fish or one vegetable — never both. */
+type MakiIngredient = { kind: 'fish' | 'veg'; name: string };
+
+function makiValue(ingredient: MakiIngredient | null): string {
+  return ingredient ? `${ingredient.kind}::${ingredient.name}` : '';
+}
+
+function parseMakiValue(value: string): MakiIngredient {
+  const [kind, name] = value.split('::');
+  return { kind: kind as 'fish' | 'veg', name };
+}
+
+/** Short Hebrew hint shown on each roll-type card so the customer knows the limit before opening the dialog. */
+export function rollSelectionHint(roll: RollPrice): string {
+  if (roll.singleChoice) return 'מרכיב אחד: דג או ירק';
+  return `דג: 1 דג + ${roll.vegCountFish} ירקות  ·  צמחוני: ${roll.vegCountVeggie} ירקות`;
+}
+
 type BuildYourOwnDialogProps = {
   open: boolean;
   onClose: () => void;
@@ -42,16 +61,24 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
   const [base, setBase] = React.useState<'fish' | 'veggie'>('fish');
   const [fishChoice, setFishChoice] = React.useState<string>(buildYourOwn.fish[0]);
   const [vegetables, setVegetables] = React.useState<string[]>([]);
+  const [makiIngredient, setMakiIngredient] = React.useState<MakiIngredient | null>(null);
   const [wrap, setWrap] = React.useState<string>(NONE);
   const [coating, setCoating] = React.useState<string>(NONE);
   const [quantity, setQuantity] = React.useState(1);
+  const [error, setError] = React.useState(false);
+
+  const resetSelection = () => {
+    setBase('fish');
+    setFishChoice(buildYourOwn.fish[0]);
+    setVegetables([]);
+    setMakiIngredient(null);
+    setError(false);
+  };
 
   React.useEffect(() => {
     if (open) {
       setRollType(initialType ?? rolls[0].type);
-      setBase('fish');
-      setFishChoice(buildYourOwn.fish[0]);
-      setVegetables([]);
+      resetSelection();
       setWrap(NONE);
       setCoating(NONE);
       setQuantity(1);
@@ -59,23 +86,59 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, initialType]);
 
+  // Each roll type has its own ingredient limits, so switching type mid-dialog
+  // must clear whatever was already picked rather than carrying over a count
+  // that may now exceed (or fall short of) the new type's requirement.
+  React.useEffect(() => {
+    resetSelection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rollType]);
+
   const selectedRoll = rolls.find((r) => r.type === rollType) as RollPrice;
+  const isMaki = Boolean(selectedRoll.singleChoice);
+  const requiredVeg = base === 'fish' ? selectedRoll.vegCountFish ?? 0 : selectedRoll.vegCountVeggie ?? 0;
+
   const wrapObj = buildYourOwn.wraps.find((w) => w.name === wrap);
   const coatingObj = buildYourOwn.coatings.find((c) => c.name === coating);
-
-  const basePrice = base === 'fish' ? selectedRoll.fish : selectedRoll.veggie;
   const wrapPrice = wrapObj ? parseAddonPrice(wrapObj.price) : 0;
   const coatingPrice = coatingObj ? parseAddonPrice(coatingObj.price) : 0;
+
+  const basePrice = isMaki
+    ? makiIngredient
+      ? makiIngredient.kind === 'fish'
+        ? selectedRoll.fish
+        : selectedRoll.veggie
+      : 0
+    : base === 'fish'
+      ? selectedRoll.fish
+      : selectedRoll.veggie;
   const unitPrice = basePrice + wrapPrice + coatingPrice;
 
+  const isValid = isMaki ? makiIngredient !== null : base === 'fish' ? Boolean(fishChoice) && vegetables.length === requiredVeg : vegetables.length === requiredVeg;
+
   const toggleVegetable = (veg: string) => {
-    setVegetables((prev) => (prev.includes(veg) ? prev.filter((v) => v !== veg) : [...prev, veg]));
+    setVegetables((prev) => {
+      if (prev.includes(veg)) return prev.filter((v) => v !== veg);
+      if (prev.length >= requiredVeg) return prev;
+      return [...prev, veg];
+    });
+    setError(false);
   };
 
   const handleAdd = () => {
-    const options: string[] = [`בסיס: ${base === 'fish' ? 'דג' : 'צמחוני'}`];
-    if (base === 'fish') options.push(`דג: ${fishChoice}`);
-    if (vegetables.length > 0) options.push(`ירקות: ${vegetables.join(', ')}`);
+    if (!isValid) {
+      setError(true);
+      return;
+    }
+
+    const options: string[] = [];
+    if (isMaki && makiIngredient) {
+      options.push(makiIngredient.kind === 'fish' ? `דג: ${makiIngredient.name}` : `ירק: ${makiIngredient.name}`);
+    } else {
+      options.push(`בסיס: ${base === 'fish' ? 'דג' : 'צמחוני'}`);
+      if (base === 'fish') options.push(`דג: ${fishChoice}`);
+      options.push(`ירקות: ${vegetables.join(', ')}`);
+    }
     if (wrapObj) options.push(`מעטפה: ${wrapObj.name} (+₪${wrapPrice})`);
     if (coatingObj) options.push(`ציפוי: ${coatingObj.name} (+₪${coatingPrice})`);
 
@@ -132,39 +195,80 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
                 </ToggleButton>
               ))}
             </ToggleButtonGroup>
+            <Typography sx={{ mt: 0.75, fontSize: '0.78rem', color: COLORS.textMuted }}>{rollSelectionHint(selectedRoll)}</Typography>
           </Box>
 
-          <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בסיס</Typography>
-            <RadioGroup row value={base} onChange={(e) => setBase(e.target.value as 'fish' | 'veggie')}>
-              <FormControlLabel value="fish" control={<Radio size="small" />} label={`דג · ₪${selectedRoll.fish}`} />
-              <FormControlLabel value="veggie" control={<Radio size="small" />} label={`צמחוני · ₪${selectedRoll.veggie}`} />
-            </RadioGroup>
-          </Box>
-
-          {base === 'fish' && (
+          {isMaki ? (
             <Box>
-              <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בחרו דג</Typography>
-              <RadioGroup value={fishChoice} onChange={(e) => setFishChoice(e.target.value)}>
+              <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>
+                בחרו מרכיב אחד — דג או ירק ({makiIngredient ? 'נבחר: ' + makiIngredient.name : 'טרם נבחר'})
+              </Typography>
+              <RadioGroup
+                value={makiValue(makiIngredient)}
+                onChange={(e) => {
+                  setMakiIngredient(parseMakiValue(e.target.value));
+                  setError(false);
+                }}
+              >
                 {buildYourOwn.fish.map((f) => (
-                  <FormControlLabel key={f} value={f} control={<Radio size="small" />} label={f} />
+                  <FormControlLabel key={`fish-${f}`} value={makiValue({ kind: 'fish', name: f })} control={<Radio size="small" />} label={`דג: ${f}`} />
+                ))}
+                {buildYourOwn.vegetables.map((v) => (
+                  <FormControlLabel key={`veg-${v}`} value={makiValue({ kind: 'veg', name: v })} control={<Radio size="small" />} label={`ירק: ${v}`} />
                 ))}
               </RadioGroup>
+              {error && !isValid && (
+                <Alert severity="error" sx={{ mt: 1 }}>
+                  יש לבחור מרכיב אחד: דג או ירק
+                </Alert>
+              )}
             </Box>
-          )}
+          ) : (
+            <>
+              <Box>
+                <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בסיס</Typography>
+                <RadioGroup row value={base} onChange={(e) => setBase(e.target.value as 'fish' | 'veggie')}>
+                  <FormControlLabel value="fish" control={<Radio size="small" />} label={`דג · ₪${selectedRoll.fish}`} />
+                  <FormControlLabel value="veggie" control={<Radio size="small" />} label={`צמחוני · ₪${selectedRoll.veggie}`} />
+                </RadioGroup>
+              </Box>
 
-          <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>ירקות (לבחירה חופשית)</Typography>
-            <FormGroup>
-              {buildYourOwn.vegetables.map((veg) => (
-                <FormControlLabel
-                  key={veg}
-                  control={<Checkbox size="small" checked={vegetables.includes(veg)} onChange={() => toggleVegetable(veg)} />}
-                  label={veg}
-                />
-              ))}
-            </FormGroup>
-          </Box>
+              {base === 'fish' && (
+                <Box>
+                  <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בחרו דג</Typography>
+                  <RadioGroup value={fishChoice} onChange={(e) => setFishChoice(e.target.value)}>
+                    {buildYourOwn.fish.map((f) => (
+                      <FormControlLabel key={f} value={f} control={<Radio size="small" />} label={f} />
+                    ))}
+                  </RadioGroup>
+                </Box>
+              )}
+
+              <Box>
+                <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>
+                  ירקות — בחרו {requiredVeg} (נבחרו {vegetables.length} מתוך {requiredVeg})
+                </Typography>
+                <FormGroup>
+                  {buildYourOwn.vegetables.map((veg) => {
+                    const checked = vegetables.includes(veg);
+                    const disabled = !checked && vegetables.length >= requiredVeg;
+                    return (
+                      <FormControlLabel
+                        key={veg}
+                        control={<Checkbox size="small" checked={checked} disabled={disabled} onChange={() => toggleVegetable(veg)} />}
+                        label={veg}
+                      />
+                    );
+                  })}
+                </FormGroup>
+                {error && !isValid && (
+                  <Alert severity="error" sx={{ mt: 1 }}>
+                    יש לבחור בדיוק {requiredVeg} ירקות{base === 'fish' ? ' ודג אחד' : ''}
+                  </Alert>
+                )}
+              </Box>
+            </>
+          )}
 
           <Box>
             <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>מעטפה מיוחדת (אופציונלי)</Typography>
@@ -204,6 +308,7 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
             color="primary"
             fullWidth
             size="large"
+            disabled={!isValid}
             onClick={handleAdd}
             sx={{ minHeight: 52, fontSize: '1rem' }}
           >

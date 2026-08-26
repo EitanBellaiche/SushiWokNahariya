@@ -1,4 +1,5 @@
 import { BUSINESS } from '../data/business';
+import { NAHARIYA_DELIVERY_FEE, isDeliveryFeePending } from './delivery';
 import type { CartLine, CustomerDetails, OrderSnapshot } from './types';
 
 const DIVIDER = '━━━━━━━━━━━━━━';
@@ -70,7 +71,16 @@ export function buildOrderWhatsAppLink(order: OrderSnapshot): string {
   }
   parts.push(DIVIDER);
 
-  parts.push(`💰 *סה״כ לתשלום: ₪${order.subtotal}*`);
+  const pending = isDeliveryFeePending(order.customer.fulfillment, order.customer.deliveryZone);
+  if (pending) {
+    parts.push('🛵 *דמי משלוח:* יתואמו לפי מרחק/מיקום ויאושרו מול הלקוח');
+    parts.push(`💰 *סה״כ מוצרים (ללא דמי משלוח): ₪${order.subtotal}*`);
+  } else {
+    if (order.deliveryFee > 0) {
+      parts.push(`🛵 *דמי משלוח (נהריה): ₪${NAHARIYA_DELIVERY_FEE}*`);
+    }
+    parts.push(`💰 *סה״כ לתשלום: ₪${order.total}*`);
+  }
   parts.push(DIVIDER);
 
   if (order.customer.orderNotes?.trim()) {

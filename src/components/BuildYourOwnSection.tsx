@@ -4,7 +4,7 @@ import { buildYourOwn } from '../data/menu';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
-import { BuildYourOwnDialog } from './BuildYourOwnDialog';
+import { BuildYourOwnDialog, rollSelectionHint } from './BuildYourOwnDialog';
 
 type RollVariant = 'ring' | 'spiral' | 'cone' | 'block';
 
@@ -129,7 +129,7 @@ export function BuildYourOwnSection() {
       component="section"
       id={buildYourOwn.id}
       aria-labelledby="build-heading"
-      sx={{ scrollMarginTop: { xs: '122px', md: '154px' }, py: { xs: 3.5, md: 4.5 } }}
+      sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}
     >
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
@@ -183,6 +183,9 @@ export function BuildYourOwnSection() {
                         צמחוני <Box component="span" sx={{ color: COLORS.red, fontWeight: 700 }}>₪{roll.veggie}</Box>
                       </Typography>
                     </Stack>
+                    <Typography sx={{ mt: 0.5, fontSize: '0.68rem', color: COLORS.textMuted, lineHeight: 1.4 }}>
+                      {rollSelectionHint(roll)}
+                    </Typography>
                   </Box>
                 </ButtonBase>
               ))}

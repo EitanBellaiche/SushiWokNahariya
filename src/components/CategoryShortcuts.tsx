@@ -1,21 +1,46 @@
 import { Box, Container, Typography, alpha } from '@mui/material';
-import { IMAGES, specials, wok, poke, starters, nigiri, partyTrays, drinks, combos, buildYourOwn, kids } from '../data/menu';
+import {
+  IMAGES,
+  navCategories,
+  specials,
+  wok,
+  poke,
+  starters,
+  nigiri,
+  partyTrays,
+  drinks,
+  combos,
+  sushiBox,
+  buildYourOwn,
+  kids,
+} from '../data/menu';
 import { COLORS } from '../theme';
 
 type Shortcut = { id: string; label: string; image?: string; icon: string };
 
-const shortcuts: Shortcut[] = [
-  { id: specials.id, label: specials.navLabel, image: IMAGES.specialsHero, icon: specials.icon },
-  { id: buildYourOwn.id, label: buildYourOwn.navLabel, image: IMAGES.buildYourOwnHero, icon: buildYourOwn.icon },
-  { id: wok.id, label: wok.navLabel, image: IMAGES.wokHero, icon: wok.icon },
-  { id: poke.id, label: poke.navLabel, image: IMAGES.pokeHero, icon: poke.icon },
-  { id: starters.id, label: starters.navLabel, image: IMAGES.startersHero, icon: starters.icon },
-  { id: combos.id, label: combos.navLabel, image: IMAGES.combosHero, icon: combos.icon },
-  { id: nigiri.id, label: nigiri.navLabel, image: IMAGES.nigiriSalmon, icon: nigiri.icon },
-  { id: partyTrays.id, label: partyTrays.navLabel, image: IMAGES.partyTraysHero, icon: partyTrays.icon },
-  { id: kids.id, label: kids.navLabel, image: IMAGES.kidsHero, icon: kids.icon },
-  { id: drinks.id, label: drinks.navLabel, image: IMAGES.drinksHero, icon: drinks.icon },
-];
+// Per-category image/icon only — the ORDER is always taken from navCategories
+// (the single source of truth for category order across the whole site), so
+// this can never drift out of sync with the main nav / drawer / anchors.
+const shortcutMeta: Record<string, { image?: string; icon: string }> = {
+  [starters.id]: { image: IMAGES.startersHero, icon: starters.icon },
+  [specials.id]: { image: IMAGES.specialsHero, icon: specials.icon },
+  [buildYourOwn.id]: { image: IMAGES.buildYourOwnHero, icon: buildYourOwn.icon },
+  [wok.id]: { image: IMAGES.wokHero, icon: wok.icon },
+  [poke.id]: { image: IMAGES.pokeHero, icon: poke.icon },
+  [sushiBox.id]: { image: IMAGES.sushiBoxPhoto, icon: sushiBox.icon },
+  [combos.id]: { image: IMAGES.combosHero, icon: combos.icon },
+  [nigiri.id]: { image: IMAGES.nigiriSalmon, icon: nigiri.icon },
+  [partyTrays.id]: { image: IMAGES.partyTraysHero, icon: partyTrays.icon },
+  [kids.id]: { image: IMAGES.kidsHero, icon: kids.icon },
+  [drinks.id]: { image: IMAGES.drinksHero, icon: drinks.icon },
+};
+
+const shortcuts: Shortcut[] = navCategories.map((cat) => ({
+  id: cat.id,
+  label: cat.label,
+  image: shortcutMeta[cat.id]?.image,
+  icon: shortcutMeta[cat.id]?.icon ?? '🍣',
+}));
 
 export function CategoryShortcuts() {
   return (

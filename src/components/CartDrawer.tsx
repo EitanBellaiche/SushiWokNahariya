@@ -24,7 +24,10 @@ import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useCart } from '../cart/CartContext';
 import { buildOrderWhatsAppLink } from '../cart/whatsapp';
+import { NAHARIYA_DELIVERY_FEE, getDeliveryFee, isDeliveryFeePending } from '../cart/delivery';
+import type { DeliveryZone } from '../cart/delivery';
 import type { CustomerDetails, FulfillmentType } from '../cart/types';
+import { DeliveryTimeNote } from './DeliveryTimeNote';
 import { COLORS } from '../theme';
 
 function normalizePhone(raw: string): string {
@@ -127,6 +130,7 @@ function CartStep() {
         spacing={1.25}
         sx={{ p: 2.25, borderTop: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: COLORS.bgElevated }}
       >
+        <DeliveryTimeNote />
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>סה״כ</Typography>
           <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.red }}>₪{totalPrice}</Typography>
@@ -153,16 +157,22 @@ function CheckoutStep() {
   const [fulfillment, setFulfillment] = React.useState<FulfillmentType>('pickup');
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
+  const [deliveryZone, setDeliveryZone] = React.useState<DeliveryZone>('nahariya');
   const [floorApartment, setFloorApartment] = React.useState('');
   const [courierNotes, setCourierNotes] = React.useState('');
   const [orderNotes, setOrderNotes] = React.useState('');
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+
+  const deliveryFee = getDeliveryFee(fulfillment, deliveryZone);
+  const deliveryPending = isDeliveryFeePending(fulfillment, deliveryZone);
+  const displayTotal = totalPrice + deliveryFee;
 
   const handleSubmit = () => {
     const nextErrors: Record<string, string> = {};
     if (!name.trim() || name.trim().length < 2) nextErrors.name = 'נא להזין שם מלא';
     if (!isValidPhone(phone)) nextErrors.phone = 'נא להזין מספר טלפון תקין';
     if (fulfillment === 'delivery' && !address.trim()) nextErrors.address = 'נא להזין כתובת למשלוח';
+    if (fulfillment === 'delivery' && !deliveryZone) nextErrors.deliveryZone = 'נא לבחור אזור משלוח';
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
@@ -173,6 +183,7 @@ function CheckoutStep() {
       fulfillment,
       address: fulfillment === 'delivery' ? address.trim() : undefined,
       city: fulfillment === 'delivery' ? city.trim() || undefined : undefined,
+      deliveryZone: fulfillment === 'delivery' ? deliveryZone : undefined,
       floorApartment: fulfillment === 'delivery' ? floorApartment.trim() || undefined : undefined,
       courierNotes: fulfillment === 'delivery' ? courierNotes.trim() || undefined : undefined,
       orderNotes: orderNotes.trim() || undefined,
@@ -231,6 +242,20 @@ function CheckoutStep() {
               size="small"
             />
             <TextField label="עיר" value={city} onChange={(e) => setCity(e.target.value)} fullWidth size="small" />
+
+            <Box>
+              <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.5 }}>אזור משלוח</Typography>
+              <RadioGroup value={deliveryZone} onChange={(e) => setDeliveryZone(e.target.value as DeliveryZone)}>
+                <FormControlLabel value="nahariya" control={<Radio />} label={`נהריה (משלוח בתוך העיר) — ₪${NAHARIYA_DELIVERY_FEE}`} />
+                <FormControlLabel value="other" control={<Radio />} label="עיר אחרת — המחיר ייקבע לפי מרחק" />
+              </RadioGroup>
+              {deliveryZone === 'other' && (
+                <Alert severity="info" icon={false} sx={{ mt: 1, bgcolor: alpha(COLORS.white, 0.05), color: COLORS.textSecondary }}>
+                  דמי המשלוח לעיר זו ייקבעו לפי מרחק/מיקום ויתואמו איתכם על ידי בית העסק. הסכום הסופי עשוי להשתנות בהתאם.
+                </Alert>
+              )}
+            </Box>
+
             <TextField
               label="קומה / דירה (אופציונלי)"
               value={floorApartment}
@@ -273,9 +298,28 @@ function CheckoutStep() {
 
       <Stack spacing={1} sx={{ p: 2.25, borderTop: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: COLORS.bgElevated }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography sx={{ fontWeight: 700, color: COLORS.white }}>סה״כ</Typography>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.red }}>₪{totalPrice}</Typography>
+          <Typography sx={{ fontSize: '0.85rem', color: COLORS.textSecondary }}>מוצרים</Typography>
+          <Typography sx={{ fontSize: '0.85rem', color: COLORS.textSecondary }}>₪{totalPrice}</Typography>
         </Stack>
+
+        {fulfillment === 'delivery' && (
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography sx={{ fontSize: '0.85rem', color: COLORS.textSecondary }}>משלוח</Typography>
+            <Typography sx={{ fontSize: '0.85rem', color: COLORS.textSecondary }}>
+              {deliveryPending ? 'יתואם לפי מרחק' : `₪${deliveryFee}`}
+            </Typography>
+          </Stack>
+        )}
+
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography sx={{ fontWeight: 700, color: COLORS.white }}>{deliveryPending ? 'סה״כ מוצרים' : 'סה״כ'}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.red }}>₪{displayTotal}</Typography>
+        </Stack>
+        {deliveryPending && (
+          <Typography sx={{ fontSize: '0.74rem', color: COLORS.textMuted, textAlign: 'center' }}>
+            לא כולל דמי משלוח — יתואמו איתכם בהתאם למרחק
+          </Typography>
+        )}
 
         <Typography sx={{ fontSize: '0.74rem', color: COLORS.textMuted, textAlign: 'center', lineHeight: 1.6 }}>
           בהמשך ושליחת ההזמנה אני מאשר/ת שקראתי את{' '}
@@ -300,6 +344,8 @@ function CheckoutStep() {
           </Box>
           .
         </Typography>
+
+        <DeliveryTimeNote />
 
         <Button
           variant="contained"

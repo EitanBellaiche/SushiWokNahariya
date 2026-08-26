@@ -199,7 +199,7 @@ export function MenuSection({ category }: MenuSectionProps) {
       component="section"
       id={category.id}
       aria-labelledby={`${category.id}-heading`}
-      sx={{ scrollMarginTop: { xs: '122px', md: '154px' }, py: { xs: 3.5, md: 4.5 } }}
+      sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}
     >
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>

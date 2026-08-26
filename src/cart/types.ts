@@ -1,3 +1,5 @@
+import type { DeliveryZone } from './delivery';
+
 export type FulfillmentType = 'pickup' | 'delivery';
 
 export type CartLine = {
@@ -19,6 +21,8 @@ export type CustomerDetails = {
   floorApartment?: string;
   courierNotes?: string;
   orderNotes?: string;
+  /** Only meaningful when fulfillment === 'delivery'; determines the delivery fee — see cart/delivery.ts. */
+  deliveryZone?: DeliveryZone;
 };
 
 // Kept broad on purpose so a future order-management dashboard can move orders
@@ -37,7 +41,12 @@ export type OrderSnapshot = {
   createdAt: string;
   status: OrderStatus;
   items: CartLine[];
+  /** Items only — never includes the delivery fee. */
   subtotal: number;
+  /** ₪ delivery fee already included in `total`. 0 for pickup and for a pending-price delivery zone. */
+  deliveryFee: number;
+  /** subtotal + deliveryFee. For a pending-price delivery zone this equals subtotal — the real fee isn't known yet. */
+  total: number;
   customer: CustomerDetails;
 };
 

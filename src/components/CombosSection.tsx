@@ -7,7 +7,6 @@ import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
 import { MenuImage } from './MenuImage';
-import { SushiBoxSection } from './SushiBoxSection';
 import { AddToCartButton } from './AddToCartButton';
 
 function ComboRow({ combo }: { combo: ComboItem }) {
@@ -43,14 +42,12 @@ function ComboRow({ combo }: { combo: ComboItem }) {
 
 export function CombosSection() {
   return (
-    <Box component="section" id={combos.id} aria-labelledby="combos-heading" sx={{ scrollMarginTop: { xs: '122px', md: '154px' }, py: { xs: 3.5, md: 4.5 } }}>
+    <Box component="section" id={combos.id} aria-labelledby="combos-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
           <SectionHeading id="combos-heading" icon={combos.icon} title={combos.title} />
         </Reveal>
       </Container>
-
-      <SushiBoxSection />
 
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 }, mt: { xs: 2.5, md: 3 } }}>
         <Reveal>

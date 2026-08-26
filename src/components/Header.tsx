@@ -39,7 +39,7 @@ export function Header() {
       >
         <Toolbar
           sx={{
-            minHeight: { xs: 68, md: 82 },
+            minHeight: { xs: 80, md: 96 },
             px: { xs: 1.5, md: 3 },
             gap: 1,
             position: 'relative',
@@ -68,6 +68,7 @@ export function Header() {
               top: '50%',
               transform: 'translate(-50%, -50%)',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
               textDecoration: 'none',
             }}
@@ -79,6 +80,14 @@ export function Header() {
               alt="Sushi Wok Nahariya"
               sx={{ height: { xs: 56, md: 72 }, width: 'auto', objectFit: 'contain' }}
             />
+            <Stack alignItems="center" spacing={0} sx={{ mt: 0.15 }}>
+              <Typography sx={{ fontSize: '0.62rem', fontWeight: 800, color: COLORS.white, lineHeight: 1.15 }}>
+                {BUSINESS.kosher}
+              </Typography>
+              <Typography sx={{ fontSize: '0.5rem', color: COLORS.textMuted, lineHeight: 1.15, whiteSpace: 'nowrap' }}>
+                {BUSINESS.kosherAuthority}
+              </Typography>
+            </Stack>
           </Box>
 
           <Stack direction="row" alignItems="center" spacing={1}>

@@ -1,14 +1,17 @@
-import { Box, Container, Stack, Typography, alpha } from '@mui/material';
+import React from 'react';
+import { Box, Button, Container, Stack, Typography, alpha } from '@mui/material';
 import { sushiBox } from '../data/menu';
 import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { MenuImage } from './MenuImage';
-import { AddToCartButton } from './AddToCartButton';
+import { SushiBoxPickerDialog } from './SushiBoxPickerDialog';
 
 export function SushiBoxSection() {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
   return (
-    <Box component="section" id={sushiBox.id} aria-labelledby="sushibox-heading" sx={{ py: { xs: 2, md: 2.5 } }}>
+    <Box component="section" id={sushiBox.id} aria-labelledby="sushibox-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
           <Box
@@ -52,15 +55,24 @@ export function SushiBoxSection() {
               </Typography>
 
               <Box sx={{ pt: 0.75 }}>
-                <AddToCartButton productId={sushiBox.id} name={sushiBox.title} unitPrice={sushiBox.numericPrice} />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setDialogOpen(true)}
+                  sx={{ minHeight: 44, px: 2.5, fontSize: '0.9rem', fontWeight: 700 }}
+                >
+                  בחרו {sushiBox.requiredRollCount} רולים והוסיפו להזמנה
+                </Button>
               </Box>
               <Typography sx={{ fontSize: '0.72rem', color: COLORS.textMuted }}>
-                נא לציין את 5 הרולים הרצויים בהערות להזמנה
+                בחרו {sushiBox.requiredRollCount} רולים מתוך רולי הספיישלים
               </Typography>
             </Stack>
           </Box>
         </Reveal>
       </Container>
+
+      <SushiBoxPickerDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
     </Box>
   );
 }

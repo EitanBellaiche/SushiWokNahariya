@@ -7,7 +7,7 @@ import { AddToCartButton } from './AddToCartButton';
 
 export function DrinksSection() {
   return (
-    <Box component="section" id={drinks.id} aria-labelledby="drinks-heading" sx={{ scrollMarginTop: { xs: '122px', md: '154px' }, py: { xs: 3.5, md: 4.5 } }}>
+    <Box component="section" id={drinks.id} aria-labelledby="drinks-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
           <SectionHeading id="drinks-heading" icon={drinks.icon} title={drinks.title} />

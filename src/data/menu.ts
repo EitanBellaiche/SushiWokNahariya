@@ -145,12 +145,24 @@ export const poke: MenuCategory = {
   ],
 };
 
+// Every wok dish must be orderable without a paid protein add-on — "צמחוני /
+// ללא תוספת" is a real, ₪0 choice in the same required selector, not a
+// fallback. Keep it first in each list so it reads as the default, and never
+// give it a price: the existing עוף/בקר/סלמון supplements are unchanged.
+const NO_PROTEIN_CHOICE: MenuAddon = { name: 'צמחוני / ללא תוספת', price: 0 };
+const WOK_PROTEIN_CHOICES: MenuAddon[] = [
+  NO_PROTEIN_CHOICE,
+  { name: 'עוף', price: 10 },
+  { name: 'בקר', price: 15 },
+  { name: 'סלמון', price: 15 },
+];
+
 export const wok: MenuCategory = {
   id: 'wok',
   navLabel: 'מוקפצים',
   title: 'מן הווק (Stir Fry)',
   icon: '🍜',
-  subtitle: 'תוספת לבחירה: עוף +₪10 | בקר +₪15 | סלמון +₪15',
+  subtitle: 'תוספת חלבון לבחירה: צמחוני / ללא תוספת | עוף +₪10 | בקר +₪15 | סלמון +₪15',
   items: [
     {
       id: 'pad-thai',
@@ -159,11 +171,7 @@ export const wok: MenuCategory = {
       price: '₪46',
       numericPrice: 46,
       image: IMAGES.padThai,
-      addonChoices: [
-        { name: 'עוף', price: 10 },
-        { name: 'בקר', price: 15 },
-        { name: 'סלמון', price: 15 },
-      ],
+      addonChoices: WOK_PROTEIN_CHOICES,
     },
     {
       id: 'smoky-noodles',
@@ -172,11 +180,7 @@ export const wok: MenuCategory = {
       price: '₪49',
       numericPrice: 49,
       image: IMAGES.smokyNoodles,
-      addonChoices: [
-        { name: 'עוף', price: 10 },
-        { name: 'בקר', price: 15 },
-        { name: 'סלמון', price: 15 },
-      ],
+      addonChoices: WOK_PROTEIN_CHOICES,
     },
     {
       id: 'fried-rice',
@@ -185,11 +189,7 @@ export const wok: MenuCategory = {
       price: '₪44',
       numericPrice: 44,
       image: IMAGES.friedRice,
-      addonChoices: [
-        { name: 'עוף', price: 10 },
-        { name: 'בקר', price: 15 },
-        { name: 'סלמון', price: 15 },
-      ],
+      addonChoices: WOK_PROTEIN_CHOICES,
     },
   ],
 };
@@ -220,7 +220,9 @@ export const sushiBox = {
   icon: '⭐',
   subtitleEn: 'Special Box',
   unitsLabel: '40 יחידות',
-  description: '5 רולים לבחירה מתוך קטגוריית הספיישלים של Sushi Wok',
+  description: 'בחרו 5 רולים מתוך קטגוריית הספיישלים של Sushi Wok',
+  /** How many Specials rolls make up one Sushi Box — enforced by SushiBoxPickerDialog. */
+  requiredRollCount: 5,
   price: '₪249',
   numericPrice: 249,
   image: IMAGES.sushiBoxPhoto,
@@ -279,7 +281,17 @@ export const combos: { id: string; navLabel: string; title: string; icon: string
   ],
 };
 
-export type RollPrice = { type: string; fish: number; veggie: number };
+export type RollPrice = {
+  type: string;
+  fish: number;
+  veggie: number;
+  /** Vegetables required alongside the single fish choice (fish-base rolls). Omitted for single-choice rolls (maki). */
+  vegCountFish?: number;
+  /** Vegetables required for the all-vegetarian version (no fish). Omitted for single-choice rolls (maki). */
+  vegCountVeggie?: number;
+  /** Maki only: the customer picks exactly one ingredient total — one fish OR one vegetable, not a base plus extras. */
+  singleChoice?: boolean;
+};
 
 export const buildYourOwn = {
   id: 'build',
@@ -289,10 +301,10 @@ export const buildYourOwn = {
   titleEn: 'Build Your Own',
   intro: 'בחרו סוג רול',
   rollPrices: [
-    { type: 'I/O', fish: 39, veggie: 35 },
-    { type: 'פוטומאקי', fish: 45, veggie: 39 },
-    { type: 'סנדוויץ׳ סושי', fish: 40, veggie: 35 },
-    { type: 'מאקי', fish: 25, veggie: 20 },
+    { type: 'I/O', fish: 39, veggie: 35, vegCountFish: 2, vegCountVeggie: 3 },
+    { type: 'פוטומאקי', fish: 45, veggie: 39, vegCountFish: 3, vegCountVeggie: 4 },
+    { type: 'סנדוויץ׳ סושי', fish: 40, veggie: 35, vegCountFish: 3, vegCountVeggie: 4 },
+    { type: 'מאקי', fish: 25, veggie: 20, singleChoice: true },
   ] as RollPrice[],
   vegetables: ['אבוקדו', 'בטטה', 'מלפפון', 'גזר', 'בצל ירוק', 'עירית', 'קנפיו'],
   fish: ['סלמון', 'סלמון צלוי', 'טונה אדומה', 'דג לבן'],
@@ -381,15 +393,22 @@ export const drinks: MenuCategory = {
 
 export const simpleCategories: MenuCategory[] = [starters, poke, wok, specials, nigiri, kids, drinks];
 
-// Page order (and nav-chip order) follows the menu's actual flow:
-// specials first, then build-your-own, wok, poke, starters, combinations
-// (with the Sushi Box called out above them), nigiri, party trays, kids, drinks.
+// Single source of truth for category order — every nav surface (main menu,
+// desktop/mobile category nav, category shortcuts, the drawer, and section
+// anchors) is built by mapping over this list, so they can't drift apart.
+// Order taken directly from the business's own printed menu (Sushi1.pdf /
+// Sushi2.pdf): page 1 reads starters → poke → wok top to bottom; page 2 reads
+// specials → Sushi Box → build-your-own (right-to-left, top row), then
+// combinations, nigiri, party trays, kids, drinks. Sushi Box is kept as its
+// own category (not nested under קומבינציות) per the client's request, in the
+// same position it holds in the printed layout — right after specials.
 export const navCategories = [
-  { id: specials.id, label: specials.navLabel },
-  { id: buildYourOwn.id, label: buildYourOwn.navLabel },
-  { id: wok.id, label: wok.navLabel },
-  { id: poke.id, label: poke.navLabel },
   { id: starters.id, label: starters.navLabel },
+  { id: poke.id, label: poke.navLabel },
+  { id: wok.id, label: wok.navLabel },
+  { id: specials.id, label: specials.navLabel },
+  { id: sushiBox.id, label: sushiBox.navLabel },
+  { id: buildYourOwn.id, label: buildYourOwn.navLabel },
   { id: combos.id, label: combos.navLabel },
   { id: nigiri.id, label: nigiri.navLabel },
   { id: partyTrays.id, label: partyTrays.navLabel },

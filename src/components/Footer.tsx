@@ -23,7 +23,7 @@ const legalRouteLinks = [
 
 export function Footer() {
   return (
-    <Box component="footer" id="contact" sx={{ scrollMarginTop: { xs: '100px', md: '124px' }, borderTop: '1px solid', borderColor: COLORS.surfaceBorder, py: { xs: 3.5, md: 4.5 }, mt: 1 }}>
+    <Box component="footer" id="contact" sx={{ scrollMarginTop: { xs: '112px', md: '138px' }, borderTop: '1px solid', borderColor: COLORS.surfaceBorder, py: { xs: 3.5, md: 4.5 }, mt: 1 }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Stack spacing={3}>
           <Stack spacing={0.5} alignItems="center" textAlign="center">

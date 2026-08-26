@@ -7,6 +7,7 @@ export const BUSINESS = {
   address: 'כליל החורש 7, נהריה',
   city: 'נהריה',
   kosher: 'כשר',
+  kosherAuthority: 'בהשגחת הרבנות נהריה',
   serviceLine: 'משלוחים | איסוף עצמי',
   hoursWeekday: "א׳–ה׳: 11:00–23:00",
   hoursWeekend: 'שבת: חצי שעה לאחר צאת השבת ועד 23:30',

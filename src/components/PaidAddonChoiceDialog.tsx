@@ -58,7 +58,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
       name,
       unitPrice: totalUnitPrice,
       quantity,
-      options: [`תוספת: ${selectedAddon.name} (+₪${selectedAddon.price})`],
+      options: [selectedAddon.price > 0 ? `תוספת: ${selectedAddon.name} (+₪${selectedAddon.price})` : `תוספת: ${selectedAddon.name}`],
     });
     onClose();
   };
@@ -94,7 +94,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
                   key={addon.name}
                   value={addon.name}
                   control={<Radio size="small" />}
-                  label={`${addon.name} +₪${addon.price}`}
+                  label={addon.price > 0 ? `${addon.name} +₪${addon.price}` : addon.name}
                 />
               ))}
             </RadioGroup>

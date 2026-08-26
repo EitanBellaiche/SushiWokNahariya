@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, IconButton, alpha } from '@mui/material';
+import { Button, IconButton, Stack, Typography, alpha } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useCart } from '../cart/CartContext';
 import { COLORS } from '../theme';
@@ -10,13 +11,13 @@ type AddToCartButtonProps = {
   name: string;
   unitPrice?: number;
   fullWidth?: boolean;
-  /** Icon-only pill, for tight single-line rows (e.g. drinks). */
+  /** Icon-only pill, for tight single-line rows (e.g. drinks). Becomes a live +/- stepper once the item is in the cart. */
   compact?: boolean;
 };
 
 /** "הוסף להזמנה" button for menu items with a fixed price and no configurable options. */
 export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact }: AddToCartButtonProps) {
-  const { addLine } = useCart();
+  const { addLine, items, updateQuantity } = useCart();
   const [justAdded, setJustAdded] = React.useState(false);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>();
 
@@ -32,6 +33,44 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
   };
 
   if (compact) {
+    // Items with no configurable options (like drinks) always land on the
+    // same cart line, so this line's quantity is exactly "how many of this
+    // are in the cart" — show it directly instead of a plus button that
+    // silently keeps incrementing with no visible count.
+    const line = items.find((l) => l.productId === productId && l.options.length === 0);
+
+    if (line) {
+      return (
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={0}
+          sx={{ border: '1px solid', borderColor: alpha(COLORS.red, 0.5), borderRadius: 999, flexShrink: 0 }}
+        >
+          <IconButton
+            onClick={() => updateQuantity(line.lineId, line.quantity - 1)}
+            aria-label={`הפחת כמות של ${name}`}
+            size="small"
+            sx={{ width: 30, height: 30, color: COLORS.red }}
+          >
+            <RemoveRoundedIcon fontSize="small" />
+          </IconButton>
+          <Typography sx={{ minWidth: 16, textAlign: 'center', fontWeight: 700, fontSize: '0.82rem', color: COLORS.white }}>
+            {line.quantity}
+          </Typography>
+          <IconButton
+            onClick={() => updateQuantity(line.lineId, line.quantity + 1)}
+            aria-label={`הוסף עוד ${name} להזמנה`}
+            data-testid={`add-to-cart-${productId}`}
+            size="small"
+            sx={{ width: 30, height: 30, color: COLORS.red }}
+          >
+            <AddRoundedIcon fontSize="small" />
+          </IconButton>
+        </Stack>
+      );
+    }
+
     return (
       <IconButton
         onClick={handleClick}
@@ -41,15 +80,15 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
         sx={{
           width: 32,
           height: 32,
-          color: justAdded ? COLORS.white : COLORS.red,
-          bgcolor: justAdded ? COLORS.red : alpha(COLORS.red, 0.1),
+          color: COLORS.red,
+          bgcolor: alpha(COLORS.red, 0.1),
           border: '1px solid',
           borderColor: alpha(COLORS.red, 0.5),
           flexShrink: 0,
-          '&:hover': { bgcolor: justAdded ? COLORS.red : alpha(COLORS.red, 0.18) },
+          '&:hover': { bgcolor: alpha(COLORS.red, 0.18) },
         }}
       >
-        {justAdded ? <CheckRoundedIcon fontSize="small" /> : <AddRoundedIcon fontSize="small" />}
+        <AddRoundedIcon fontSize="small" />
       </IconButton>
     );
   }
