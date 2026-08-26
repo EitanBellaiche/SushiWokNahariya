@@ -7,6 +7,7 @@ import { Reveal } from '../hooks/useReveal';
 import { MenuImage } from './MenuImage';
 import { AddToCartButton } from './AddToCartButton';
 import { BundledChoiceDialog } from './BundledChoiceDialog';
+import { PaidAddonChoiceDialog } from './PaidAddonChoiceDialog';
 
 type MenuSectionProps = {
   category: MenuCategory;
@@ -75,6 +76,7 @@ export function SectionHeading({
 export function MenuRow({ item }: { item: MenuItem }) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const needsChoice = item.includesDrinkChoice && item.numericPrice != null;
+  const needsPaidAddonChoice = Boolean(item.addonChoices?.length && item.numericPrice != null);
 
   return (
     <Stack direction="row" alignItems="center" gap={1.5} sx={{ py: 1.1 }}>
@@ -125,6 +127,39 @@ export function MenuRow({ item }: { item: MenuItem }) {
                 name={item.name}
                 unitPrice={item.numericPrice as number}
                 sideChoices={item.sideChoices}
+              />
+            </>
+          ) : needsPaidAddonChoice ? (
+            <>
+              <Button
+                onClick={() => setDialogOpen(true)}
+                size="small"
+                data-testid={`paid-addon-choice-${item.id}`}
+                startIcon={<AddRoundedIcon fontSize="small" />}
+                sx={{
+                  alignSelf: 'flex-start',
+                  minHeight: 38,
+                  px: 1.75,
+                  borderRadius: 999,
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  color: COLORS.red,
+                  bgcolor: alpha(COLORS.red, 0.1),
+                  border: '1px solid',
+                  borderColor: alpha(COLORS.red, 0.5),
+                  '& .MuiButton-startIcon': { ml: 0.5, mr: 0 },
+                  '&:hover': { bgcolor: alpha(COLORS.red, 0.18) },
+                }}
+              >
+                בחירת תוספת והוספה
+              </Button>
+              <PaidAddonChoiceDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                productId={item.id}
+                name={item.name}
+                unitPrice={item.numericPrice as number}
+                addons={item.addonChoices ?? []}
               />
             </>
           ) : (

@@ -14,6 +14,13 @@ export type MenuItem = {
   includesDrinkChoice?: boolean;
   /** Set when the price bundles a free side choice (e.g. rice vs. fries) — the cart must ask which one. */
   sideChoices?: string[];
+  /** Paid add-ons that must be selected before the item is added to the cart. */
+  addonChoices?: MenuAddon[];
+};
+
+export type MenuAddon = {
+  name: string;
+  price: number;
 };
 
 export type MenuCategory = {
@@ -152,6 +159,11 @@ export const wok: MenuCategory = {
       price: '₪46',
       numericPrice: 46,
       image: IMAGES.padThai,
+      addonChoices: [
+        { name: 'עוף', price: 10 },
+        { name: 'בקר', price: 15 },
+        { name: 'סלמון', price: 15 },
+      ],
     },
     {
       id: 'smoky-noodles',
@@ -160,6 +172,11 @@ export const wok: MenuCategory = {
       price: '₪49',
       numericPrice: 49,
       image: IMAGES.smokyNoodles,
+      addonChoices: [
+        { name: 'עוף', price: 10 },
+        { name: 'בקר', price: 15 },
+        { name: 'סלמון', price: 15 },
+      ],
     },
     {
       id: 'fried-rice',
@@ -168,6 +185,11 @@ export const wok: MenuCategory = {
       price: '₪44',
       numericPrice: 44,
       image: IMAGES.friedRice,
+      addonChoices: [
+        { name: 'עוף', price: 10 },
+        { name: 'בקר', price: 15 },
+        { name: 'סלמון', price: 15 },
+      ],
     },
   ],
 };
