@@ -164,7 +164,7 @@ export const wok: MenuCategory = {
   navLabel: 'מוקפצים',
   title: 'מן הווק (Stir Fry)',
   icon: '🍜',
-  subtitle: 'תוספת חלבון לבחירה: צמחוני / ללא תוספת | עוף +₪10 | בקר +₪15 | סלמון +₪15',
+  subtitle: 'תוספת חלבון לבחירה: צמחוני | עוף +₪10 | בקר +₪15 | סלמון +₪15',
   items: [
     {
       id: 'pad-thai',
@@ -304,7 +304,7 @@ export const buildYourOwn = {
   rollPrices: [
     { type: 'I/O', fish: 39, veggie: 35, vegCountFish: 2, vegCountVeggie: 3 },
     { type: 'פוטומאקי', fish: 45, veggie: 39, vegCountFish: 3, vegCountVeggie: 4 },
-    { type: 'סנדוויץ׳ סושי', fish: 40, veggie: 35, vegCountFish: 3, vegCountVeggie: 4 },
+    { type: 'סנדוויץ׳ סושי', fish: 40, veggie: 35, vegCountFish: 3, vegCountVeggie: 3 },
     { type: 'מאקי', fish: 25, veggie: 20, singleChoice: true },
   ] as RollPrice[],
   vegetables: ['אבוקדו', 'בטטה', 'מלפפון', 'גזר', 'בצל ירוק', 'עירית', 'קנפיו'],
