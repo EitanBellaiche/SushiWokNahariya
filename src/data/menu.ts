@@ -18,6 +18,8 @@ export type MenuItem = {
   sideChoices?: string[];
   /** Paid add-ons that must be selected before the item is added to the cart. */
   addonChoices?: MenuAddon[];
+  /** Overrides the generic "תוספת" wording in the addon-choice dialog (e.g. "אופן הכנה" for a raw/baked choice with no price difference). */
+  addonChoiceLabel?: string;
 };
 
 export type MenuAddon = {
@@ -135,6 +137,11 @@ export const poke: MenuCategory = {
       price: '₪56',
       numericPrice: 56,
       image: IMAGES.salmonPokeBowl,
+      addonChoices: [
+        { name: 'סלמון נא', price: 0 },
+        { name: 'סלמון אפוי', price: 0 },
+      ],
+      addonChoiceLabel: 'אופן הכנה',
     },
     {
       id: 'tuna-poke',

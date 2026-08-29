@@ -153,7 +153,7 @@ export function MenuRow({ item }: { item: MenuItem }) {
                   '&:hover': { bgcolor: alpha(COLORS.red, 0.18) },
                 }}
               >
-                בחירת תוספת והוספה
+                בחירת {item.addonChoiceLabel ?? 'תוספת'} והוספה
               </Button>
               <PaidAddonChoiceDialog
                 open={dialogOpen}
@@ -162,6 +162,7 @@ export function MenuRow({ item }: { item: MenuItem }) {
                 name={item.name}
                 unitPrice={item.numericPrice as number}
                 addons={item.addonChoices ?? []}
+                label={item.addonChoiceLabel}
               />
             </>
           ) : (

@@ -44,7 +44,7 @@ function parseMakiValue(value: string): MakiIngredient {
 /** Short Hebrew hint shown on each roll-type card so the customer knows the limit before opening the dialog. */
 export function rollSelectionHint(roll: RollPrice): string {
   if (roll.singleChoice) return 'מרכיב אחד: דג או ירק';
-  return `דג: 1 דג + ${roll.vegCountFish} ירקות  ·  צמחוני: ${roll.vegCountVeggie} ירקות`;
+  return `דג: 1 דג + עד ${roll.vegCountFish} ירקות  ·  צמחוני: עד ${roll.vegCountVeggie} ירקות`;
 }
 
 type BuildYourOwnDialogProps = {
@@ -114,7 +114,11 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
       : selectedRoll.veggie;
   const unitPrice = basePrice + wrapPrice + coatingPrice;
 
-  const isValid = isMaki ? makiIngredient !== null : base === 'fish' ? Boolean(fishChoice) && vegetables.length === requiredVeg : vegetables.length === requiredVeg;
+  const isValid = isMaki
+    ? makiIngredient !== null
+    : base === 'fish'
+      ? Boolean(fishChoice) && vegetables.length > 0 && vegetables.length <= requiredVeg
+      : vegetables.length > 0 && vegetables.length <= requiredVeg;
 
   const toggleVegetable = (veg: string) => {
     setVegetables((prev) => {
@@ -246,7 +250,7 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
 
               <Box>
                 <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>
-                  ירקות — בחרו {requiredVeg} (נבחרו {vegetables.length} מתוך {requiredVeg})
+                  ירקות — בחרו עד {requiredVeg} (נבחרו {vegetables.length} מתוך {requiredVeg})
                 </Typography>
                 <FormGroup>
                   {buildYourOwn.vegetables.map((veg) => {
@@ -263,7 +267,7 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
                 </FormGroup>
                 {error && !isValid && (
                   <Alert severity="error" sx={{ mt: 1 }}>
-                    יש לבחור בדיוק {requiredVeg} ירקות{base === 'fish' ? ' ודג אחד' : ''}
+                    יש לבחור לפחות ירק אחד (עד {requiredVeg} ירקות){base === 'fish' ? ' ודג אחד' : ''}
                   </Alert>
                 )}
               </Box>

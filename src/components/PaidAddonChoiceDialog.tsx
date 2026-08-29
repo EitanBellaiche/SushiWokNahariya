@@ -27,10 +27,12 @@ type PaidAddonChoiceDialogProps = {
   name: string;
   unitPrice: number;
   addons: MenuAddon[];
+  /** Overrides the default "תוספת" wording (e.g. "אופן הכנה" for a raw/baked choice). */
+  label?: string;
 };
 
-/** Collects the required paid protein choice for wok dishes before adding them to the cart. */
-export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPrice, addons }: PaidAddonChoiceDialogProps) {
+/** Collects a required addon choice (e.g. a paid protein, or a free prep-style option) before adding an item to the cart. */
+export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPrice, addons, label = 'תוספת' }: PaidAddonChoiceDialogProps) {
   const { addLine } = useCart();
   const [selectedAddonName, setSelectedAddonName] = React.useState('');
   const [quantity, setQuantity] = React.useState(1);
@@ -58,7 +60,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
       name,
       unitPrice: totalUnitPrice,
       quantity,
-      options: [selectedAddon.price > 0 ? `תוספת: ${selectedAddon.name} (+₪${selectedAddon.price})` : `תוספת: ${selectedAddon.name}`],
+      options: [selectedAddon.price > 0 ? `${label}: ${selectedAddon.name} (+₪${selectedAddon.price})` : `${label}: ${selectedAddon.name}`],
     });
     onClose();
   };
@@ -81,7 +83,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
       <DialogContent sx={{ pt: 0 }}>
         <Stack spacing={2.25}>
           <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בחרו תוספת</Typography>
+            <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.25 }}>בחרו {label}</Typography>
             <RadioGroup
               value={selectedAddonName}
               onChange={(event) => {
@@ -98,7 +100,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
                 />
               ))}
             </RadioGroup>
-            {error && <Alert severity="error" sx={{ mt: 1 }}>נא לבחור תוספת</Alert>}
+            {error && <Alert severity="error" sx={{ mt: 1 }}>נא לבחור {label}</Alert>}
           </Box>
 
           <Stack direction="row" alignItems="center" justifyContent="space-between">
