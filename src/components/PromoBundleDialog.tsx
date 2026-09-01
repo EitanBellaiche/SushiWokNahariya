@@ -59,7 +59,8 @@ type PromoBundleDialogProps = {
  */
 export function PromoBundleDialog({ open, onClose }: PromoBundleDialogProps) {
   const { addLine, storeOpen } = useCart();
-  const rolls = buildYourOwn.rollPrices;
+  // The ₪69 promo only covers I/O and פוטומאקי rolls — סנדוויץ׳ סושי and מאקי are excluded.
+  const rolls = buildYourOwn.rollPrices.filter((r) => r.type === 'I/O' || r.type === 'פוטומאקי');
 
   const [wokItemId, setWokItemId] = React.useState<string>(wok.items[0].id);
   const [proteinName, setProteinName] = React.useState<string>(WOK_PROTEIN_CHOICES[0].name);

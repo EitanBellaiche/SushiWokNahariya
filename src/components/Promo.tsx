@@ -6,12 +6,29 @@ import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { PromoBundleDialog } from './PromoBundleDialog';
 
-// Native size of the supplied promo video — the box is locked to this
-// aspect ratio so the footage is never cropped.
-const VIDEO_ASPECT = '1280 / 720';
+// Native size of the supplied promo images — the box is locked to this
+// aspect ratio so the artwork is never cropped.
+const PROMO_IMAGE_ASPECT = '823 / 760';
+
+const PROMO_IMAGES = ['/promo-1.jpg', '/promo-2.jpg', '/promo-3.jpg'];
+
+const SLIDE_INTERVAL_MS = 4000;
+
+/** Cycles through PROMO_IMAGES on a timer, crossfading between the current and next slide. */
+function usePromoSlideshow(count: number) {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const id = setInterval(() => setIndex((current) => (current + 1) % count), SLIDE_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [count]);
+
+  return index;
+}
 
 export function Promo() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const activeIndex = usePromoSlideshow(PROMO_IMAGES.length);
 
   return (
     <Box component="section" aria-labelledby="promo-heading" sx={{ px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
@@ -26,23 +43,29 @@ export function Promo() {
               bgcolor: COLORS.bg,
             }}
           >
-            <Box sx={{ position: 'relative', aspectRatio: VIDEO_ASPECT }}>
-              <Box
-                component="video"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                poster="/promo-video-poster.jpg"
-                aria-hidden="true"
-                sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              >
-                <source src="/promo-video.webm" type="video/webm" />
-                <source src="/promo-video.mp4" type="video/mp4" />
-              </Box>
+            <Box sx={{ position: 'relative', aspectRatio: PROMO_IMAGE_ASPECT }}>
+              {PROMO_IMAGES.map((src, i) => (
+                <Box
+                  key={src}
+                  component="img"
+                  src={src}
+                  alt=""
+                  aria-hidden="true"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                    opacity: i === activeIndex ? 1 : 0,
+                    transition: 'opacity 0.8s ease',
+                  }}
+                />
+              ))}
 
-              {/* Soft vignette so the footage dissolves into the page background
+              {/* Soft vignette so the artwork dissolves into the page background
                   instead of showing a hard rectangular edge. */}
               <Box
                 aria-hidden="true"
@@ -55,7 +78,7 @@ export function Promo() {
               />
 
               {/* Real, accessible copy of the offer for screen readers and search engines —
-                  the visible design is the supplied video; this never renders on screen. */}
+                  the visible design is the promo images; this never renders on screen. */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -74,7 +97,7 @@ export function Promo() {
               </Box>
             </Box>
 
-            {/* Real, visible ordering button — the video itself doesn't have a clickable CTA */}
+            {/* Real, visible ordering button — the promo images don't have a clickable CTA */}
             <Box sx={{ p: { xs: 1.75, md: 2.25 } }}>
               <Button
                 variant="contained"
