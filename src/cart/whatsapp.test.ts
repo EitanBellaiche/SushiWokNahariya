@@ -85,7 +85,7 @@ describe('buildOrderWhatsAppLink', () => {
     });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('🛍️ *סוג הזמנה:* איסוף עצמי');
+    expect(message).toContain('*סוג הזמנה:* איסוף עצמי');
     expect(message).not.toContain('כתובת');
     expect(message).not.toContain('משלוח');
   });
@@ -105,9 +105,9 @@ describe('buildOrderWhatsAppLink', () => {
     });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('🛵 *סוג הזמנה:* משלוח');
-    expect(message).toContain('📍 *כתובת:* ויצמן 12, נהריה');
-    expect(message).toContain('🏠 *דירה/קומה:* קומה 2, דירה 6');
+    expect(message).toContain('*סוג הזמנה:* משלוח');
+    expect(message).toContain('*כתובת:* ויצמן 12, נהריה');
+    expect(message).toContain('*דירה/קומה:* קומה 2, דירה 6');
   });
 
   it('omits the notes section entirely when there are no order notes', () => {
@@ -125,7 +125,7 @@ describe('buildOrderWhatsAppLink', () => {
     });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('📝 *הערות להזמנה*');
+    expect(message).toContain('*הערות להזמנה*');
     expect(message).toContain('בלי חריף');
   });
 
@@ -147,8 +147,8 @@ describe('buildOrderWhatsAppLink', () => {
     });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('🛵 *דמי משלוח (נהריה): ₪20*');
-    expect(message).toContain('💰 *סה״כ לתשלום: ₪30*');
+    expect(message).toContain('*דמי משלוח (נהריה): ₪20*');
+    expect(message).toContain('*סה״כ לתשלום: ₪30*');
     expect(message).not.toContain('יתואמו לפי מרחק');
   });
 
@@ -162,8 +162,8 @@ describe('buildOrderWhatsAppLink', () => {
     });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('🛵 *דמי משלוח:* יתואמו לפי מרחק/מיקום ויאושרו מול הלקוח');
-    expect(message).toContain('💰 *סה״כ מוצרים (ללא דמי משלוח): ₪10*');
+    expect(message).toContain('*דמי משלוח:* יתואמו לפי מרחק/מיקום ויאושרו מול הלקוח');
+    expect(message).toContain('*סה״כ מוצרים (ללא דמי משלוח): ₪10*');
     expect(message).not.toContain('₪0');
     expect(message).not.toContain('סה״כ לתשלום');
   });
@@ -173,15 +173,15 @@ describe('buildOrderWhatsAppLink', () => {
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
     expect(message).not.toContain('דמי משלוח');
-    expect(message).toContain('💰 *סה״כ לתשלום: ₪10*');
+    expect(message).toContain('*סה״כ לתשלום: ₪10*');
   });
 
   it('uses the existing order number, both near the top and repeated at the bottom, without generating a new one', () => {
     const order = makeOrder({ items: [cocaColaZero], subtotal: 10, orderNumber: 'SW-2048' });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
 
-    expect(message).toContain('🧾 *הזמנה #SW-2048*');
-    expect(message).toContain('📌 *מספר הזמנה: SW-2048*');
+    expect(message).toContain('*הזמנה #SW-2048*');
+    expect(message).toContain('*מספר הזמנה: SW-2048*');
     expect(message.match(/SW-2048/g)?.length).toBe(2);
   });
 

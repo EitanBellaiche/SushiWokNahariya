@@ -16,13 +16,11 @@ type MenuSectionProps = {
 
 export function SectionHeading({
   id,
-  icon,
   title,
   subtitle,
   note,
 }: {
   id?: string;
-  icon?: string;
   title: string;
   subtitle?: string;
   note?: string;
@@ -30,27 +28,6 @@ export function SectionHeading({
   return (
     <Stack spacing={0.5} sx={{ mb: { xs: 2, md: 2.5 } }}>
       <Stack direction="row" alignItems="center" spacing={1.25} useFlexGap>
-        {icon && (
-          <Box
-            component="span"
-            aria-hidden="true"
-            sx={{
-              width: 36,
-              height: 36,
-              flexShrink: 0,
-              borderRadius: '50%',
-              display: 'grid',
-              placeItems: 'center',
-              fontSize: '1.1rem',
-              lineHeight: 1,
-              border: '1px solid',
-              borderColor: alpha(COLORS.red, 0.5),
-              bgcolor: alpha(COLORS.red, 0.08),
-            }}
-          >
-            {icon}
-          </Box>
-        )}
         <Typography
           id={id}
           component="h2"
@@ -205,7 +182,7 @@ export function MenuSection({ category }: MenuSectionProps) {
     >
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id={`${category.id}-heading`} icon={category.icon} title={category.title} subtitle={category.subtitle} note={category.note} />
+          <SectionHeading id={`${category.id}-heading`} title={category.title} subtitle={category.subtitle} note={category.note} />
           <MenuRowList category={category} />
         </Reveal>
       </Container>

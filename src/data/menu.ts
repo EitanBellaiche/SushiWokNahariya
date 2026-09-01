@@ -31,7 +31,6 @@ export type MenuCategory = {
   id: string;
   navLabel: string;
   title: string;
-  icon: string;
   subtitle?: string;
   note?: string;
   items: MenuItem[];
@@ -113,7 +112,6 @@ export const starters: MenuCategory = {
   id: 'starters',
   navLabel: 'מנות פתיחה',
   title: 'מנות פתיחה',
-  icon: '🥢',
   items: [
     { id: 'kimchi', name: 'קימצ׳י', description: 'חמוצים יפניים בתיבול ביתי', price: '₪18', numericPrice: 18, image: IMAGES.kimchi },
     { id: 'veg-eggroll', name: 'אגרול ירקות', description: '3 יח׳ קריספיות, מוגש עם רוטב חמוץ־מתוק', price: '₪32', numericPrice: 32, image: IMAGES.vegEggroll },
@@ -127,7 +125,6 @@ export const poke: MenuCategory = {
   id: 'poke',
   navLabel: 'פוקי',
   title: 'פוקי (Poké Bowl)',
-  icon: '🥗',
   subtitle: 'על מצע אורז סושי, מוגש עם ספייסי מיונז וסויה.',
   items: [
     {
@@ -170,7 +167,6 @@ export const wok: MenuCategory = {
   id: 'wok',
   navLabel: 'מוקפצים',
   title: 'מן הווק (Stir Fry)',
-  icon: '🍜',
   subtitle: 'תוספת חלבון לבחירה: צמחוני | עוף +₪10 | בקר +₪15 | סלמון +₪15',
   items: [
     {
@@ -207,7 +203,6 @@ export const specials: MenuCategory = {
   id: 'specials',
   navLabel: 'ספיישלים',
   title: 'ספיישלים',
-  icon: '🍣',
   items: [
     { id: 'crispy-roll', name: 'קריספי רול (מטוגן) (8 יח׳)', description: 'סלמון, אבוקדו ובטטה בציפוי טמפורה ופנקו', price: '₪42', numericPrice: 42, image: IMAGES.crispyRoll },
     { id: 'spicy-salmon', name: 'ספייסי סלמון (8 יח׳)', description: 'בטטה, אבוקדו ומלפפון במעטפת טרטר סלמון ועירית', price: '₪52', numericPrice: 52, image: IMAGES.spicySalmon },
@@ -225,7 +220,6 @@ export const sushiBox = {
   id: 'sushibox',
   navLabel: 'Sushi Box',
   title: 'Sushi Box',
-  icon: '⭐',
   subtitleEn: 'Special Box',
   unitsLabel: '40 יחידות',
   description: 'בחרו 5 רולים מתוך קטגוריית הספיישלים של Sushi Wok',
@@ -245,11 +239,10 @@ export type ComboItem = {
   image?: string;
 };
 
-export const combos: { id: string; navLabel: string; title: string; icon: string; items: ComboItem[] } = {
+export const combos: { id: string; navLabel: string; title: string; items: ComboItem[] } = {
   id: 'combos',
   navLabel: 'קומבינציות',
   title: 'קומבינציות השף',
-  icon: '🍱',
   items: [
     {
       id: 'salmon-combo',
@@ -305,7 +298,6 @@ export const buildYourOwn = {
   id: 'build',
   navLabel: 'הרכבה עצמית',
   title: 'הרכבה עצמית',
-  icon: '🎯',
   titleEn: 'Build Your Own',
   intro: 'בחרו סוג רול',
   rollPrices: [
@@ -333,7 +325,6 @@ export const nigiri: MenuCategory = {
   id: 'nigiri',
   navLabel: 'ניגירי',
   title: 'ניגירי',
-  icon: '🍣',
   items: [
     { id: 'nigiri-salmon', name: 'ניגירי סלמון (2 יח׳)', price: '₪24', numericPrice: 24, image: IMAGES.nigiriSalmonPiece },
     { id: 'nigiri-salmon-torched', name: 'ניגירי סלמון צרוב (2 יח׳)', price: '₪26', numericPrice: 26, image: IMAGES.nigiriSalmonTorched },
@@ -341,11 +332,10 @@ export const nigiri: MenuCategory = {
   ],
 };
 
-export const partyTrays: { id: string; navLabel: string; title: string; icon: string; intro: string; items: MenuItem[] } = {
+export const partyTrays: { id: string; navLabel: string; title: string; intro: string; items: MenuItem[] } = {
   id: 'trays',
   navLabel: 'מגשי מסיבה',
   title: 'מגשי מסיבה ואירוח',
-  icon: '🎉',
   intro: 'מגשי סושי מפנקים לאירוח ולאירועים. כל מגש כולל 12 רולים | 96 יחידות.',
   items: [
     { id: 'tray-veggie', name: 'מגש צמחוני', description: '12 רולים צמחוניים', price: '₪350', numericPrice: 350, image: IMAGES.trayVeggie },
@@ -358,7 +348,6 @@ export const kids: MenuCategory = {
   id: 'kids',
   navLabel: 'מנות ילדים',
   title: 'מנות ילדים',
-  icon: '👶',
   items: [
     {
       id: 'kids-noodles',
@@ -388,7 +377,6 @@ export const drinks: MenuCategory = {
   id: 'drinks',
   navLabel: 'שתייה',
   title: 'שתייה',
-  icon: '🥤',
   items: [
     { id: 'water', name: 'מים', price: '₪8', numericPrice: 8 },
     { id: 'soda', name: 'סודה', price: '₪8', numericPrice: 8 },

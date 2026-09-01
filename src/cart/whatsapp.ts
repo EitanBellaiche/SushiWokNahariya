@@ -35,18 +35,18 @@ function formatItemBlock(item: CartLine): string {
 
 /** Customer + fulfillment block. Delivery-only fields are included only when they actually have data. */
 function formatCustomerLines(customer: CustomerDetails): string[] {
-  const lines = [`👤 *לקוח:* ${customer.name}`, `📞 *טלפון:* ${customer.phone}`];
+  const lines = [`*לקוח:* ${customer.name}`, `*טלפון:* ${customer.phone}`];
 
   if (customer.fulfillment === 'pickup') {
-    lines.push('🛍️ *סוג הזמנה:* איסוף עצמי');
+    lines.push('*סוג הזמנה:* איסוף עצמי');
     return lines;
   }
 
-  lines.push('🛵 *סוג הזמנה:* משלוח');
+  lines.push('*סוג הזמנה:* משלוח');
   const addressLine = [customer.address, customer.city].filter((part) => part?.trim()).join(', ');
-  if (addressLine) lines.push(`📍 *כתובת:* ${addressLine}`);
-  if (customer.floorApartment?.trim()) lines.push(`🏠 *דירה/קומה:* ${customer.floorApartment.trim()}`);
-  if (customer.courierNotes?.trim()) lines.push(`🗒️ *הערות לשליח:* ${customer.courierNotes.trim()}`);
+  if (addressLine) lines.push(`*כתובת:* ${addressLine}`);
+  if (customer.floorApartment?.trim()) lines.push(`*דירה/קומה:* ${customer.floorApartment.trim()}`);
+  if (customer.courierNotes?.trim()) lines.push(`*הערות לשליח:* ${customer.courierNotes.trim()}`);
 
   return lines;
 }
@@ -59,12 +59,12 @@ function formatCustomerLines(customer: CustomerDetails): string[] {
 export function buildOrderWhatsAppLink(order: OrderSnapshot): string {
   const parts: string[] = [];
 
-  parts.push(`🍣 *${BUSINESS.nameHe} | הזמנה חדשה*`);
+  parts.push(`*${BUSINESS.nameHe} | הזמנה חדשה*`);
   parts.push(DIVIDER);
-  parts.push(`🧾 *הזמנה #${order.orderNumber}*`);
+  parts.push(`*הזמנה #${order.orderNumber}*`);
   parts.push(...formatCustomerLines(order.customer));
 
-  parts.push('🍱 *פרטי ההזמנה*');
+  parts.push('*פרטי ההזמנה*');
   parts.push(DIVIDER);
   for (const item of order.items) {
     parts.push(formatItemBlock(item));
@@ -73,22 +73,22 @@ export function buildOrderWhatsAppLink(order: OrderSnapshot): string {
 
   const pending = isDeliveryFeePending(order.customer.fulfillment, order.customer.deliveryZone);
   if (pending) {
-    parts.push('🛵 *דמי משלוח:* יתואמו לפי מרחק/מיקום ויאושרו מול הלקוח');
-    parts.push(`💰 *סה״כ מוצרים (ללא דמי משלוח): ₪${order.subtotal}*`);
+    parts.push('*דמי משלוח:* יתואמו לפי מרחק/מיקום ויאושרו מול הלקוח');
+    parts.push(`*סה״כ מוצרים (ללא דמי משלוח): ₪${order.subtotal}*`);
   } else {
     if (order.deliveryFee > 0) {
-      parts.push(`🛵 *דמי משלוח (נהריה): ₪${NAHARIYA_DELIVERY_FEE}*`);
+      parts.push(`*דמי משלוח (נהריה): ₪${NAHARIYA_DELIVERY_FEE}*`);
     }
-    parts.push(`💰 *סה״כ לתשלום: ₪${order.total}*`);
+    parts.push(`*סה״כ לתשלום: ₪${order.total}*`);
   }
   parts.push(DIVIDER);
 
   if (order.customer.orderNotes?.trim()) {
-    parts.push('📝 *הערות להזמנה*');
+    parts.push('*הערות להזמנה*');
     parts.push(order.customer.orderNotes.trim());
   }
 
-  parts.push(`📌 *מספר הזמנה: ${order.orderNumber}*`);
+  parts.push(`*מספר הזמנה: ${order.orderNumber}*`);
 
   return `https://wa.me/${BUSINESS.whatsappPhone}?text=${encodeURIComponent(parts.join('\n'))}`;
 }

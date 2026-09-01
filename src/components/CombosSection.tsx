@@ -45,7 +45,7 @@ export function CombosSection() {
     <Box component="section" id={combos.id} aria-labelledby="combos-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id="combos-heading" icon={combos.icon} title={combos.title} />
+          <SectionHeading id="combos-heading" title={combos.title} />
         </Reveal>
       </Container>
 

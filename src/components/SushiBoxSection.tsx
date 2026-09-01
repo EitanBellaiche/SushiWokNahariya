@@ -15,7 +15,7 @@ export function SushiBoxSection() {
     <Box component="section" id={sushiBox.id} aria-labelledby="sushibox-heading" sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id="sushibox-heading" icon={sushiBox.icon} title={sushiBox.title} />
+          <SectionHeading id="sushibox-heading" title={sushiBox.title} />
           <Box
             sx={{
               borderRadius: 3,

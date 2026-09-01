@@ -16,22 +16,22 @@ import {
 } from '../data/menu';
 import { COLORS } from '../theme';
 
-type Shortcut = { id: string; label: string; image?: string; icon: string };
+type Shortcut = { id: string; label: string; image?: string };
 
-// Per-category image/icon only — the ORDER is always taken from navCategories
+// Per-category image only — the ORDER is always taken from navCategories
 // (the single source of truth for category order across the whole site), so
 // this can never drift out of sync with the main nav / drawer / anchors.
-const shortcutMeta: Record<string, { image?: string; icon: string }> = {
-  [starters.id]: { image: IMAGES.startersHero, icon: starters.icon },
-  [specials.id]: { image: IMAGES.specialsHero, icon: specials.icon },
-  [buildYourOwn.id]: { image: IMAGES.buildYourOwnHero, icon: buildYourOwn.icon },
-  [wok.id]: { image: IMAGES.wokHero, icon: wok.icon },
-  [poke.id]: { image: IMAGES.pokeHero, icon: poke.icon },
-  [combos.id]: { image: IMAGES.combosHero, icon: combos.icon },
-  [nigiri.id]: { image: IMAGES.nigiriSalmon, icon: nigiri.icon },
-  [partyTrays.id]: { image: IMAGES.partyTraysHero, icon: partyTrays.icon },
-  [kids.id]: { image: IMAGES.kidsHero, icon: kids.icon },
-  [drinks.id]: { image: IMAGES.drinksHero, icon: drinks.icon },
+const shortcutMeta: Record<string, { image?: string }> = {
+  [starters.id]: { image: IMAGES.startersHero },
+  [specials.id]: { image: IMAGES.specialsHero },
+  [buildYourOwn.id]: { image: IMAGES.buildYourOwnHero },
+  [wok.id]: { image: IMAGES.wokHero },
+  [poke.id]: { image: IMAGES.pokeHero },
+  [combos.id]: { image: IMAGES.combosHero },
+  [nigiri.id]: { image: IMAGES.nigiriSalmon },
+  [partyTrays.id]: { image: IMAGES.partyTraysHero },
+  [kids.id]: { image: IMAGES.kidsHero },
+  [drinks.id]: { image: IMAGES.drinksHero },
 };
 
 // Sushi Box is a real nav category (pills, drawer, its own section) but the
@@ -42,7 +42,6 @@ const shortcuts: Shortcut[] = navCategories
     id: cat.id,
     label: cat.label,
     image: shortcutMeta[cat.id]?.image,
-    icon: shortcutMeta[cat.id]?.icon ?? '🍣',
   }));
 
 export function CategoryShortcuts() {
@@ -99,14 +98,16 @@ export function CategoryShortcuts() {
                     borderRadius: '50%',
                     display: 'grid',
                     placeItems: 'center',
-                    fontSize: '1.4rem',
+                    fontSize: '1.2rem',
+                    fontWeight: 800,
+                    color: COLORS.red,
                     bgcolor: alpha(COLORS.red, 0.1),
                     border: '1px solid',
                     borderColor: alpha(COLORS.red, 0.3),
                     flexShrink: 0,
                   }}
                 >
-                  {item.icon}
+                  {item.label.charAt(0)}
                 </Box>
               )}
               <Typography sx={{ fontSize: '0.72rem', fontWeight: 700, color: COLORS.white, textAlign: 'center', lineHeight: 1.2 }}>

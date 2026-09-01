@@ -86,13 +86,10 @@ function DotDivider({ label }: { label: string }) {
   );
 }
 
-function ChoiceLine({ label, emoji, choices }: { label: string; emoji: string; choices: string[] }) {
+function ChoiceLine({ label, choices }: { label: string; choices: string[] }) {
   return (
     <Stack spacing={0.4}>
-      <Stack direction="row" alignItems="center" spacing={0.6}>
-        <Typography sx={{ fontWeight: 700, color: COLORS.red, fontSize: '0.82rem' }}>{label}</Typography>
-        <Box component="span" aria-hidden="true" sx={{ fontSize: '0.9rem', lineHeight: 1 }}>{emoji}</Box>
-      </Stack>
+      <Typography sx={{ fontWeight: 700, color: COLORS.red, fontSize: '0.82rem' }}>{label}</Typography>
       <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.6 }}>{choices.join('  •  ')}</Typography>
     </Stack>
   );
@@ -133,7 +130,7 @@ export function BuildYourOwnSection() {
     >
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id="build-heading" icon={buildYourOwn.icon} title={buildYourOwn.title} />
+          <SectionHeading id="build-heading" title={buildYourOwn.title} />
 
           <Stack alignItems="center" spacing={1} sx={{ mb: { xs: 2, md: 2.5 }, mt: 1 }}>
             <Stack direction="row" alignItems="center" spacing={1.25} useFlexGap>
@@ -192,8 +189,8 @@ export function BuildYourOwnSection() {
             </Box>
 
             <Stack spacing={1.25} sx={{ p: { xs: 1.75, md: 2.25 } }} divider={<Box sx={{ height: '1px', bgcolor: COLORS.surfaceBorder }} />}>
-              <ChoiceLine label="ירקות לבחירה" emoji="🌱" choices={buildYourOwn.vegetables} />
-              <ChoiceLine label="דגים לבחירה" emoji="🐟" choices={buildYourOwn.fish} />
+              <ChoiceLine label="ירקות לבחירה" choices={buildYourOwn.vegetables} />
+              <ChoiceLine label="דגים לבחירה" choices={buildYourOwn.fish} />
             </Stack>
 
             <Stack

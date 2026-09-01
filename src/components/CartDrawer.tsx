@@ -415,7 +415,7 @@ export function CartDrawer() {
   const { isCartOpen, closeCart, checkoutStep, totalItems } = useCart();
 
   const titles: Record<typeof checkoutStep, string> = {
-    cart: 'ההזמנה שלי 🍣',
+    cart: 'ההזמנה שלי',
     checkout: 'פרטי הזמנה',
     confirmation: 'ההזמנה נשלחה',
   };

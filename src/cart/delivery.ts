@@ -28,6 +28,6 @@ export function isDeliveryFeePending(fulfillment: FulfillmentType, zone?: Delive
 
 /** Single source of truth for the estimated delivery time copy — shown on the menu and in the cart, per the client's exact wording. */
 export const DELIVERY_TIME_ESTIMATE = {
-  headline: '🛵 זמן משלוח משוער: 50–70 דקות',
+  headline: 'זמן משלוח משוער: 50–70 דקות',
   detail: 'הזמן עשוי להשתנות בהתאם לעומס ולמרחק, ולעיתים ההזמנה תגיע מוקדם יותר.',
 } as const;

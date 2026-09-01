@@ -60,7 +60,7 @@ export function PartyTraysSection() {
     >
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id="trays-heading" icon={partyTrays.icon} title={partyTrays.title} subtitle={partyTrays.intro} />
+          <SectionHeading id="trays-heading" title={partyTrays.title} subtitle={partyTrays.intro} />
         </Reveal>
 
         <Box

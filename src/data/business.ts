@@ -56,7 +56,7 @@ export function buildCartWhatsAppLink(
   if (customerNotes?.trim()) message.push(`הערות: ${customerNotes.trim()}`);
 
   message.push('');
-  message.push('אשמח לאישור הזמנה 🙏');
+  message.push('אשמח לאישור הזמנה');
 
   return `https://wa.me/${BUSINESS.whatsappPhone}?text=${encodeURIComponent(message.join('\n'))}`;
 }
