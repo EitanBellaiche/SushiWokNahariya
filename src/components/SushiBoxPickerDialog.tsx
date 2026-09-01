@@ -18,6 +18,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { specials, sushiBox } from '../data/menu';
 import { useCart } from '../cart/CartContext';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 
 type SushiBoxPickerDialogProps = {
@@ -32,7 +33,7 @@ type SushiBoxPickerDialogProps = {
  * order text like any other customization.
  */
 export function SushiBoxPickerDialog({ open, onClose }: SushiBoxPickerDialogProps) {
-  const { addLine } = useCart();
+  const { addLine, storeOpen } = useCart();
   const requiredCount = sushiBox.requiredRollCount;
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
   const [quantity, setQuantity] = React.useState(1);
@@ -58,6 +59,7 @@ export function SushiBoxPickerDialog({ open, onClose }: SushiBoxPickerDialogProp
   };
 
   const handleAdd = () => {
+    if (!storeOpen) return;
     if (!isValid) {
       setError(true);
       return;
@@ -128,12 +130,14 @@ export function SushiBoxPickerDialog({ open, onClose }: SushiBoxPickerDialogProp
             </Stack>
           </Stack>
 
+          <StoreClosedNotice />
+
           <Button
             variant="contained"
             color="primary"
             fullWidth
             size="large"
-            disabled={!isValid}
+            disabled={!isValid || !storeOpen}
             onClick={handleAdd}
             sx={{ minHeight: 52, fontSize: '1rem' }}
           >

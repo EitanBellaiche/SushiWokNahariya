@@ -22,7 +22,7 @@ const drawerLinks = [
 
 export function Header() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const { totalItems, openCart } = useCart();
+  const { totalItems, openCart, storeOpen } = useCart();
 
   return (
     <>
@@ -159,11 +159,12 @@ export function Header() {
               href={buildWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
+              disabled={!storeOpen}
               startIcon={<WhatsAppIcon />}
               fullWidth
               sx={{ py: 1.2, '& .MuiButton-startIcon': { ml: 0.8, mr: 0 } }}
             >
-              הזמן עכשיו
+              {storeOpen ? 'הזמן עכשיו' : 'המקום סגור כרגע'}
             </Button>
             <Button
               variant="outlined"

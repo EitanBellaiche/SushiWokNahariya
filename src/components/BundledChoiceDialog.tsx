@@ -18,6 +18,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { drinks } from '../data/menu';
 import { useCart } from '../cart/CartContext';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 
 type BundledChoiceDialogProps = {
@@ -33,7 +34,7 @@ type BundledChoiceDialogProps = {
 
 /** For menu items whose price already bundles a soft drink (and sometimes a side) — asks which one before adding to the cart. */
 export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice, sideChoices, drinkChoices }: BundledChoiceDialogProps) {
-  const { addLine } = useCart();
+  const { addLine, storeOpen } = useCart();
   const availableDrinks = drinkChoices && drinkChoices.length > 0 ? drinks.items.filter((d) => drinkChoices.includes(d.name)) : drinks.items;
   const [side, setSide] = React.useState(sideChoices?.[0] ?? '');
   const [drink, setDrink] = React.useState(availableDrinks[0]?.name ?? '');
@@ -51,6 +52,7 @@ export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice,
   }, [open]);
 
   const handleAdd = () => {
+    if (!storeOpen) return;
     if (!drink) {
       setError(true);
       return;
@@ -124,7 +126,17 @@ export function BundledChoiceDialog({ open, onClose, productId, name, unitPrice,
             </Stack>
           </Stack>
 
-          <Button variant="contained" color="primary" fullWidth size="large" onClick={handleAdd} sx={{ minHeight: 52, fontSize: '1rem' }}>
+          <StoreClosedNotice />
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            disabled={!storeOpen}
+            onClick={handleAdd}
+            sx={{ minHeight: 52, fontSize: '1rem' }}
+          >
             הוסף להזמנה · ₪{unitPrice * quantity}
           </Button>
         </Stack>

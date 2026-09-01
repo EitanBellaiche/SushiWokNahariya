@@ -1,4 +1,5 @@
 import { Box, Container, Typography } from '@mui/material';
+import { StoreStatusBanner } from '../components/StoreStatusBanner';
 import { Promo } from '../components/Promo';
 import { MenuNav } from '../components/MenuNav';
 import { CategoryShortcuts } from '../components/CategoryShortcuts';
@@ -53,6 +54,8 @@ export function HomePage() {
           </Typography>
         </Container>
       </Box>
+
+      <StoreStatusBanner />
 
       <Promo />
 

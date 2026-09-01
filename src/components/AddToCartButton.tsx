@@ -17,7 +17,7 @@ type AddToCartButtonProps = {
 
 /** "הוסף להזמנה" button for menu items with a fixed price and no configurable options. */
 export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact }: AddToCartButtonProps) {
-  const { addLine, items, updateQuantity } = useCart();
+  const { addLine, items, updateQuantity, storeOpen } = useCart();
   const [justAdded, setJustAdded] = React.useState(false);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>();
 
@@ -26,6 +26,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
   if (unitPrice == null) return null;
 
   const handleClick = () => {
+    if (!storeOpen) return;
     addLine({ productId, name, unitPrice });
     setJustAdded(true);
     clearTimeout(timeoutRef.current);
@@ -74,6 +75,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
     return (
       <IconButton
         onClick={handleClick}
+        disabled={!storeOpen}
         aria-label={`הוסף ${name} להזמנה`}
         data-testid={`add-to-cart-${productId}`}
         size="small"
@@ -96,6 +98,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
   return (
     <Button
       onClick={handleClick}
+      disabled={!storeOpen}
       size="small"
       fullWidth={fullWidth}
       aria-label={`הוסף ${name} להזמנה`}
@@ -117,7 +120,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
         '&:hover': { bgcolor: justAdded ? COLORS.red : alpha(COLORS.red, 0.18) },
       }}
     >
-      {justAdded ? 'נוסף להזמנה' : 'הוסף להזמנה'}
+      {justAdded ? 'נוסף להזמנה' : storeOpen ? 'הוסף להזמנה' : 'המקום סגור'}
     </Button>
   );
 }

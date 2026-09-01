@@ -7,7 +7,7 @@ import { useCart } from '../cart/CartContext';
 import { COLORS } from '../theme';
 
 export function MobileOrderBar() {
-  const { totalItems, totalPrice, openCart } = useCart();
+  const { totalItems, totalPrice, openCart, storeOpen } = useCart();
   const hasItems = totalItems > 0;
 
   return (
@@ -73,6 +73,7 @@ export function MobileOrderBar() {
             href={buildWhatsAppLink()}
             target="_blank"
             rel="noopener noreferrer"
+            disabled={!storeOpen}
             startIcon={<WhatsAppIcon />}
             sx={{
               minHeight: 52,
@@ -82,7 +83,7 @@ export function MobileOrderBar() {
               '& .MuiButton-startIcon': { ml: 0.7, mr: 0 },
             }}
           >
-            הזמן עכשיו
+            {storeOpen ? 'הזמן עכשיו' : 'המקום סגור כרגע'}
           </Button>
         )}
       </Box>

@@ -28,6 +28,7 @@ import { NAHARIYA_DELIVERY_FEE, getDeliveryFee, isDeliveryFeePending } from '../
 import type { DeliveryZone } from '../cart/delivery';
 import type { CustomerDetails, FulfillmentType } from '../cart/types';
 import { DeliveryTimeNote } from './DeliveryTimeNote';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 
 function normalizePhone(raw: string): string {
@@ -101,7 +102,7 @@ function CartLineRow({
 }
 
 function CartStep() {
-  const { items, totalPrice, goToCheckout } = useCart();
+  const { items, totalPrice, goToCheckout, storeOpen } = useCart();
 
   if (items.length === 0) {
     return (
@@ -135,11 +136,13 @@ function CartStep() {
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>סה״כ</Typography>
           <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.red }}>₪{totalPrice}</Typography>
         </Stack>
+        <StoreClosedNotice />
         <Button
           variant="contained"
           color="primary"
           fullWidth
           size="large"
+          disabled={!storeOpen}
           onClick={goToCheckout}
           sx={{ minHeight: 52, fontSize: '1rem' }}
         >
@@ -151,7 +154,7 @@ function CartStep() {
 }
 
 function CheckoutStep() {
-  const { totalPrice, backToCart, completeOrder, isSubmitting } = useCart();
+  const { totalPrice, backToCart, completeOrder, isSubmitting, storeOpen } = useCart();
   const [name, setName] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [fulfillment, setFulfillment] = React.useState<FulfillmentType>('pickup');
@@ -168,6 +171,7 @@ function CheckoutStep() {
   const displayTotal = totalPrice + deliveryFee;
 
   const handleSubmit = () => {
+    if (!storeOpen) return;
     const nextErrors: Record<string, string> = {};
     if (!name.trim() || name.trim().length < 2) nextErrors.name = 'נא להזין שם מלא';
     if (!isValidPhone(phone)) nextErrors.phone = 'נא להזין מספר טלפון תקין';
@@ -347,6 +351,8 @@ function CheckoutStep() {
 
         <DeliveryTimeNote />
 
+        <StoreClosedNotice />
+
         <Button
           variant="contained"
           color="primary"
@@ -354,7 +360,7 @@ function CheckoutStep() {
           size="large"
           startIcon={<WhatsAppIcon />}
           onClick={handleSubmit}
-          disabled={isSubmitting}
+          disabled={isSubmitting || !storeOpen}
           sx={{ minHeight: 52, fontSize: '1rem', '& .MuiButton-startIcon': { ml: 0.8, mr: 0 } }}
         >
           שליחת ההזמנה ב-WhatsApp

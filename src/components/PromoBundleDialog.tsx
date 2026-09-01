@@ -26,6 +26,7 @@ import type { RollPrice } from '../data/menu';
 import { PROMO } from '../data/business';
 import { parseAddonPrice } from '../cart/pricing';
 import { useCart } from '../cart/CartContext';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 import { rollSelectionHint } from './BuildYourOwnDialog';
 
@@ -57,7 +58,7 @@ type PromoBundleDialogProps = {
  * costs the same difference/add-on price as it would standalone.
  */
 export function PromoBundleDialog({ open, onClose }: PromoBundleDialogProps) {
-  const { addLine } = useCart();
+  const { addLine, storeOpen } = useCart();
   const rolls = buildYourOwn.rollPrices;
 
   const [wokItemId, setWokItemId] = React.useState<string>(wok.items[0].id);
@@ -138,6 +139,7 @@ export function PromoBundleDialog({ open, onClose }: PromoBundleDialogProps) {
   };
 
   const handleAdd = () => {
+    if (!storeOpen) return;
     if (!isRollValid) {
       setError(true);
       return;
@@ -345,12 +347,14 @@ export function PromoBundleDialog({ open, onClose }: PromoBundleDialogProps) {
             </Stack>
           </Stack>
 
+          <StoreClosedNotice />
+
           <Button
             variant="contained"
             color="primary"
             fullWidth
             size="large"
-            disabled={!isRollValid}
+            disabled={!isRollValid || !storeOpen}
             onClick={handleAdd}
             sx={{ minHeight: 52, fontSize: '1rem' }}
           >

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { CartLine, CheckoutStep, CustomerDetails, OrderSnapshot } from './types';
 import { getDeliveryFee } from './delivery';
+import { useStoreStatus } from '../hooks/useStoreStatus';
 
 const CART_KEY = 'sushiwok:cart:v1';
 const ORDER_SEQ_KEY = 'sushiwok:orderSeq:v1';
@@ -111,6 +112,11 @@ type CartContextValue = {
   /** Creates the order (once), clears the cart, and moves to the confirmation step. Safe against double-submits. */
   completeOrder: (customer: CustomerDetails) => OrderSnapshot;
   dismissConfirmation: () => void;
+
+  /** Whether the store is currently within ordering hours. */
+  storeOpen: boolean;
+  /** Human-readable Hebrew "reopens ..." label, set whenever storeOpen is false. */
+  reopensLabel: string;
 };
 
 const CartContext = React.createContext<CartContextValue | null>(null);
@@ -122,6 +128,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [checkoutStep, setCheckoutStep] = React.useState<CheckoutStep>('cart');
   const [isSubmitting, setSubmitting] = React.useState(false);
   const hasSubmittedRef = React.useRef(false);
+  const storeStatus = useStoreStatus();
 
   React.useEffect(() => {
     writeStorage(CART_KEY, JSON.stringify(items));
@@ -214,6 +221,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     isSubmitting,
     completeOrder,
     dismissConfirmation,
+    storeOpen: storeStatus.open,
+    reopensLabel: storeStatus.open ? '' : storeStatus.reopensLabel,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

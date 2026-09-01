@@ -25,6 +25,7 @@ import { buildYourOwn } from '../data/menu';
 import type { RollPrice } from '../data/menu';
 import { parseAddonPrice } from '../cart/pricing';
 import { useCart } from '../cart/CartContext';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 
 const NONE = '__none__';
@@ -54,7 +55,7 @@ type BuildYourOwnDialogProps = {
 };
 
 export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnDialogProps) {
-  const { addLine } = useCart();
+  const { addLine, storeOpen } = useCart();
   const rolls = buildYourOwn.rollPrices;
 
   const [rollType, setRollType] = React.useState<string>(initialType ?? rolls[0].type);
@@ -130,6 +131,7 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
   };
 
   const handleAdd = () => {
+    if (!storeOpen) return;
     if (!isValid) {
       setError(true);
       return;
@@ -307,12 +309,14 @@ export function BuildYourOwnDialog({ open, onClose, initialType }: BuildYourOwnD
             </Stack>
           </Stack>
 
+          <StoreClosedNotice />
+
           <Button
             variant="contained"
             color="primary"
             fullWidth
             size="large"
-            disabled={!isValid}
+            disabled={!isValid || !storeOpen}
             onClick={handleAdd}
             sx={{ minHeight: 52, fontSize: '1rem' }}
           >

@@ -18,6 +18,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import type { MenuAddon } from '../data/menu';
 import { useCart } from '../cart/CartContext';
+import { StoreClosedNotice } from './StoreClosedNotice';
 import { COLORS } from '../theme';
 
 type PaidAddonChoiceDialogProps = {
@@ -33,7 +34,7 @@ type PaidAddonChoiceDialogProps = {
 
 /** Collects a required addon choice (e.g. a paid protein, or a free prep-style option) before adding an item to the cart. */
 export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPrice, addons, label = 'תוספת' }: PaidAddonChoiceDialogProps) {
-  const { addLine } = useCart();
+  const { addLine, storeOpen } = useCart();
   const [selectedAddonName, setSelectedAddonName] = React.useState('');
   const [quantity, setQuantity] = React.useState(1);
   const [error, setError] = React.useState(false);
@@ -50,6 +51,7 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
   const totalUnitPrice = unitPrice + (selectedAddon?.price ?? 0);
 
   const handleAdd = () => {
+    if (!storeOpen) return;
     if (!selectedAddon) {
       setError(true);
       return;
@@ -116,7 +118,17 @@ export function PaidAddonChoiceDialog({ open, onClose, productId, name, unitPric
             </Stack>
           </Stack>
 
-          <Button variant="contained" color="primary" fullWidth size="large" onClick={handleAdd} sx={{ minHeight: 52, fontSize: '1rem' }}>
+          <StoreClosedNotice />
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            disabled={!storeOpen}
+            onClick={handleAdd}
+            sx={{ minHeight: 52, fontSize: '1rem' }}
+          >
             הוסף להזמנה · ₪{totalUnitPrice * quantity}
           </Button>
         </Stack>
