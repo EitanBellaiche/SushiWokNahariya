@@ -53,3 +53,52 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* Accessibility menu (see src/accessibility). Component styles are emotion
+   classes, so these user-chosen overrides need !important to win. */
+html.a11y-stop-motion,
+html.a11y-stop-motion *,
+html.a11y-stop-motion *::before,
+html.a11y-stop-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+}
+
+html.a11y-readable-font body,
+html.a11y-readable-font body *:not(svg, svg *) {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* :where() keeps this base rule's specificity low so the link and state rules below win. */
+html.a11y-high-contrast body,
+html.a11y-high-contrast body :where(*:not(img, svg, svg *, .MuiBackdrop-root, .MuiTouchRipple-root, .MuiTouchRipple-root *, .a11y-keep-background)) {
+  background-color: #000 !important;
+  background-image: none !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  box-shadow: none !important;
+}
+
+html.a11y-high-contrast body a,
+html.a11y-high-contrast body a * {
+  color: #ffeb3b !important;
+}
+
+html.a11y-high-contrast body [aria-current] {
+  color: #ffeb3b !important;
+  text-decoration: underline !important;
+}
+
+html.a11y-high-contrast body .MuiButton-root,
+html.a11y-high-contrast body .MuiIconButton-root {
+  border: 1px solid #fff !important;
+}
+
+html.a11y-high-contrast body *:focus-visible {
+  outline: 3px solid #ffeb3b !important;
+}

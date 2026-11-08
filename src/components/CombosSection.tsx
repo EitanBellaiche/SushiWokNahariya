@@ -1,43 +1,12 @@
-import { Box, Container, Divider, Stack, Typography } from '@mui/material';
-import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
+import { Box, Container, Divider } from '@mui/material';
 import { combos } from '../data/menu';
 import type { ComboItem } from '../data/menu';
-import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
-import { SectionHeading } from './MenuSection';
-import { MenuImage } from './MenuImage';
-import { AddToCartButton } from './AddToCartButton';
+import { MenuRow, SectionHeading } from './MenuSection';
 
 function ComboRow({ combo }: { combo: ComboItem }) {
-  return (
-    <Stack direction="row" gap={1.5} sx={{ py: 1.4 }}>
-      <MenuImage src={combo.image} alt={`${combo.name} – ${BUSINESS.nameHe}`} size={64} />
-      <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1}>
-          <Typography component="h3" sx={{ fontSize: '0.98rem', fontWeight: 700, color: COLORS.white }}>
-            {combo.name}
-          </Typography>
-          <Typography sx={{ fontWeight: 800, fontSize: '0.98rem', color: COLORS.red, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {combo.price}
-          </Typography>
-        </Stack>
-
-        <Stack spacing={0.35} sx={{ mt: 0.6 }}>
-          {combo.bullets.map((bullet) => (
-            <Stack direction="row" spacing={0.9} useFlexGap alignItems="flex-start" key={bullet}>
-              <FiberManualRecordRoundedIcon sx={{ fontSize: 6, color: COLORS.red, mt: '7px', flexShrink: 0 }} />
-              <Typography sx={{ fontSize: '0.82rem', color: COLORS.textSecondary, lineHeight: 1.5 }}>{bullet}</Typography>
-            </Stack>
-          ))}
-        </Stack>
-
-        <Box sx={{ mt: 0.9 }}>
-          <AddToCartButton productId={combo.id} name={combo.name} unitPrice={combo.numericPrice} />
-        </Box>
-      </Box>
-    </Stack>
-  );
+  return <MenuRow item={{ ...combo, description: combo.bullets.join('\n') }} />;
 }
 
 export function CombosSection() {

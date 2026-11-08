@@ -1,4 +1,4 @@
-import { Box, Typography, alpha } from '@mui/material';
+import { Box, Typography, alpha, type SxProps, type Theme } from '@mui/material';
 import RestaurantRoundedIcon from '@mui/icons-material/RestaurantRounded';
 import { COLORS } from '../theme';
 
@@ -9,6 +9,7 @@ type MenuImageProps = {
   aspectRatio?: string;
   rounded?: number;
   eager?: boolean;
+  fit?: 'cover' | 'contain';
 };
 
 /**
@@ -17,7 +18,7 @@ type MenuImageProps = {
  * reserves the exact same space, so swapping in a real photo later never
  * requires touching the surrounding card layout.
  */
-export function MenuImage({ src, alt, size = 72, aspectRatio, rounded = 2.5, eager = false }: MenuImageProps) {
+export function MenuImage({ src, alt, size = 72, aspectRatio, rounded = 2.5, eager = false, fit = 'cover' }: MenuImageProps) {
   const boxSx = aspectRatio
     ? { width: '100%', aspectRatio }
     : { width: size, height: size, flexShrink: 0 };
@@ -65,9 +66,18 @@ export function MenuImage({ src, alt, size = 72, aspectRatio, rounded = 2.5, eag
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).style.display = 'none';
         }}
-        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        sx={{ width: '100%', height: '100%', objectFit: fit, display: 'block' }}
       />
     </Box>
+  );
+}
+
+/** Legal notice shown next to food photography, so customers know the photo isn't a promise of the exact dish. */
+export function ImageDisclaimer({ plural = false, sx }: { plural?: boolean; sx?: SxProps<Theme> }) {
+  return (
+    <Typography sx={{ fontSize: '0.75rem', color: COLORS.textSecondary, ...(sx as object) }}>
+      {plural ? 'התמונות להמחשה בלבד' : 'התמונה להמחשה בלבד'}
+    </Typography>
   );
 }
 

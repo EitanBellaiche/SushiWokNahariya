@@ -1,10 +1,11 @@
 import React from 'react';
 import type { CartLine, CheckoutStep, CustomerDetails, OrderSnapshot } from './types';
-import { getDeliveryFee } from './delivery';
+import { addCartLine, replaceCartLine, restoreCart } from './state';
+import type { AddLineInput } from './state';
+import { MAX_QUANTITY } from '../dishes/configuration';
 import { useStoreStatus } from '../hooks/useStoreStatus';
 
 const CART_KEY = 'sushiwok:cart:v1';
-const ORDER_SEQ_KEY = 'sushiwok:orderSeq:v1';
 const LAST_ORDER_KEY = 'sushiwok:lastOrder:v1';
 
 function makeId(): string {
@@ -30,28 +31,8 @@ function writeStorage(key: string, value: string) {
   }
 }
 
-function isCartLine(value: unknown): value is CartLine {
-  if (!value || typeof value !== 'object') return false;
-  const l = value as Record<string, unknown>;
-  return (
-    typeof l.lineId === 'string' &&
-    typeof l.productId === 'string' &&
-    typeof l.name === 'string' &&
-    typeof l.unitPrice === 'number' &&
-    typeof l.quantity === 'number' &&
-    Array.isArray(l.options)
-  );
-}
-
 function loadCart(): CartLine[] {
-  const raw = readStorage(CART_KEY);
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.filter(isCartLine) : [];
-  } catch {
-    return [];
-  }
+  return restoreCart(readStorage(CART_KEY));
 }
 
 function loadLastOrder(): OrderSnapshot | null {
@@ -64,38 +45,12 @@ function loadLastOrder(): OrderSnapshot | null {
   }
 }
 
-/**
- * Generates a human-facing order number (e.g. SW-1047) from a counter kept in
- * localStorage. This is NOT a server-authoritative id — the project is a static
- * site with no backend/database, so nothing can issue a globally unique number.
- * It is stable and sequential per browser, which is enough since WhatsApp (a
- * human on the other end) is the actual order-receiving system.
- */
-function nextOrderNumber(): string {
-  const current = Number(readStorage(ORDER_SEQ_KEY) ?? '1000');
-  const base = Number.isFinite(current) && current >= 1000 ? current : 1000;
-  const next = base + 1;
-  writeStorage(ORDER_SEQ_KEY, String(next));
-  return `SW-${next}`;
-}
-
-function lineKey(productId: string, options: string[]): string {
-  return `${productId}::${options.join('|')}`;
-}
-
-export type AddLineInput = {
-  productId: string;
-  name: string;
-  unitPrice: number;
-  quantity?: number;
-  options?: string[];
-};
-
 type CartContextValue = {
   items: CartLine[];
   totalItems: number;
   totalPrice: number;
   addLine: (line: AddLineInput) => void;
+  replaceLine: (lineId: string, line: AddLineInput) => void;
   updateQuantity: (lineId: string, quantity: number) => void;
   removeLine: (lineId: string) => void;
 
@@ -110,7 +65,7 @@ type CartContextValue = {
   lastOrder: OrderSnapshot | null;
   isSubmitting: boolean;
   /** Creates the order (once), clears the cart, and moves to the confirmation step. Safe against double-submits. */
-  completeOrder: (customer: CustomerDetails) => OrderSnapshot;
+  completeOrder: (customer: CustomerDetails) => Promise<OrderSnapshot>;
   dismissConfirmation: () => void;
 
   /** Whether the store is currently within ordering hours. */
@@ -127,7 +82,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isCartOpen, setCartOpen] = React.useState(false);
   const [checkoutStep, setCheckoutStep] = React.useState<CheckoutStep>('cart');
   const [isSubmitting, setSubmitting] = React.useState(false);
-  const hasSubmittedRef = React.useRef(false);
+  const submissionRef = React.useRef<Promise<OrderSnapshot> | null>(null);
+  const requestIdRef = React.useRef({ id: makeId(), payload: '' });
   const storeStatus = useStoreStatus();
 
   React.useEffect(() => {
@@ -135,29 +91,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addLine = React.useCallback((line: AddLineInput) => {
-    const options = line.options ?? [];
-    const qty = line.quantity ?? 1;
-    setItems((prev) => {
-      const key = lineKey(line.productId, options);
-      const existingIndex = prev.findIndex((l) => lineKey(l.productId, l.options) === key);
-      if (existingIndex >= 0) {
-        const next = [...prev];
-        next[existingIndex] = { ...next[existingIndex], quantity: next[existingIndex].quantity + qty };
-        return next;
-      }
-      return [
-        ...prev,
-        { lineId: makeId(), productId: line.productId, name: line.name, unitPrice: line.unitPrice, quantity: qty, options },
-      ];
-    });
-  }, []);
+    if (!storeStatus.open || isSubmitting) return;
+    submissionRef.current = null;
+    requestIdRef.current = { id: makeId(), payload: '' };
+    setCheckoutStep('cart');
+    setItems((prev) => addCartLine(prev, line, makeId()));
+  }, [storeStatus.open, isSubmitting]);
+
+  const replaceLine = React.useCallback((lineId: string, line: AddLineInput) => {
+    if (!storeStatus.open) return;
+    setItems((prev) => replaceCartLine(prev, lineId, line));
+  }, [storeStatus.open]);
 
   const updateQuantity = React.useCallback((lineId: string, quantity: number) => {
+    if (!Number.isInteger(quantity) || quantity > MAX_QUANTITY) return;
+    if (!storeStatus.open && quantity > (items.find((line) => line.lineId === lineId)?.quantity ?? 0)) return;
     setItems((prev) => {
       if (quantity <= 0) return prev.filter((l) => l.lineId !== lineId);
       return prev.map((l) => (l.lineId === lineId ? { ...l, quantity } : l));
     });
-  }, []);
+  }, [storeStatus.open, items]);
 
   const removeLine = React.useCallback((lineId: string) => {
     setItems((prev) => prev.filter((l) => l.lineId !== lineId));
@@ -167,39 +120,44 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const totalPrice = items.reduce((sum, l) => sum + l.quantity * l.unitPrice, 0);
 
   const completeOrder = React.useCallback(
-    (customer: CustomerDetails): OrderSnapshot => {
-      // Guards against double-clicking the submit button: once an order has been
-      // created for this cart, return the same snapshot instead of minting another.
-      if (hasSubmittedRef.current && lastOrder) {
-        return lastOrder;
-      }
-      hasSubmittedRef.current = true;
+    (customer: CustomerDetails): Promise<OrderSnapshot> => {
+      if (submissionRef.current) return submissionRef.current;
+      if (!storeStatus.open) return Promise.reject(new Error('המסעדה סגורה להזמנות'));
+      if (!items.length) return Promise.reject(new Error('הסל ריק'));
+      const payload = JSON.stringify({ items, customer, expectedSubtotal: totalPrice });
+      if (requestIdRef.current.payload !== payload) requestIdRef.current = { id: makeId(), payload };
       setSubmitting(true);
-
-      const deliveryFee = getDeliveryFee(customer.fulfillment, customer.deliveryZone);
-      const order: OrderSnapshot = {
-        orderNumber: nextOrderNumber(),
-        createdAt: new Date().toISOString(),
-        status: 'PENDING_CUSTOMER_SEND',
-        items,
-        subtotal: totalPrice,
-        deliveryFee,
-        total: totalPrice + deliveryFee,
-        customer,
-      };
-
-      writeStorage(LAST_ORDER_KEY, JSON.stringify(order));
-      setLastOrder(order);
-      setItems([]);
-      setCheckoutStep('confirmation');
-      setSubmitting(false);
-      return order;
+      const pending = (async () => {
+        await Promise.resolve();
+        try {
+          const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items, customer, expectedSubtotal: totalPrice, requestId: requestIdRef.current.id }),
+            signal: AbortSignal.timeout(15000),
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error ?? 'לא ניתן לאמת את ההזמנה כרגע');
+          const order = result as OrderSnapshot;
+          writeStorage(LAST_ORDER_KEY, JSON.stringify(order));
+          setLastOrder(order);
+          setItems([]);
+          setCheckoutStep('confirmation');
+          return order;
+        } catch (error) {
+          submissionRef.current = null;
+          throw error;
+        } finally { setSubmitting(false); }
+      })();
+      submissionRef.current = pending;
+      return pending;
     },
-    [items, totalPrice, lastOrder],
+    [items, totalPrice, storeStatus.open],
   );
 
   const dismissConfirmation = React.useCallback(() => {
-    hasSubmittedRef.current = false;
+    submissionRef.current = null;
+    requestIdRef.current = { id: makeId(), payload: '' };
     setCheckoutStep('cart');
     setCartOpen(false);
   }, []);
@@ -209,11 +167,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     totalItems,
     totalPrice,
     addLine,
+    replaceLine,
     updateQuantity,
     removeLine,
     isCartOpen,
     openCart: () => setCartOpen(true),
-    closeCart: () => setCartOpen(false),
+    closeCart: () => { if (!isSubmitting) setCartOpen(false); },
     checkoutStep,
     goToCheckout: () => setCheckoutStep('checkout'),
     backToCart: () => setCheckoutStep('cart'),

@@ -6,11 +6,13 @@ export const COLORS = {
   surface: '#18130f',
   surfaceBorder: 'rgba(245, 240, 233, 0.09)',
   red: '#b91c1f',
+  /** Brand red lifted for text and icons on the dark surfaces: #b91c1f is under 3:1 there, this is over 6.5:1. */
+  redText: '#f47272',
   redDark: '#6e1013',
   redSoft: 'rgba(185, 28, 31, 0.14)',
   white: '#f7f4ef',
   textSecondary: '#a79f95',
-  textMuted: '#7d766c',
+  textMuted: '#958d82',
 };
 
 export const theme = createTheme({
@@ -47,7 +49,7 @@ export const theme = createTheme({
           backgroundColor: COLORS.bg,
         },
         '*:focus-visible': {
-          outline: `2px solid ${COLORS.red}`,
+          outline: `2px solid ${COLORS.white}`,
           outlineOffset: '2px',
         },
       },
@@ -61,7 +63,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           '&:focus-visible': {
-            outline: `2px solid ${COLORS.red}`,
+            outline: `2px solid ${COLORS.white}`,
             outlineOffset: '2px',
           },
         },

@@ -8,6 +8,7 @@ import {
   starters,
   nigiri,
   partyTrays,
+  sauces,
   drinks,
   combos,
   sushiBox,
@@ -31,6 +32,7 @@ const shortcutMeta: Record<string, { image?: string }> = {
   [nigiri.id]: { image: IMAGES.nigiriSalmon },
   [partyTrays.id]: { image: IMAGES.partyTraysHero },
   [kids.id]: { image: IMAGES.kidsHero },
+  [sauces.id]: { image: IMAGES.saucesHero },
   [drinks.id]: { image: IMAGES.drinksHero },
 };
 
@@ -72,7 +74,7 @@ export function CategoryShortcuts() {
                 gap: 0.6,
                 width: 68,
                 textDecoration: 'none',
-                '&:focus-visible': { outline: `2px solid ${COLORS.red}`, outlineOffset: '2px', borderRadius: '50%' },
+                '&:focus-visible': { outline: `2px solid ${COLORS.white}`, outlineOffset: '2px', borderRadius: '50%' },
               }}
             >
               {item.image ? (
@@ -100,7 +102,7 @@ export function CategoryShortcuts() {
                     placeItems: 'center',
                     fontSize: '1.2rem',
                     fontWeight: 800,
-                    color: COLORS.red,
+                    color: COLORS.redText,
                     bgcolor: alpha(COLORS.red, 0.1),
                     border: '1px solid',
                     borderColor: alpha(COLORS.red, 0.3),

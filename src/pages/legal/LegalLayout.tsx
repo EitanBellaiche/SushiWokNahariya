@@ -57,7 +57,7 @@ export function LegalLayout({ title, description, showLastUpdated = true, childr
               lineHeight: 1.85,
               '& h2': { color: COLORS.white, fontSize: { xs: '1.1rem', md: '1.2rem' }, fontWeight: 700, marginTop: '0.5rem' },
               '& strong': { color: COLORS.white },
-              '& a': { color: COLORS.red, fontWeight: 600 },
+              '& a': { color: COLORS.redText, fontWeight: 600 },
               '& ul': { margin: 0, paddingInlineStart: '1.4rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' },
             }}
           >

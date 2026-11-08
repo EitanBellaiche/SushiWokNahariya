@@ -26,9 +26,11 @@ import { useCart } from '../cart/CartContext';
 import { buildOrderWhatsAppLink } from '../cart/whatsapp';
 import { NAHARIYA_DELIVERY_FEE, getDeliveryFee, isDeliveryFeePending } from '../cart/delivery';
 import type { DeliveryZone } from '../cart/delivery';
-import type { CustomerDetails, FulfillmentType } from '../cart/types';
+import type { CartLine, CustomerDetails, FulfillmentType } from '../cart/types';
 import { DeliveryTimeNote } from './DeliveryTimeNote';
 import { StoreClosedNotice } from './StoreClosedNotice';
+import { MAX_QUANTITY } from '../dishes/configuration';
+import { useDishDetails } from '../dishes/DishDetailsContext';
 import { COLORS } from '../theme';
 
 function normalizePhone(raw: string): string {
@@ -43,9 +45,10 @@ function isValidPhone(raw: string): boolean {
 function CartLineRow({
   line,
 }: {
-  line: { lineId: string; name: string; unitPrice: number; quantity: number; options: string[] };
+  line: CartLine;
 }) {
-  const { updateQuantity, removeLine } = useCart();
+  const { updateQuantity, removeLine, storeOpen } = useCart();
+  const openDish = useDishDetails();
   return (
     <Stack spacing={0.75} sx={{ py: 1.5 }}>
       <Stack direction="row" alignItems="flex-start" justifyContent="space-between" gap={1}>
@@ -55,7 +58,7 @@ function CartLineRow({
           </Typography>
           <Typography sx={{ fontSize: '0.78rem', color: COLORS.textMuted }}>₪{line.unitPrice} ליחידה</Typography>
         </Box>
-        <Typography sx={{ fontWeight: 800, fontSize: '0.95rem', color: COLORS.red, whiteSpace: 'nowrap' }}>
+        <Typography sx={{ fontWeight: 800, fontSize: '0.95rem', color: COLORS.redText, whiteSpace: 'nowrap' }}>
           ₪{line.unitPrice * line.quantity}
         </Typography>
       </Stack>
@@ -70,6 +73,8 @@ function CartLineRow({
         </Stack>
       )}
 
+      {line.notes && <Typography sx={{ fontSize: '0.8rem', color: COLORS.textSecondary, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>בקשות מיוחדות למנה: {line.notes}</Typography>}
+      <Button onClick={() => openDish(line.productId, line)} aria-label={`עריכת ${line.name}`} size="small" sx={{ alignSelf: 'flex-start', color: COLORS.redText }}>עריכת מנה</Button>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Stack direction="row" alignItems="center" spacing={0.5} sx={{ border: '1px solid', borderColor: COLORS.surfaceBorder, borderRadius: 999 }}>
           <IconButton
@@ -82,6 +87,7 @@ function CartLineRow({
           <Typography sx={{ minWidth: 20, textAlign: 'center', fontWeight: 700 }}>{line.quantity}</Typography>
           <IconButton
             aria-label="הוסף כמות"
+            disabled={!storeOpen || line.quantity >= MAX_QUANTITY}
             onClick={() => updateQuantity(line.lineId, line.quantity + 1)}
             sx={{ color: COLORS.white, width: 40, height: 40 }}
           >
@@ -134,7 +140,7 @@ function CartStep() {
         <DeliveryTimeNote />
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>סה״כ</Typography>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.red }}>₪{totalPrice}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.redText }}>₪{totalPrice}</Typography>
         </Stack>
         <StoreClosedNotice />
         <Button
@@ -170,8 +176,10 @@ function CheckoutStep() {
   const deliveryPending = isDeliveryFeePending(fulfillment, deliveryZone);
   const displayTotal = totalPrice + deliveryFee;
 
-  const handleSubmit = () => {
-    if (!storeOpen) return;
+  const [submitError, setSubmitError] = React.useState('');
+
+  const handleSubmit = async () => {
+    if (!storeOpen || isSubmitting) return;
     const nextErrors: Record<string, string> = {};
     if (!name.trim() || name.trim().length < 2) nextErrors.name = 'נא להזין שם מלא';
     if (!isValidPhone(phone)) nextErrors.phone = 'נא להזין מספר טלפון תקין';
@@ -193,9 +201,17 @@ function CheckoutStep() {
       orderNotes: orderNotes.trim() || undefined,
     };
 
-    const order = completeOrder(customer);
-    const link = buildOrderWhatsAppLink(order);
-    window.open(link, '_blank', 'noopener,noreferrer');
+    setSubmitError('');
+    // Open on the user gesture so browsers don't block WhatsApp after the API awaits.
+    const target = window.open('about:blank', '_blank');
+    if (target) target.opener = null;
+    try {
+      const order = await completeOrder(customer);
+      if (target) target.location.href = buildOrderWhatsAppLink(order);
+    } catch (error) {
+      target?.close();
+      setSubmitError(error instanceof Error && error.name !== 'TypeError' && error.name !== 'TimeoutError' ? error.message : 'לא ניתן לאמת את ההזמנה כרגע. הסל נשמר, נסו שוב.');
+    }
   };
 
   return (
@@ -317,7 +333,7 @@ function CheckoutStep() {
 
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>{deliveryPending ? 'סה״כ מוצרים' : 'סה״כ'}</Typography>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.red }}>₪{displayTotal}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.redText }}>₪{displayTotal}</Typography>
         </Stack>
         {deliveryPending && (
           <Typography sx={{ fontSize: '0.74rem', color: COLORS.textMuted, textAlign: 'center' }}>
@@ -332,7 +348,7 @@ function CheckoutStep() {
             to="/terms"
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: COLORS.red, fontWeight: 700 }}
+            sx={{ color: COLORS.redText, fontWeight: 700 }}
           >
             תנאי השימוש
           </Box>{' '}
@@ -342,7 +358,7 @@ function CheckoutStep() {
             to="/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: COLORS.red, fontWeight: 700 }}
+            sx={{ color: COLORS.redText, fontWeight: 700 }}
           >
             מדיניות הפרטיות
           </Box>
@@ -352,6 +368,7 @@ function CheckoutStep() {
         <DeliveryTimeNote />
 
         <StoreClosedNotice />
+        {submitError && <Alert severity="error">{submitError}</Alert>}
 
         <Button
           variant="contained"
@@ -365,7 +382,7 @@ function CheckoutStep() {
         >
           שליחת ההזמנה ב-WhatsApp
         </Button>
-        <Button onClick={backToCart} sx={{ color: COLORS.textMuted }}>
+        <Button disabled={isSubmitting} onClick={backToCart} sx={{ color: COLORS.textMuted }}>
           חזרה לעגלה
         </Button>
       </Stack>
@@ -383,7 +400,7 @@ function ConfirmationStep() {
 
   return (
     <Stack spacing={2} sx={{ px: 2.25, py: 3, overflowY: 'auto', flex: 1 }} alignItems="center" textAlign="center">
-      <CheckCircleRoundedIcon sx={{ fontSize: '2.8rem', color: COLORS.red }} />
+      <CheckCircleRoundedIcon sx={{ fontSize: '2.8rem', color: COLORS.redText }} />
       <Typography sx={{ fontWeight: 800, fontSize: '1.15rem', color: COLORS.white }}>הזמנה #{lastOrder.orderNumber}</Typography>
       <Typography sx={{ color: COLORS.textSecondary }}>ההזמנה הוכנה לשליחה ב-WhatsApp</Typography>
 
@@ -399,6 +416,14 @@ function ConfirmationStep() {
         </Box>
       </Typography>
 
+      <Stack spacing={1.5} sx={{ width: '100%', textAlign: 'start' }}>
+        {lastOrder.items.map((line) => <Box key={line.lineId}>
+          <Typography sx={{ fontWeight: 700 }}>{line.quantity} × {line.name} · ₪{line.unitPrice * line.quantity}</Typography>
+          {line.options.map((option) => <Typography key={option} sx={{ fontSize: '0.8rem', color: COLORS.textSecondary }}>{option}</Typography>)}
+          {line.notes && <Typography sx={{ fontSize: '0.8rem', whiteSpace: 'pre-wrap' }}>בקשות מיוחדות למנה: {line.notes}</Typography>}
+        </Box>)}
+        <Typography sx={{ fontWeight: 800 }}>סה״כ{isDeliveryFeePending(lastOrder.customer.fulfillment, lastOrder.customer.deliveryZone) ? ' מוצרים (ללא דמי משלוח)' : ''}: ₪{lastOrder.total}</Typography>
+      </Stack>
       <Stack spacing={1} sx={{ width: '100%', pt: 1 }}>
         <Button variant="contained" color="primary" fullWidth size="large" startIcon={<WhatsAppIcon />} onClick={reopenWhatsApp} sx={{ minHeight: 52 }}>
           פתח שוב את WhatsApp
@@ -412,7 +437,7 @@ function ConfirmationStep() {
 }
 
 export function CartDrawer() {
-  const { isCartOpen, closeCart, checkoutStep, totalItems } = useCart();
+  const { isCartOpen, closeCart, checkoutStep, totalItems, isSubmitting } = useCart();
 
   const titles: Record<typeof checkoutStep, string> = {
     cart: 'ההזמנה שלי',
@@ -424,7 +449,7 @@ export function CartDrawer() {
     <Drawer
       anchor="bottom"
       open={isCartOpen}
-      onClose={closeCart}
+      onClose={() => { if (!isSubmitting) closeCart(); }}
       PaperProps={{
         sx: {
           bgcolor: COLORS.bg,
@@ -444,7 +469,7 @@ export function CartDrawer() {
               <Box component="span" sx={{ color: COLORS.textMuted, fontWeight: 600, fontSize: '0.85rem' }}> · {totalItems} פריטים</Box>
             )}
           </Typography>
-          <IconButton onClick={closeCart} aria-label="סגירת עגלה" sx={{ color: COLORS.white }}>
+          <IconButton disabled={isSubmitting} onClick={closeCart} aria-label="סגירת עגלה" sx={{ color: COLORS.white }}>
             <CloseRoundedIcon />
           </IconButton>
         </Stack>

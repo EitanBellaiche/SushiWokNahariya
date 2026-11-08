@@ -1,14 +1,12 @@
 import React from 'react';
-import { Box, Button, Container, Divider, Stack, Typography, alpha } from '@mui/material';
+import { Box, ButtonBase, Container, Divider, Stack, Typography, alpha } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import type { MenuCategory, MenuItem } from '../data/menu';
 import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
-import { MenuImage } from './MenuImage';
-import { AddToCartButton } from './AddToCartButton';
-import { BundledChoiceDialog } from './BundledChoiceDialog';
-import { PaidAddonChoiceDialog } from './PaidAddonChoiceDialog';
+import { ImageDisclaimer, MenuImage } from './MenuImage';
+import { useDishDetails } from '../dishes/DishDetailsContext';
 
 type MenuSectionProps = {
   category: MenuCategory;
@@ -52,102 +50,26 @@ export function SectionHeading({
 }
 
 export function MenuRow({ item }: { item: MenuItem }) {
-  const [dialogOpen, setDialogOpen] = React.useState(false);
-  const needsChoice = item.includesDrinkChoice && item.numericPrice != null;
-  const needsPaidAddonChoice = Boolean(item.addonChoices?.length && item.numericPrice != null);
-
+  const openDish = useDishDetails();
+  // The aria-label replaces the row's content for screen readers, so price and description are re-attached here.
+  const infoId = React.useId();
+  const describedBy = item.description ? `${infoId}-price ${infoId}-description` : `${infoId}-price`;
   return (
-    <Stack direction="row" alignItems="center" gap={1.5} sx={{ py: 1.1 }}>
-      <MenuImage src={item.image} alt={`${item.name} – ${BUSINESS.nameHe}`} size={64} />
+    <ButtonBase component="div" role="button" tabIndex={0} onClick={() => openDish(item.id)} aria-label={`פרטים והתאמה: ${item.name}`} aria-describedby={describedBy} aria-haspopup="dialog"
+      sx={{ width: '100%', textAlign: 'start', display: 'flex', alignItems: 'center', gap: 1.5, py: 1.5, borderRadius: 2,
+        '&:hover': { bgcolor: alpha(COLORS.red, 0.04) }, '&.Mui-focusVisible': { outline: `2px solid ${COLORS.white}`, outlineOffset: 2 } }}>
+      <MenuImage src={item.image} alt={`${item.name} – ${BUSINESS.nameHe}`} size={72} />
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1}>
-          <Typography component="h3" sx={{ fontSize: '0.96rem', fontWeight: 700, color: COLORS.white }}>
-            {item.name}
-          </Typography>
-          <Typography sx={{ fontWeight: 800, fontSize: '0.96rem', color: COLORS.red, whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {item.price}
-          </Typography>
+          <Typography component="h3" sx={{ fontSize: '0.96rem', fontWeight: 700, color: COLORS.white }}>{item.name}</Typography>
+          <Typography id={`${infoId}-price`} sx={{ fontWeight: 800, fontSize: '0.96rem', color: COLORS.redText, whiteSpace: 'nowrap' }}>{item.price}</Typography>
         </Stack>
-        {item.description && (
-          <Typography sx={{ mt: 0.15, fontSize: '0.8rem', color: COLORS.textSecondary, lineHeight: 1.45 }}>
-            {item.description}
-          </Typography>
-        )}
-        <Box sx={{ mt: 0.9 }}>
-          {needsChoice ? (
-            <>
-              <Button
-                onClick={() => setDialogOpen(true)}
-                size="small"
-                data-testid={`bundled-choice-${item.id}`}
-                startIcon={<AddRoundedIcon fontSize="small" />}
-                sx={{
-                  alignSelf: 'flex-start',
-                  minHeight: 38,
-                  px: 1.75,
-                  borderRadius: 999,
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  color: COLORS.red,
-                  bgcolor: alpha(COLORS.red, 0.1),
-                  border: '1px solid',
-                  borderColor: alpha(COLORS.red, 0.5),
-                  '& .MuiButton-startIcon': { ml: 0.5, mr: 0 },
-                  '&:hover': { bgcolor: alpha(COLORS.red, 0.18) },
-                }}
-              >
-                בחירת שתייה והוספה
-              </Button>
-              <BundledChoiceDialog
-                open={dialogOpen}
-                onClose={() => setDialogOpen(false)}
-                productId={item.id}
-                name={item.name}
-                unitPrice={item.numericPrice as number}
-                sideChoices={item.sideChoices}
-                drinkChoices={item.drinkChoices}
-              />
-            </>
-          ) : needsPaidAddonChoice ? (
-            <>
-              <Button
-                onClick={() => setDialogOpen(true)}
-                size="small"
-                data-testid={`paid-addon-choice-${item.id}`}
-                startIcon={<AddRoundedIcon fontSize="small" />}
-                sx={{
-                  alignSelf: 'flex-start',
-                  minHeight: 38,
-                  px: 1.75,
-                  borderRadius: 999,
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  color: COLORS.red,
-                  bgcolor: alpha(COLORS.red, 0.1),
-                  border: '1px solid',
-                  borderColor: alpha(COLORS.red, 0.5),
-                  '& .MuiButton-startIcon': { ml: 0.5, mr: 0 },
-                  '&:hover': { bgcolor: alpha(COLORS.red, 0.18) },
-                }}
-              >
-                בחירת {item.addonChoiceLabel ?? 'תוספת'} והוספה
-              </Button>
-              <PaidAddonChoiceDialog
-                open={dialogOpen}
-                onClose={() => setDialogOpen(false)}
-                productId={item.id}
-                name={item.name}
-                unitPrice={item.numericPrice as number}
-                addons={item.addonChoices ?? []}
-                label={item.addonChoiceLabel}
-              />
-            </>
-          ) : (
-            <AddToCartButton productId={item.id} name={item.name} unitPrice={item.numericPrice} />
-          )}
-        </Box>
+        {item.description && <Typography id={`${infoId}-description`} sx={{ mt: 0.3, fontSize: '0.8rem', color: COLORS.textSecondary, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{item.description}</Typography>}
+        <Stack direction="row" alignItems="center" gap={0.5} sx={{ mt: 1, color: COLORS.redText }}>
+          <AddRoundedIcon fontSize="small" /><Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>פרטים והתאמה</Typography>
+        </Stack>
       </Box>
-    </Stack>
+    </ButtonBase>
   );
 }
 
@@ -162,6 +84,7 @@ export function MenuRowList({ category }: { category: MenuCategory }) {
         px: { xs: 1.75, md: 2 },
       }}
     >
+      {category.items.some((item) => item.image) && <ImageDisclaimer plural sx={{ pt: 1.25, textAlign: 'center' }} />}
       {category.items.map((item, index) => (
         <Box key={item.id}>
           <MenuRow item={item} />

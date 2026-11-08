@@ -4,7 +4,7 @@ import { sushiBox } from '../data/menu';
 import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
-import { MenuImage } from './MenuImage';
+import { ImageDisclaimer, MenuImage } from './MenuImage';
 import { SectionHeading } from './MenuSection';
 import { SushiBoxPickerDialog } from './SushiBoxPickerDialog';
 
@@ -17,7 +17,8 @@ export function SushiBoxSection() {
         <Reveal>
           <SectionHeading id="sushibox-heading" title={sushiBox.title} />
           <Box
-            sx={{
+            onClick={() => setDialogOpen(true)}
+            sx={{ cursor: 'pointer',
               borderRadius: 3,
               border: '1px solid',
               borderColor: COLORS.red,
@@ -31,8 +32,9 @@ export function SushiBoxSection() {
           >
             <Stack spacing={1} alignItems="center">
               <MenuImage src={sushiBox.image} alt={`${sushiBox.title} – ${BUSINESS.nameHe}`} size={96} rounded={2} />
+              <ImageDisclaimer />
               <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: COLORS.textSecondary }}>{sushiBox.subtitleEn}</Typography>
-              <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: COLORS.red, pt: 0.5 }}>{sushiBox.unitsLabel}</Typography>
+              <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: COLORS.redText, pt: 0.5 }}>{sushiBox.unitsLabel}</Typography>
               <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.5 }}>{sushiBox.description}</Typography>
 
               <Typography

@@ -1,113 +1,89 @@
 import React from 'react';
-import { Box, Button, ButtonBase, Container, Stack, Typography, alpha } from '@mui/material';
+import { Box, ButtonBase, Chip, Container, Divider, Stack, Typography, alpha } from '@mui/material';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { buildYourOwn } from '../data/menu';
+import type { RollPrice } from '../data/menu';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
-import { BuildYourOwnDialog, rollSelectionHint } from './BuildYourOwnDialog';
+import { BuildYourOwnDialog } from './BuildYourOwnDialog';
+import { ImageDisclaimer, MenuImage } from './MenuImage';
 
-type RollVariant = 'ring' | 'spiral' | 'cone' | 'block';
+const BUILD_STEPS = ['בוחרים סוג רול', 'בוחרים את המילוי', 'משדרגים אם רוצים'];
 
-const ROLL_ICON_BY_TYPE: Record<string, RollVariant> = {
-  'I/O': 'ring',
-  פוטומאקי: 'spiral',
-  'סנדוויץ׳ סושי': 'block',
-  מאקי: 'cone',
-};
-
-function RollIcon({ variant }: { variant: RollVariant }) {
-  const stroke = COLORS.red;
-  if (variant === 'ring') {
-    return (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="9" stroke={stroke} strokeWidth="1.6" />
-        <circle cx="12" cy="12" r="3.4" stroke={stroke} strokeWidth="1.6" />
-      </svg>
-    );
-  }
-  if (variant === 'spiral') {
-    return (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="9" stroke={stroke} strokeWidth="1.6" />
-        <circle cx="9.5" cy="10" r="1.1" fill={stroke} />
-        <circle cx="14.5" cy="9.5" r="1.1" fill={stroke} />
-        <circle cx="13" cy="14.5" r="1.1" fill={stroke} />
-        <circle cx="9" cy="14" r="1.1" fill={stroke} />
-      </svg>
-    );
-  }
-  if (variant === 'cone') {
-    return (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-        <path d="M12 3.5 L19 20 A9 4 0 0 1 5 20 Z" stroke={stroke} strokeWidth="1.6" strokeLinejoin="round" />
-        <path d="M8.3 12.5 Q12 15 15.7 12.5" stroke={stroke} strokeWidth="1.2" />
-      </svg>
-    );
-  }
+function RollPriceRow({ label, price, hint }: { label: string; price: number; hint: string }) {
   return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-      <rect x="3.5" y="6.5" width="17" height="11" rx="4" stroke={stroke} strokeWidth="1.6" />
-      <line x1="3.5" y1="12" x2="20.5" y2="12" stroke={stroke} strokeWidth="1.2" />
-    </svg>
+    <Stack direction="row" alignItems="center" justifyContent="space-between" gap={0.75}>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography sx={{ color: COLORS.white, fontSize: '0.8rem', fontWeight: 700 }}>{label}</Typography>
+        <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.72rem', lineHeight: 1.5 }}>{hint}</Typography>
+      </Box>
+      <Typography sx={{ color: COLORS.redText, fontWeight: 800, fontSize: '1.05rem', flexShrink: 0 }}>₪{price}</Typography>
+    </Stack>
   );
 }
 
-function RollIconBadge({ type }: { type: string }) {
+function RollCard({ roll, index, onSelect }: { roll: RollPrice; index: number; onSelect: () => void }) {
+  const detailsId = `build-roll-${index}-details`;
+  const pricesId = `build-roll-${index}-prices`;
   return (
-    <Box
-      aria-hidden="true"
+    <ButtonBase
+      component="div"
+      role="button"
+      tabIndex={0}
+      onClick={onSelect}
+      aria-label={`בחרו רול ${roll.type} והוסיפו להזמנה`}
+      aria-describedby={`${detailsId} ${pricesId}`}
+      aria-haspopup="dialog"
       sx={{
-        width: 44,
-        height: 44,
-        borderRadius: '50%',
-        display: 'grid',
-        placeItems: 'center',
-        border: '1px solid',
-        borderColor: alpha(COLORS.red, 0.5),
-        bgcolor: alpha(COLORS.red, 0.08),
-        mx: 'auto',
-        mb: 0.75,
+        display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'flex-start',
+        width: '100%', textAlign: 'start', borderRadius: '18px', overflow: 'hidden',
+        border: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: COLORS.surface,
+        transition: 'border-color 180ms ease, background-color 180ms ease',
+        '&:hover': { borderColor: alpha(COLORS.redText, 0.7), bgcolor: COLORS.bgElevated },
+        '&.Mui-focusVisible': { outline: `2px solid ${COLORS.white}`, outlineOffset: 3 },
       }}
     >
-      <RollIcon variant={ROLL_ICON_BY_TYPE[type] ?? 'ring'} />
-    </Box>
-  );
-}
-
-function DotDivider({ label }: { label: string }) {
-  return (
-    <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.25} useFlexGap>
-      <Box sx={{ width: 28, height: '1px', bgcolor: alpha(COLORS.red, 0.5) }} />
-      <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: COLORS.red, flexShrink: 0 }} />
-      <Typography sx={{ fontWeight: 700, color: COLORS.white, fontSize: '0.9rem', whiteSpace: 'nowrap' }}>{label}</Typography>
-      <Box sx={{ width: 5, height: 5, borderRadius: '50%', bgcolor: COLORS.red, flexShrink: 0 }} />
-      <Box sx={{ width: 28, height: '1px', bgcolor: alpha(COLORS.red, 0.5) }} />
-    </Stack>
+      <MenuImage src={roll.image} alt={`דוגמה לצורת רול ${roll.type}`} aspectRatio="4 / 3" rounded={0} />
+      <Stack spacing={1.25} sx={{ p: { xs: 1.5, md: 2 }, flex: 1 }}>
+        <Box>
+          <Typography component="h3" sx={{ fontSize: { xs: '1rem', md: '1.1rem' }, fontWeight: 800, color: COLORS.white }}><bdi>{roll.type}</bdi></Typography>
+          <Typography id={detailsId} sx={{ mt: 0.4, minHeight: '3em', fontSize: '0.78rem', lineHeight: 1.5, color: COLORS.textSecondary }}>{roll.description}</Typography>
+        </Box>
+        <Stack id={pricesId} spacing={1.1} divider={<Divider sx={{ borderColor: COLORS.surfaceBorder }} />}>
+          <RollPriceRow label="עם דג" price={roll.fish} hint={roll.singleChoice ? 'דג אחד לבחירה' : `דג אחד + עד ${roll.vegCountFish} ירקות`} />
+          <RollPriceRow label="צמחוני" price={roll.veggie} hint={roll.singleChoice ? 'ירק אחד לבחירה' : `עד ${roll.vegCountVeggie} ירקות לבחירה`} />
+        </Stack>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" gap={0.5}
+          sx={{ mt: 'auto !important', pt: 1.5, color: COLORS.redText }}>
+          <Typography sx={{ fontSize: '0.82rem', fontWeight: 800 }}>להרכבת הרול</Typography>
+          <ArrowBackRoundedIcon sx={{ fontSize: 19 }} />
+        </Stack>
+      </Stack>
+    </ButtonBase>
   );
 }
 
 function ChoiceLine({ label, choices }: { label: string; choices: string[] }) {
   return (
-    <Stack spacing={0.4}>
-      <Typography sx={{ fontWeight: 700, color: COLORS.red, fontSize: '0.82rem' }}>{label}</Typography>
-      <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.6 }}>{choices.join('  •  ')}</Typography>
+    <Stack spacing={1}>
+      <Typography component="h4" sx={{ fontWeight: 700, color: COLORS.white, fontSize: '0.85rem' }}>{label}</Typography>
+      <Stack direction="row" flexWrap="wrap" gap={0.75}>
+        {choices.map((choice) => <Chip key={choice} label={choice} size="small" variant="outlined" sx={{ fontSize: '0.78rem', borderColor: COLORS.surfaceBorder }} />)}
+      </Stack>
     </Stack>
   );
 }
 
 function AddonLine({ label, addons }: { label: string; addons: { name: string; price: string }[] }) {
   return (
-    <Stack spacing={0.4}>
-      <Typography sx={{ fontWeight: 700, color: COLORS.red, fontSize: '0.82rem' }}>{label}</Typography>
-      <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.6 }}>
-        {addons.map((a, i) => (
-          <Box key={a.name} component="span">
-            {a.name}
-            <Box component="span" sx={{ color: COLORS.red, fontWeight: 700, mx: 1 }}>{a.price}</Box>
-            {i < addons.length - 1 ? '  |  ' : ''}
-          </Box>
-        ))}
-      </Typography>
+    <Stack spacing={1}>
+      <Typography component="h4" sx={{ fontWeight: 700, color: COLORS.white, fontSize: '0.85rem' }}>{label}</Typography>
+      <Stack direction="row" flexWrap="wrap" gap={0.75}>
+        {addons.map((addon) => <Box key={addon.name} sx={{ px: 1.25, py: 0.6, border: `1px solid ${COLORS.surfaceBorder}`, borderRadius: 999, fontSize: '0.8rem', color: COLORS.textSecondary }}>
+          {addon.name} <Box component="span" sx={{ color: COLORS.redText, fontWeight: 700, marginInlineStart: 0.5 }}><bdi dir="ltr">{addon.price}</bdi></Box>
+        </Box>)}
+      </Stack>
     </Stack>
   );
 }
@@ -115,112 +91,46 @@ function AddonLine({ label, addons }: { label: string; addons: { name: string; p
 export function BuildYourOwnSection() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [initialType, setInitialType] = React.useState<string | undefined>(undefined);
-
-  const openDialogFor = (type?: string) => {
-    setInitialType(type);
-    setDialogOpen(true);
-  };
+  const openDialogFor = (type: string) => { setInitialType(type); setDialogOpen(true); };
 
   return (
-    <Box
-      component="section"
-      id={buildYourOwn.id}
-      aria-labelledby="build-heading"
-      sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}
-    >
+    <Box component="section" id={buildYourOwn.id} aria-labelledby="build-heading"
+      sx={{ scrollMarginTop: { xs: '134px', md: '168px' }, py: { xs: 3.5, md: 4.5 } }}>
       <Container maxWidth="lg" disableGutters sx={{ px: { xs: 2.5, md: 3 } }}>
         <Reveal>
-          <SectionHeading id="build-heading" title={buildYourOwn.title} />
-
-          <Stack alignItems="center" spacing={1} sx={{ mb: { xs: 2, md: 2.5 }, mt: 1 }}>
-            <Stack direction="row" alignItems="center" spacing={1.25} useFlexGap>
-              <Box sx={{ width: 24, height: '1px', bgcolor: alpha(COLORS.red, 0.6) }} />
-              <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', color: COLORS.textMuted }}>
-                {buildYourOwn.titleEn.toUpperCase()}
-              </Typography>
-              <Box sx={{ width: 24, height: '1px', bgcolor: alpha(COLORS.red, 0.6) }} />
-            </Stack>
-            <Typography sx={{ color: COLORS.textSecondary, fontSize: { xs: '0.85rem', md: '0.9rem' } }}>{buildYourOwn.intro}</Typography>
+          <SectionHeading id="build-heading" title={buildYourOwn.title} subtitle="בחרו את צורת הרול. את המילוי והתוספות בוחרים בהמשך." />
+          <Stack component="ol" direction="row" spacing={1} useFlexGap sx={{ listStyle: 'none', p: 0, mt: 0, mb: 2.5 }}>
+            {BUILD_STEPS.map((label, index) => <Stack component="li" key={label} direction="row" alignItems="center" gap={0.75}
+              sx={{ flex: 1, minWidth: 0, py: 1, px: { xs: 0.75, sm: 1.5 }, bgcolor: alpha(COLORS.white, 0.025), border: `1px solid ${COLORS.surfaceBorder}`, borderRadius: '12px' }}>
+              <Box component="span" aria-hidden="true" sx={{ width: 25, height: 25, flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', bgcolor: alpha(COLORS.red, 0.16), color: COLORS.redText, fontSize: '0.8rem', fontWeight: 800 }}>{index + 1}</Box>
+              <Typography sx={{ fontSize: { xs: '0.74rem', sm: '0.82rem' }, color: COLORS.textSecondary, lineHeight: 1.45 }}>{label}</Typography>
+            </Stack>)}
           </Stack>
 
-          <Box
-            sx={{
-              border: '1px solid',
-              borderColor: COLORS.surfaceBorder,
-              borderRadius: 3,
-              bgcolor: COLORS.surface,
-              overflow: 'hidden',
-            }}
-          >
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' } }}>
-              {buildYourOwn.rollPrices.map((roll) => (
-                <ButtonBase
-                  key={roll.type}
-                  onClick={() => openDialogFor(roll.type)}
-                  aria-label={`בחרו רול ${roll.type} והוסיפו להזמנה`}
-                  sx={{
-                    display: 'block',
-                    width: '100%',
-                    p: 1.5,
-                    textAlign: 'center',
-                    borderBottom: '1px solid',
-                    borderInlineStart: '1px solid',
-                    borderColor: COLORS.surfaceBorder,
-                    '&:hover': { bgcolor: alpha(COLORS.red, 0.06) },
-                  }}
-                >
-                  <Box sx={{ width: '100%' }}>
-                    <RollIconBadge type={roll.type} />
-                    <Typography sx={{ fontWeight: 800, fontSize: '0.88rem', color: COLORS.white, mb: 0.5 }}>{roll.type}</Typography>
-                    <Stack direction="row" spacing={1.25} useFlexGap justifyContent="center" sx={{ fontSize: '0.75rem' }}>
-                      <Typography sx={{ color: COLORS.textMuted, fontSize: 'inherit' }}>
-                        דג <Box component="span" sx={{ color: COLORS.red, fontWeight: 700 }}>₪{roll.fish}</Box>
-                      </Typography>
-                      <Typography sx={{ color: COLORS.textMuted, fontSize: 'inherit' }}>
-                        צמחוני <Box component="span" sx={{ color: COLORS.red, fontWeight: 700 }}>₪{roll.veggie}</Box>
-                      </Typography>
-                    </Stack>
-                    <Typography sx={{ mt: 0.5, fontSize: '0.68rem', color: COLORS.textMuted, lineHeight: 1.4 }}>
-                      {rollSelectionHint(roll)}
-                    </Typography>
-                  </Box>
-                </ButtonBase>
-              ))}
-            </Box>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' }, gap: { xs: 1.25, sm: 2 } }}>
+            {buildYourOwn.rollPrices.map((roll, index) => <RollCard key={roll.type} roll={roll} index={index} onSelect={() => openDialogFor(roll.type)} />)}
+          </Box>
+          <ImageDisclaimer plural sx={{ mt: 1, textAlign: 'center' }} />
 
-            <Stack spacing={1.25} sx={{ p: { xs: 1.75, md: 2.25 } }} divider={<Box sx={{ height: '1px', bgcolor: COLORS.surfaceBorder }} />}>
+          <Box sx={{ mt: 2.5, p: { xs: 2, md: 2.5 }, border: `1px solid ${COLORS.surfaceBorder}`, borderRadius: '18px', bgcolor: COLORS.surface }}>
+            <Typography component="h3" sx={{ fontSize: '1rem', fontWeight: 800, color: COLORS.white, mb: 0.5 }}>מה נכנס לרול שלכם?</Typography>
+            <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.8rem', mb: 2 }}>בוחרים את המרכיבים לפי הכמות שמופיעה בסוג הרול.</Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
               <ChoiceLine label="ירקות לבחירה" choices={buildYourOwn.vegetables} />
               <ChoiceLine label="דגים לבחירה" choices={buildYourOwn.fish} />
+            </Box>
+            <Divider sx={{ my: 2.25, borderColor: COLORS.surfaceBorder }} />
+            <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1} sx={{ mb: 1.5 }}>
+              <Typography component="h3" sx={{ fontSize: '1rem', fontWeight: 800, color: COLORS.white }}>רוצים לשדרג?</Typography>
+              <Typography sx={{ fontSize: '0.78rem', color: COLORS.textSecondary }}>מעטפות וציפויים בתוספת תשלום · לבחירה</Typography>
             </Stack>
-
-            <Stack
-              spacing={1.5}
-              sx={{
-                p: { xs: 1.75, md: 2.25 },
-                borderTop: '1px solid',
-                borderColor: COLORS.surfaceBorder,
-                bgcolor: alpha(COLORS.red, 0.05),
-              }}
-            >
-              <DotDivider label="תוספות מיוחדות לרול" />
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
               <AddonLine label="מעטפות" addons={buildYourOwn.wraps} />
               <AddonLine label="ציפויים" addons={buildYourOwn.coatings} />
-            </Stack>
+            </Box>
           </Box>
-
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size="large"
-            onClick={() => openDialogFor(undefined)}
-            sx={{ mt: 2, minHeight: 52, fontSize: '0.95rem' }}
-          >
-            בחרו רול והוסיפו להזמנה
-          </Button>
         </Reveal>
       </Container>
-
       <BuildYourOwnDialog open={dialogOpen} onClose={() => setDialogOpen(false)} initialType={initialType} />
     </Box>
   );

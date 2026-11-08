@@ -16,13 +16,15 @@ const DIVIDER = '━━━━━━━━━━━━━━';
  * Quantity 1 never shows a redundant "₪10 × 1 = ₪10" calculation.
  */
 function formatItemBlock(item: CartLine): string {
-  const isCustomized = item.options.length > 0;
+  const isCustomized = item.options.length > 0 || Boolean(item.notes);
   const lineTotal = item.unitPrice * item.quantity;
 
   const lines: string[] = [`*${item.quantity} × ${item.name}*`];
   for (const option of item.options) {
     lines.push(`• ${option}`);
   }
+
+  if (item.notes?.trim()) lines.push(`בקשות מיוחדות למנה: ${item.notes.trim()}`);
 
   if (isCustomized) {
     lines.push(item.quantity > 1 ? `*מחיר: ₪${item.unitPrice} × ${item.quantity} = ₪${lineTotal}*` : `*מחיר: ₪${item.unitPrice}*`);
@@ -52,9 +54,8 @@ function formatCustomerLines(customer: CustomerDetails): string[] {
 }
 
 /**
- * Builds the wa.me deep link carrying the full, human-readable order — the only
- * place order data is transmitted (there is no backend). Uses only the order's
- * own already-computed prices/total; never recalculates anything.
+ * Builds the wa.me deep link carrying the full, human-readable, server-validated order.
+ * Uses the snapshot's prices/total; never recalculates anything.
  */
 export function buildOrderWhatsAppLink(order: OrderSnapshot): string {
   const parts: string[] = [];

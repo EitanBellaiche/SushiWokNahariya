@@ -19,8 +19,13 @@ export const BUSINESS = {
    * here and the pages will pick it up automatically.
    */
   email: undefined as string | undefined,
+  /**
+   * TODO(legal): name of the accessibility coordinator, if one is appointed. The
+   * accessibility statement shows it automatically once it is filled in.
+   */
+  accessibilityCoordinator: undefined as string | undefined,
   /** Centralized "last updated" date shown on every legal page — edit once here. */
-  lastLegalUpdate: '26.08.2026',
+  lastLegalUpdate: '08.11.2026',
 } as const;
 
 export const PROMO = {

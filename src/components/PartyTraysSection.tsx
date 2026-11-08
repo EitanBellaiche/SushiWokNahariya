@@ -1,18 +1,21 @@
-import { Box, Container, Stack, Typography, alpha } from '@mui/material';
+import { Box, ButtonBase, Container, Stack, Typography, alpha } from '@mui/material';
+import { useDishDetails } from '../dishes/DishDetailsContext';
 import { partyTrays } from '../data/menu';
 import type { MenuItem } from '../data/menu';
 import { BUSINESS } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { SectionHeading } from './MenuSection';
-import { MenuImage } from './MenuImage';
+import { ImageDisclaimer, MenuImage } from './MenuImage';
 import { AddToCartButton } from './AddToCartButton';
 
 function TrayCard({ tray, index }: { tray: MenuItem; index: number }) {
+  const openDish = useDishDetails();
   return (
     <Reveal delay={index * 80}>
       <Box
-        sx={{
+        onClick={() => openDish(tray.id)}
+        sx={{ cursor: 'pointer',
           borderRadius: 4,
           overflow: 'hidden',
           border: '1px solid',
@@ -22,9 +25,10 @@ function TrayCard({ tray, index }: { tray: MenuItem; index: number }) {
       >
         <MenuImage src={tray.image} alt={`${tray.name} – ${BUSINESS.nameHe}`} aspectRatio="16 / 10" rounded={0} eager={index === 0} />
         <Stack spacing={0.5} sx={{ p: 2.25 }}>
+          <ImageDisclaimer />
           <Stack direction="row" justifyContent="space-between" alignItems="baseline" gap={1}>
             <Typography component="h3" sx={{ fontSize: '1.1rem', fontWeight: 800, color: COLORS.white }}>
-              {tray.name}
+              <ButtonBase onClick={(e) => { e.stopPropagation(); openDish(tray.id); }} aria-haspopup="dialog" sx={{ font: 'inherit', color: 'inherit', textAlign: 'start' }}>{tray.name}</ButtonBase>
             </Typography>
             <Typography
               sx={{

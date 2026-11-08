@@ -1,4 +1,5 @@
 import type { DeliveryZone } from './delivery';
+import type { DishCustomization } from '../dishes/types';
 
 export type FulfillmentType = 'pickup' | 'delivery';
 
@@ -10,6 +11,9 @@ export type CartLine = {
   quantity: number;
   /** Human-readable option lines, e.g. "דג: סלמון", already reflected in unitPrice where relevant. */
   options: string[];
+  customization?: DishCustomization;
+  /** Per-dish kitchen instructions, separate from order/courier notes. */
+  notes?: string;
 };
 
 export type CustomerDetails = {

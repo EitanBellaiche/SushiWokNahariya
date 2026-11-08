@@ -20,6 +20,11 @@ export type MenuItem = {
   addonChoices?: MenuAddon[];
   /** Overrides the generic "תוספת" wording in the addon-choice dialog (e.g. "אופן הכנה" for a raw/baked choice with no price difference). */
   addonChoiceLabel?: string;
+  /** Explicit restaurant-configured ingredients and removable subset. */
+  ingredients?: string[];
+  removableIngredients?: string[];
+  /** Optional extras, independent of the required addonChoices selector. */
+  optionalAddons?: MenuAddon[];
 };
 
 export type MenuAddon = {
@@ -80,7 +85,28 @@ export const IMAGES = {
   partyTraysHero: img('party-trays.png'),
   kidsHero: img('kids.png'),
   drinksHero: img('drinks.png'),
+  saucesHero: img('sauces.png'),
+  sauceSpicyMayo: img('sauce-spicy-mayo.png'),
+  sauceTeriyaki: img('sauce-teriyaki.png'),
+  sauceSoy: img('sauce-soy.png'),
+  sauceGinger: img('sauce-ginger.png'),
+  sauceWasabi: img('sauce-wasabi.png'),
+  sauceSweetChili: img('sauce-sweet-chili.png'),
+  sauceChiliOil: img('sauce-chili-oil.png'),
+  sauceSweetSour: img('sauce-sweet-sour.png'),
+  drinkWater: img('drink-water.png'),
+  drinkSoda: img('drink-soda.png'),
+  drinkCoke: img('drink-coke.png'),
+  drinkCokeZero: img('drink-coke-zero.png'),
+  drinkSprite: img('drink-sprite.png'),
+  drinkFanta: img('drink-fanta.png'),
+  drinkGrape: img('drink-grape.png'),
+  drinkOrange: img('drink-orange.png'),
   buildYourOwnHero: img('build-your-own.png'),
+  buildIo: img('build-io.png'),
+  buildFutomaki: img('build-futomaki.png'),
+  buildSushiSandwich: img('build-sushi-sandwich.png'),
+  buildMaki: img('build-maki.png'),
   combosHero: img('combos.png'),
 
   // Second batch of supplied dish photos.
@@ -284,6 +310,8 @@ export const combos: { id: string; navLabel: string; title: string; items: Combo
 
 export type RollPrice = {
   type: string;
+  description?: string;
+  image?: string;
   fish: number;
   veggie: number;
   /** Vegetables required alongside the single fish choice (fish-base rolls). Omitted for single-choice rolls (maki). */
@@ -301,10 +329,10 @@ export const buildYourOwn = {
   titleEn: 'Build Your Own',
   intro: 'בחרו סוג רול',
   rollPrices: [
-    { type: 'I/O', fish: 39, veggie: 35, vegCountFish: 2, vegCountVeggie: 3 },
-    { type: 'פוטומאקי', fish: 45, veggie: 39, vegCountFish: 3, vegCountVeggie: 4 },
-    { type: 'סנדוויץ׳ סושי', fish: 40, veggie: 35, vegCountFish: 3, vegCountVeggie: 3 },
-    { type: 'מאקי', fish: 25, veggie: 20, singleChoice: true },
+    { type: 'I/O', description: 'אינסייד אאוט · אורז מבחוץ', image: IMAGES.buildIo, fish: 39, veggie: 35, vegCountFish: 2, vegCountVeggie: 3 },
+    { type: 'פוטומאקי', description: 'רול עבה עם אצה מבחוץ', image: IMAGES.buildFutomaki, fish: 45, veggie: 39, vegCountFish: 3, vegCountVeggie: 4 },
+    { type: 'סנדוויץ׳ סושי', description: 'משולשי סושי בשכבות אורז', image: IMAGES.buildSushiSandwich, fish: 40, veggie: 35, vegCountFish: 3, vegCountVeggie: 3 },
+    { type: 'מאקי', description: 'רול דק עם מרכיב אחד לבחירה', image: IMAGES.buildMaki, fish: 25, veggie: 20, singleChoice: true },
   ] as RollPrice[],
   vegetables: ['אבוקדו', 'בטטה', 'מלפפון', 'גזר', 'בצל ירוק', 'עירית', 'קנפיו'],
   fish: ['סלמון', 'סלמון צלוי', 'טונה אדומה', 'דג לבן'],
@@ -373,23 +401,39 @@ export const kids: MenuCategory = {
   ],
 };
 
+export const sauces: MenuCategory = {
+  id: 'sauces',
+  navLabel: 'רטבים',
+  title: 'רטבים בתוספת תשלום',
+  items: [
+    { id: 'sauce-spicy-mayo', name: 'ספייסי מיונז', price: '₪3', numericPrice: 3, image: IMAGES.sauceSpicyMayo },
+    { id: 'sauce-teriyaki', name: 'טריאקי', price: '₪3', numericPrice: 3, image: IMAGES.sauceTeriyaki },
+    { id: 'sauce-soy', name: 'סויה', price: '₪3', numericPrice: 3, image: IMAGES.sauceSoy },
+    { id: 'sauce-ginger', name: 'גינגר', price: '₪3', numericPrice: 3, image: IMAGES.sauceGinger },
+    { id: 'sauce-wasabi', name: 'ווסאבי', price: '₪3', numericPrice: 3, image: IMAGES.sauceWasabi },
+    { id: 'sauce-sweet-chili', name: 'צ׳ילי מתוק', price: '₪3', numericPrice: 3, image: IMAGES.sauceSweetChili },
+    { id: 'sauce-chili-oil', name: 'שמן צ׳ילי חריף', price: '₪3', numericPrice: 3, image: IMAGES.sauceChiliOil },
+    { id: 'sauce-sweet-sour', name: 'חמוץ מתוק', price: '₪3', numericPrice: 3, image: IMAGES.sauceSweetSour },
+  ],
+};
+
 export const drinks: MenuCategory = {
   id: 'drinks',
   navLabel: 'שתייה',
   title: 'שתייה',
   items: [
-    { id: 'water', name: 'מים', price: '₪8', numericPrice: 8 },
-    { id: 'soda', name: 'סודה', price: '₪8', numericPrice: 8 },
-    { id: 'coke', name: 'קוקה קולה', price: '₪10', numericPrice: 10 },
-    { id: 'coke-zero', name: 'קוקה קולה זירו', price: '₪10', numericPrice: 10 },
-    { id: 'sprite', name: 'ספרייט', price: '₪10', numericPrice: 10 },
-    { id: 'fanta', name: 'פאנטה', price: '₪10', numericPrice: 10 },
-    { id: 'grape', name: 'ענבים', price: '₪10', numericPrice: 10 },
-    { id: 'orange', name: 'תפוזים', price: '₪10', numericPrice: 10 },
+    { id: 'water', name: 'מים', price: '₪8', numericPrice: 8, image: IMAGES.drinkWater },
+    { id: 'soda', name: 'סודה', price: '₪8', numericPrice: 8, image: IMAGES.drinkSoda },
+    { id: 'coke', name: 'קוקה קולה', price: '₪10', numericPrice: 10, image: IMAGES.drinkCoke },
+    { id: 'coke-zero', name: 'קוקה קולה זירו', price: '₪10', numericPrice: 10, image: IMAGES.drinkCokeZero },
+    { id: 'sprite', name: 'ספרייט', price: '₪10', numericPrice: 10, image: IMAGES.drinkSprite },
+    { id: 'fanta', name: 'פאנטה', price: '₪10', numericPrice: 10, image: IMAGES.drinkFanta },
+    { id: 'grape', name: 'ענבים', price: '₪10', numericPrice: 10, image: IMAGES.drinkGrape },
+    { id: 'orange', name: 'תפוזים', price: '₪10', numericPrice: 10, image: IMAGES.drinkOrange },
   ],
 };
 
-export const simpleCategories: MenuCategory[] = [starters, poke, wok, specials, nigiri, kids, drinks];
+export const simpleCategories: MenuCategory[] = [starters, poke, wok, specials, nigiri, kids, sauces, drinks];
 
 // Single source of truth for category order — every nav surface (main menu,
 // desktop/mobile category nav, category shortcuts, the drawer, and section
@@ -411,5 +455,6 @@ export const navCategories = [
   { id: nigiri.id, label: nigiri.navLabel },
   { id: partyTrays.id, label: partyTrays.navLabel },
   { id: kids.id, label: kids.navLabel },
+  { id: sauces.id, label: sauces.navLabel },
   { id: drinks.id, label: drinks.navLabel },
 ];

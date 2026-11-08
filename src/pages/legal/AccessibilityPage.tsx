@@ -14,10 +14,21 @@ export function AccessibilityPage() {
         מתארים בשקיפות את הצעדים שכבר יושמו.
       </Typography>
 
+      <Typography component="h2">רמת הנגישות</Typography>
+      <Typography>
+        ההתאמות באתר נעשו בשאיפה לעמוד בתקן הישראלי ת״י 5568, המבוסס על הנחיות WCAG ברמה AA.
+      </Typography>
+
+      <Typography component="h2">תפריט נגישות</Typography>
+      <Typography>
+        בכל עמוד באתר מופיע כפתור נגישות, המאפשר להגדיל את הטקסט, להפעיל ניגודיות גבוהה, להדגיש קישורים, לעבור לגופן
+        קריא ולעצור אנימציות. ההגדרות נשמרות במכשיר שלכם לביקורים הבאים וניתן לאפס אותן בכל עת.
+      </Typography>
+
       <Typography component="h2">ניווט במקלדת</Typography>
       <Typography>
         האפשרויות המרכזיות באתר — כולל ניווט בתפריט, הוספת מנות להזמנה, פתיחת עגלת ההזמנה ומילוי פרטי הזמנה — ניתנות
-        לתפעול גם באמצעות מקלדת בלבד, ללא צורך בעכבר או במסך מגע.
+        לתפעול גם באמצעות מקלדת בלבד, ללא צורך בעכבר או במסך מגע. בתחילת כל עמוד זמין קישור לדילוג ישיר לתוכן הראשי.
       </Typography>
 
       <Typography component="h2">מבנה סמנטי</Typography>
@@ -61,10 +72,25 @@ export function AccessibilityPage() {
         ומעברים.
       </Typography>
 
+      <Typography component="h2">תוכן מתחלף</Typography>
+      <Typography>
+        ניתן לעצור ולהפעיל מחדש את החלפת תמונות המבצע בעמוד הבית באמצעות כפתור ייעודי.
+      </Typography>
+
       <Typography component="h2">מגבלות ידועות</Typography>
       <Typography>
         האתר לא עבר עדיין ביקורת נגישות פורמלית על ידי גורם חיצוני מוסמך, וייתכנו בו חוסרים שטרם זוהו. אנו ממשיכים
-        לעבוד על שיפור הנגישות באופן שוטף.
+        לעבוד על שיפור הנגישות באופן שוטף. שליחת ההזמנה מתבצעת באמצעות WhatsApp, שירות חיצוני שנגישותו אינה בשליטתנו;
+        ניתן לבצע הזמנה גם בטלפון.
+      </Typography>
+
+      <Typography component="h2">נגישות בבית העסק</Typography>
+      <Typography>
+        לבירור הסדרי הנגישות בבית העסק ובאיסוף העצמי ב{BUSINESS.address}, ניתן לפנות אלינו בטלפון{' '}
+        <Box component="a" href={`tel:${BUSINESS.phone}`}>
+          {BUSINESS.phoneDisplay}
+        </Box>
+        .
       </Typography>
 
       <Typography component="h2">פנייה בנושא נגישות</Typography>
@@ -73,8 +99,18 @@ export function AccessibilityPage() {
         <Box component="a" href={`tel:${BUSINESS.phone}`}>
           {BUSINESS.phoneDisplay}
         </Box>{' '}
-        או ב-WhatsApp.
+        או ב-
+        <Box component="a" href={`https://wa.me/${BUSINESS.whatsappPhone}`} target="_blank" rel="noopener noreferrer">
+          WhatsApp
+        </Box>
+        {BUSINESS.email && (
+          <>
+            , או בדוא״ל <Box component="a" href={`mailto:${BUSINESS.email}`}>{BUSINESS.email}</Box>
+          </>
+        )}
+        . כתובתנו: {BUSINESS.address}.
       </Typography>
+      {BUSINESS.accessibilityCoordinator && <Typography>רכז/ת הנגישות: {BUSINESS.accessibilityCoordinator}.</Typography>}
     </LegalLayout>
   );
 }

@@ -1,10 +1,14 @@
 import React from 'react';
-import { Box, Button, Container, alpha } from '@mui/material';
+import { Box, Button, ButtonBase, Container, IconButton, alpha } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { PROMO } from '../data/business';
 import { COLORS } from '../theme';
 import { Reveal } from '../hooks/useReveal';
 import { PromoBundleDialog } from './PromoBundleDialog';
+import { ImageDisclaimer } from './MenuImage';
+import { useAccessibility } from '../accessibility/AccessibilityContext';
 
 // Native size of the supplied promo images — the box is locked to this
 // aspect ratio so the artwork is never cropped.
@@ -15,20 +19,24 @@ const PROMO_IMAGES = ['/promo-1.jpg', '/promo-2.jpg', '/promo-3.jpg'];
 const SLIDE_INTERVAL_MS = 4000;
 
 /** Cycles through PROMO_IMAGES on a timer, crossfading between the current and next slide. */
-function usePromoSlideshow(count: number) {
+function usePromoSlideshow(count: number, paused: boolean) {
   const [index, setIndex] = React.useState(0);
 
   React.useEffect(() => {
+    if (paused) return undefined;
     const id = setInterval(() => setIndex((current) => (current + 1) % count), SLIDE_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [count]);
+  }, [count, paused]);
 
   return index;
 }
 
 export function Promo() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const activeIndex = usePromoSlideshow(PROMO_IMAGES.length);
+  const { prefs } = useAccessibility();
+  const [userPaused, setUserPaused] = React.useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
+  const paused = userPaused || prefs.stopMotion;
+  const activeIndex = usePromoSlideshow(PROMO_IMAGES.length, paused);
 
   return (
     <Box component="section" aria-labelledby="promo-heading" sx={{ px: { xs: 2, md: 3 }, py: { xs: 3, md: 4 } }}>
@@ -43,7 +51,8 @@ export function Promo() {
               bgcolor: COLORS.bg,
             }}
           >
-            <Box sx={{ position: 'relative', aspectRatio: PROMO_IMAGE_ASPECT }}>
+            <Box sx={{ position: 'relative' }}>
+            <ButtonBase onClick={() => setDialogOpen(true)} aria-label={`פרטי המבצע: ${PROMO.text}, ${PROMO.price} ${PROMO.priceLabel}`} aria-haspopup="dialog" sx={{ display: 'block', width: '100%', position: 'relative', aspectRatio: PROMO_IMAGE_ASPECT }}>
               {PROMO_IMAGES.map((src, i) => (
                 <Box
                   key={src}
@@ -69,6 +78,7 @@ export function Promo() {
                   instead of showing a hard rectangular edge. */}
               <Box
                 aria-hidden="true"
+                className="a11y-keep-background"
                 sx={{
                   position: 'absolute',
                   inset: 0,
@@ -95,10 +105,22 @@ export function Promo() {
                   {PROMO.price} {PROMO.priceLabel}
                 </p>
               </Box>
+            </ButtonBase>
+
+            {!prefs.stopMotion && (
+              <IconButton
+                onClick={() => setUserPaused(!userPaused)}
+                aria-label={paused ? 'הפעלת החלפת תמונות המבצע' : 'עצירת החלפת תמונות המבצע'}
+                sx={{ position: 'absolute', top: 8, left: 8, width: 44, height: 44, color: COLORS.white, bgcolor: alpha(COLORS.bg, 0.75), '&:hover': { bgcolor: COLORS.bg } }}
+              >
+                {paused ? <PlayArrowRoundedIcon /> : <PauseRoundedIcon />}
+              </IconButton>
+            )}
             </Box>
 
             {/* Real, visible ordering button — the promo images don't have a clickable CTA */}
             <Box sx={{ p: { xs: 1.75, md: 2.25 } }}>
+              <ImageDisclaimer plural sx={{ textAlign: 'center', mb: 1 }} />
               <Button
                 variant="contained"
                 color="primary"

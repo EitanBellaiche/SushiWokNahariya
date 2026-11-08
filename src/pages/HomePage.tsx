@@ -8,10 +8,10 @@ import { CombosSection } from '../components/CombosSection';
 import { SushiBoxSection } from '../components/SushiBoxSection';
 import { BuildYourOwnSection } from '../components/BuildYourOwnSection';
 import { PartyTraysSection } from '../components/PartyTraysSection';
-import { DrinksSection } from '../components/DrinksSection';
+import { CompactMenuSection } from '../components/CompactMenuSection';
 import { WhyOrderSection } from '../components/WhyOrderSection';
 import { useActiveSection } from '../hooks/useActiveSection';
-import { specials, wok, poke, starters, kids, nigiri, combos, sushiBox, buildYourOwn, partyTrays, drinks, navCategories } from '../data/menu';
+import { specials, wok, poke, starters, kids, nigiri, combos, sushiBox, buildYourOwn, partyTrays, sauces, drinks, navCategories } from '../data/menu';
 import { COLORS } from '../theme';
 
 const sectionIds = navCategories.map((cat) => cat.id);
@@ -30,7 +30,8 @@ const sectionRenderers: Record<string, () => JSX.Element> = {
   [nigiri.id]: () => <MenuSection key={nigiri.id} category={nigiri} />,
   [partyTrays.id]: () => <PartyTraysSection key={partyTrays.id} />,
   [kids.id]: () => <MenuSection key={kids.id} category={kids} />,
-  [drinks.id]: () => <DrinksSection key={drinks.id} />,
+  [sauces.id]: () => <CompactMenuSection key={sauces.id} category={sauces} />,
+  [drinks.id]: () => <CompactMenuSection key={drinks.id} category={drinks} />,
 };
 
 export function HomePage() {
