@@ -75,7 +75,7 @@ export function DishDetailsDialog({ open, onClose, productId, line }: {
               <MenuImage src={dish.image} alt={dish.name} aspectRatio="4 / 3" rounded={3} fit={drinks.items.some((drink) => drink.id === dish.id) ? 'contain' : 'cover'} eager />
               <ImageDisclaimer sx={{ mt: 0.5 }} />
             </Box>}
-            <Typography sx={{ fontWeight: 800, fontSize: '1.45rem', color: COLORS.redText }}>{dish.price}</Typography>
+            <Typography sx={{ fontWeight: 800, fontSize: '1.45rem', color: COLORS.red }}>{dish.price}</Typography>
             <Typography id={descriptionId} sx={{ whiteSpace: 'pre-line', color: COLORS.textSecondary, lineHeight: 1.8 }}>{dish.description ?? 'פרטי המנה בהתאם לתפריט המסעדה.'}</Typography>
             {!!dish.ingredients?.length && <Box>
               <Typography component="h3" sx={{ fontWeight: 700, mb: 1 }}>מרכיבי המנה</Typography>

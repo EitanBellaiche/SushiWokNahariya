@@ -62,10 +62,10 @@ export function MenuRow({ item }: { item: MenuItem }) {
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack direction="row" alignItems="baseline" flexWrap="wrap" gap={1}>
           <Typography component="h3" sx={{ fontSize: '0.96rem', fontWeight: 700, color: COLORS.white }}>{item.name}</Typography>
-          <Typography id={`${infoId}-price`} sx={{ fontWeight: 800, fontSize: '0.96rem', color: COLORS.redText, whiteSpace: 'nowrap' }}>{item.price}</Typography>
+          <Typography id={`${infoId}-price`} sx={{ fontWeight: 800, fontSize: '0.96rem', color: COLORS.red, whiteSpace: 'nowrap' }}>{item.price}</Typography>
         </Stack>
         {item.description && <Typography id={`${infoId}-description`} sx={{ mt: 0.3, fontSize: '0.8rem', color: COLORS.textSecondary, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{item.description}</Typography>}
-        <Stack direction="row" alignItems="center" gap={0.5} sx={{ mt: 1, color: COLORS.redText }}>
+        <Stack direction="row" alignItems="center" gap={0.5} sx={{ mt: 1, color: COLORS.red }}>
           <AddRoundedIcon fontSize="small" /><Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>פרטים והתאמה</Typography>
         </Stack>
       </Box>

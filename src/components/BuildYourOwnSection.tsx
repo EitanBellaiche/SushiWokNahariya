@@ -18,7 +18,7 @@ function RollPriceRow({ label, price, hint }: { label: string; price: number; hi
         <Typography sx={{ color: COLORS.white, fontSize: '0.8rem', fontWeight: 700 }}>{label}</Typography>
         <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.72rem', lineHeight: 1.5 }}>{hint}</Typography>
       </Box>
-      <Typography sx={{ color: COLORS.redText, fontWeight: 800, fontSize: '1.05rem', flexShrink: 0 }}>₪{price}</Typography>
+      <Typography sx={{ color: COLORS.red, fontWeight: 800, fontSize: '1.05rem', flexShrink: 0 }}>₪{price}</Typography>
     </Stack>
   );
 }
@@ -81,7 +81,7 @@ function AddonLine({ label, addons }: { label: string; addons: { name: string; p
       <Typography component="h4" sx={{ fontWeight: 700, color: COLORS.white, fontSize: '0.85rem' }}>{label}</Typography>
       <Stack direction="row" flexWrap="wrap" gap={0.75}>
         {addons.map((addon) => <Box key={addon.name} sx={{ px: 1.25, py: 0.6, border: `1px solid ${COLORS.surfaceBorder}`, borderRadius: 999, fontSize: '0.8rem', color: COLORS.textSecondary }}>
-          {addon.name} <Box component="span" sx={{ color: COLORS.redText, fontWeight: 700, marginInlineStart: 0.5 }}><bdi dir="ltr">{addon.price}</bdi></Box>
+          {addon.name} <Box component="span" sx={{ color: COLORS.red, fontWeight: 700, marginInlineStart: 0.5 }}><bdi dir="ltr">{addon.price}</bdi></Box>
         </Box>)}
       </Stack>
     </Stack>

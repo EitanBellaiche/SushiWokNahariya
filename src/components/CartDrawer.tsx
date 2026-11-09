@@ -58,7 +58,7 @@ function CartLineRow({
           </Typography>
           <Typography sx={{ fontSize: '0.78rem', color: COLORS.textMuted }}>₪{line.unitPrice} ליחידה</Typography>
         </Box>
-        <Typography sx={{ fontWeight: 800, fontSize: '0.95rem', color: COLORS.redText, whiteSpace: 'nowrap' }}>
+        <Typography sx={{ fontWeight: 800, fontSize: '0.95rem', color: COLORS.red, whiteSpace: 'nowrap' }}>
           ₪{line.unitPrice * line.quantity}
         </Typography>
       </Stack>
@@ -140,7 +140,7 @@ function CartStep() {
         <DeliveryTimeNote />
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>סה״כ</Typography>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.redText }}>₪{totalPrice}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: '1.3rem', color: COLORS.red }}>₪{totalPrice}</Typography>
         </Stack>
         <StoreClosedNotice />
         <Button
@@ -333,7 +333,7 @@ function CheckoutStep() {
 
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography sx={{ fontWeight: 700, color: COLORS.white }}>{deliveryPending ? 'סה״כ מוצרים' : 'סה״כ'}</Typography>
-          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.redText }}>₪{displayTotal}</Typography>
+          <Typography sx={{ fontWeight: 900, fontSize: '1.2rem', color: COLORS.red }}>₪{displayTotal}</Typography>
         </Stack>
         {deliveryPending && (
           <Typography sx={{ fontSize: '0.74rem', color: COLORS.textMuted, textAlign: 'center' }}>

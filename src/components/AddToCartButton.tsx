@@ -105,7 +105,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
         borderRadius: 999,
         fontSize: '0.8rem',
         fontWeight: 700,
-        color: COLORS.redText,
+        color: COLORS.red,
         bgcolor: alpha(COLORS.red, 0.1),
         border: '1px solid',
         borderColor: alpha(COLORS.red, 0.5),

@@ -25,7 +25,7 @@ export function CompactMenuSection({ category }: { category: MenuCategory }) {
                     <Typography sx={{ fontSize: '0.9rem', fontWeight: 600, color: COLORS.white }}>{item.name}</Typography>
                   </ButtonBase>
                   <Stack direction="row" alignItems="center" gap={1}>
-                    <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: COLORS.redText, whiteSpace: 'nowrap' }}>{item.price}</Typography>
+                    <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: COLORS.red, whiteSpace: 'nowrap' }}>{item.price}</Typography>
                     <Box onClick={(event) => event.stopPropagation()}><AddToCartButton productId={item.id} name={item.name} unitPrice={item.numericPrice} compact /></Box>
                   </Stack>
                 </Stack>
