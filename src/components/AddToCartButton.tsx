@@ -45,7 +45,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
             onClick={() => updateQuantity(line.lineId, line.quantity - 1)}
             aria-label={`הפחת כמות של ${name}`}
             size="small"
-            sx={{ width: 30, height: 30, color: COLORS.redText }}
+            sx={{ width: 30, height: 30, color: COLORS.red }}
           >
             <RemoveRoundedIcon fontSize="small" />
           </IconButton>
@@ -58,7 +58,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
             aria-label={`הוסף עוד ${name} להזמנה`}
             data-testid={`add-to-cart-${productId}`}
             size="small"
-            sx={{ width: 30, height: 30, color: COLORS.redText }}
+            sx={{ width: 30, height: 30, color: COLORS.red }}
           >
             <AddRoundedIcon fontSize="small" />
           </IconButton>
@@ -76,7 +76,7 @@ export function AddToCartButton({ productId, name, unitPrice, fullWidth, compact
         sx={{
           width: 32,
           height: 32,
-          color: COLORS.redText,
+          color: COLORS.red,
           bgcolor: alpha(COLORS.red, 0.1),
           border: '1px solid',
           borderColor: alpha(COLORS.red, 0.5),

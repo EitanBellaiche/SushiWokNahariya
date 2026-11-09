@@ -47,7 +47,7 @@ export function Footer() {
               const Icon = item.icon;
               const content = (
                 <Stack alignItems="center" spacing={0.75} textAlign="center">
-                  <Icon sx={{ color: COLORS.redText }} />
+                  <Icon sx={{ color: COLORS.red }} />
                   <Typography sx={{ color: COLORS.white, fontWeight: 600, fontSize: '0.88rem' }}>{item.label}</Typography>
                 </Stack>
               );
@@ -77,7 +77,7 @@ export function Footer() {
               justifyContent="center"
               sx={{ flex: 1, py: 1.1, borderRadius: 2.5, border: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: alpha(COLORS.white, 0.03) }}
             >
-              <LocalShippingOutlinedIcon sx={{ color: COLORS.redText, fontSize: '1.1rem' }} />
+              <LocalShippingOutlinedIcon sx={{ color: COLORS.red, fontSize: '1.1rem' }} />
               <Typography sx={{ fontSize: '0.85rem', color: COLORS.white, fontWeight: 600 }}>משלוחים</Typography>
             </Stack>
             <Stack
@@ -88,7 +88,7 @@ export function Footer() {
               justifyContent="center"
               sx={{ flex: 1, py: 1.1, borderRadius: 2.5, border: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: alpha(COLORS.white, 0.03) }}
             >
-              <StorefrontOutlinedIcon sx={{ color: COLORS.redText, fontSize: '1.1rem' }} />
+              <StorefrontOutlinedIcon sx={{ color: COLORS.red, fontSize: '1.1rem' }} />
               <Typography sx={{ fontSize: '0.85rem', color: COLORS.white, fontWeight: 600 }}>איסוף עצמי</Typography>
             </Stack>
           </Stack>
@@ -122,7 +122,7 @@ export function Footer() {
                 key={link.to}
                 component={RouterLink}
                 to={link.to}
-                sx={{ color: COLORS.textMuted, fontSize: '0.76rem', textDecoration: 'none', '&:hover': { color: COLORS.redText } }}
+                sx={{ color: COLORS.textMuted, fontSize: '0.76rem', textDecoration: 'none', '&:hover': { color: COLORS.red } }}
               >
                 {link.label}
               </Box>
@@ -130,7 +130,7 @@ export function Footer() {
             <Box
               component="a"
               href="/#contact"
-              sx={{ color: COLORS.textMuted, fontSize: '0.76rem', textDecoration: 'none', '&:hover': { color: COLORS.redText } }}
+              sx={{ color: COLORS.textMuted, fontSize: '0.76rem', textDecoration: 'none', '&:hover': { color: COLORS.red } }}
             >
               צור קשר
             </Box>

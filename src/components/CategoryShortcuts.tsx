@@ -102,7 +102,7 @@ export function CategoryShortcuts() {
                     placeItems: 'center',
                     fontSize: '1.2rem',
                     fontWeight: 800,
-                    color: COLORS.redText,
+                    color: COLORS.red,
                     bgcolor: alpha(COLORS.red, 0.1),
                     border: '1px solid',
                     borderColor: alpha(COLORS.red, 0.3),

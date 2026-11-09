@@ -34,7 +34,7 @@ export function SushiBoxSection() {
               <MenuImage src={sushiBox.image} alt={`${sushiBox.title} – ${BUSINESS.nameHe}`} size={96} rounded={2} />
               <ImageDisclaimer />
               <Typography sx={{ fontSize: '0.85rem', fontWeight: 700, color: COLORS.textSecondary }}>{sushiBox.subtitleEn}</Typography>
-              <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: COLORS.redText, pt: 0.5 }}>{sushiBox.unitsLabel}</Typography>
+              <Typography sx={{ fontSize: '0.95rem', fontWeight: 700, color: COLORS.red, pt: 0.5 }}>{sushiBox.unitsLabel}</Typography>
               <Typography sx={{ color: COLORS.textSecondary, fontSize: '0.85rem', lineHeight: 1.5 }}>{sushiBox.description}</Typography>
 
               <Typography

@@ -40,7 +40,7 @@ function RollCard({ roll, index, onSelect }: { roll: RollPrice; index: number; o
         width: '100%', textAlign: 'start', borderRadius: '18px', overflow: 'hidden',
         border: '1px solid', borderColor: COLORS.surfaceBorder, bgcolor: COLORS.surface,
         transition: 'border-color 180ms ease, background-color 180ms ease',
-        '&:hover': { borderColor: alpha(COLORS.redText, 0.7), bgcolor: COLORS.bgElevated },
+        '&:hover': { borderColor: alpha(COLORS.red, 0.7), bgcolor: COLORS.bgElevated },
         '&.Mui-focusVisible': { outline: `2px solid ${COLORS.white}`, outlineOffset: 3 },
       }}
     >
@@ -55,7 +55,7 @@ function RollCard({ roll, index, onSelect }: { roll: RollPrice; index: number; o
           <RollPriceRow label="צמחוני" price={roll.veggie} hint={roll.singleChoice ? 'ירק אחד לבחירה' : `עד ${roll.vegCountVeggie} ירקות לבחירה`} />
         </Stack>
         <Stack direction="row" justifyContent="space-between" alignItems="center" gap={0.5}
-          sx={{ mt: 'auto !important', pt: 1.5, color: COLORS.redText }}>
+          sx={{ mt: 'auto !important', pt: 1.5, color: COLORS.red }}>
           <Typography sx={{ fontSize: '0.82rem', fontWeight: 800 }}>להרכבת הרול</Typography>
           <ArrowBackRoundedIcon sx={{ fontSize: 19 }} />
         </Stack>
@@ -102,7 +102,7 @@ export function BuildYourOwnSection() {
           <Stack component="ol" direction="row" spacing={1} useFlexGap sx={{ listStyle: 'none', p: 0, mt: 0, mb: 2.5 }}>
             {BUILD_STEPS.map((label, index) => <Stack component="li" key={label} direction="row" alignItems="center" gap={0.75}
               sx={{ flex: 1, minWidth: 0, py: 1, px: { xs: 0.75, sm: 1.5 }, bgcolor: alpha(COLORS.white, 0.025), border: `1px solid ${COLORS.surfaceBorder}`, borderRadius: '12px' }}>
-              <Box component="span" aria-hidden="true" sx={{ width: 25, height: 25, flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', bgcolor: alpha(COLORS.red, 0.16), color: COLORS.redText, fontSize: '0.8rem', fontWeight: 800 }}>{index + 1}</Box>
+              <Box component="span" aria-hidden="true" sx={{ width: 25, height: 25, flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', bgcolor: COLORS.red, color: COLORS.white, fontSize: '0.8rem', fontWeight: 800 }}>{index + 1}</Box>
               <Typography sx={{ fontSize: { xs: '0.74rem', sm: '0.82rem' }, color: COLORS.textSecondary, lineHeight: 1.45 }}>{label}</Typography>
             </Stack>)}
           </Stack>

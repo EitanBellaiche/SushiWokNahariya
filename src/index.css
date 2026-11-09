@@ -36,7 +36,7 @@ a {
 }
 
 ::selection {
-  background: rgba(216, 31, 31, 0.32);
+  background: rgba(185, 28, 31, 0.32);
 }
 
 @media (prefers-reduced-motion: reduce) {

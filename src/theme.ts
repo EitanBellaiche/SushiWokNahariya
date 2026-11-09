@@ -6,8 +6,6 @@ export const COLORS = {
   surface: '#18130f',
   surfaceBorder: 'rgba(245, 240, 233, 0.09)',
   red: '#b91c1f',
-  /** Brand red lifted for text and icons on the dark surfaces: #b91c1f is under 3:1 there, this is over 6.5:1. */
-  redText: '#f47272',
   redDark: '#6e1013',
   redSoft: 'rgba(185, 28, 31, 0.14)',
   white: '#f7f4ef',
@@ -21,6 +19,7 @@ export const theme = createTheme({
     mode: 'dark',
     primary: { main: COLORS.red, light: '#cf4245', dark: COLORS.redDark, contrastText: '#ffffff' },
     secondary: { main: '#e7c98a' },
+    error: { main: COLORS.red },
     success: { main: '#25a35a' },
     background: { default: COLORS.bg, paper: COLORS.surface },
     text: { primary: COLORS.white, secondary: COLORS.textSecondary },

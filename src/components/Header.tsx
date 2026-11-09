@@ -96,7 +96,7 @@ export function Header() {
                 <Button
                   key={cat.id}
                   href={`/#${cat.id}`}
-                  sx={{ color: COLORS.white, px: 1.2, fontSize: '0.85rem', fontWeight: 600, '&:hover': { color: COLORS.redText, bgcolor: 'transparent' } }}
+                  sx={{ color: COLORS.white, px: 1.2, fontSize: '0.85rem', fontWeight: 600, '&:hover': { color: COLORS.red, bgcolor: 'transparent' } }}
                 >
                   {cat.label}
                 </Button>

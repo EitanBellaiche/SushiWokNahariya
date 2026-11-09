@@ -77,7 +77,7 @@ function CartLineRow({
       )}
 
       {line.notes && <Typography sx={{ fontSize: '0.8rem', color: COLORS.textSecondary, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>בקשות מיוחדות למנה: {line.notes}</Typography>}
-      <Button onClick={() => openDish(line.productId, line)} aria-label={`עריכת ${line.name}`} size="small" sx={{ alignSelf: 'flex-start', color: COLORS.redText }}>עריכת מנה</Button>
+      <Button onClick={() => openDish(line.productId, line)} aria-label={`עריכת ${line.name}`} size="small" sx={{ alignSelf: 'flex-start', color: COLORS.red }}>עריכת מנה</Button>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Stack direction="row" alignItems="center" spacing={0.5} sx={{ border: '1px solid', borderColor: COLORS.surfaceBorder, borderRadius: 999 }}>
           <IconButton
@@ -374,7 +374,7 @@ function CheckoutStep() {
             to="/terms"
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: COLORS.redText, fontWeight: 700 }}
+            sx={{ color: COLORS.red, fontWeight: 700 }}
           >
             תנאי השימוש
           </Box>{' '}
@@ -384,7 +384,7 @@ function CheckoutStep() {
             to="/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ color: COLORS.redText, fontWeight: 700 }}
+            sx={{ color: COLORS.red, fontWeight: 700 }}
           >
             מדיניות הפרטיות
           </Box>
@@ -426,7 +426,7 @@ function ConfirmationStep() {
 
   return (
     <Stack spacing={2} sx={{ px: 2.25, py: 3, overflowY: 'auto', flex: 1 }} alignItems="center" textAlign="center">
-      <CheckCircleRoundedIcon sx={{ fontSize: '2.8rem', color: COLORS.redText }} />
+      <CheckCircleRoundedIcon sx={{ fontSize: '2.8rem', color: COLORS.red }} />
       <Typography sx={{ fontWeight: 800, fontSize: '1.15rem', color: COLORS.white }}>הזמנה #{lastOrder.orderNumber}</Typography>
       <Typography sx={{ color: COLORS.textSecondary }}>ההזמנה הוכנה לשליחה ב-WhatsApp</Typography>
 
