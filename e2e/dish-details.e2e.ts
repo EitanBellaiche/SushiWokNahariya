@@ -78,7 +78,7 @@ test('production API derives prices and preserves notes', async ({ request }) =>
   const body = {
     requestId: crypto.randomUUID(),
     items: [{ ...configuredLine('pad-thai', { choice: 'עוף', removedIngredients: ['גזר'] }, 1, 'בלי חריף'), lineId: 'browser-test', unitPrice: 1 }],
-    customer: { name: 'בדיקת מערכת', phone: '0501234567', fulfillment: 'pickup' }, expectedSubtotal: 56,
+    customer: { name: 'בדיקת מערכת', phone: '0501234567', fulfillment: 'pickup', paymentMethod: 'cash' }, expectedSubtotal: 56,
   };
   for (const endpoint of ['/api/orders', 'http://127.0.0.1:4177/api/orders']) {
   const response = await request.post(endpoint, { data: body });

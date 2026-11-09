@@ -9,7 +9,7 @@ function payload() {
   return {
     requestId: crypto.randomUUID(),
     items: [{ ...configuredLine('pad-thai', { choice: 'עוף', removedIngredients: ['בצל ירוק'] }, 2, 'בלי חריף, לחתוך ל-10 יחידות'), lineId: 'line-1' }],
-    customer: { name: 'לקוח בדיקה', phone: '0501234567', fulfillment: 'delivery', address: 'כליל החורש 7', deliveryZone: 'nahariya' },
+    customer: { name: 'לקוח בדיקה', phone: '0501234567', fulfillment: 'delivery', address: 'כליל החורש 7', deliveryZone: 'nahariya', paymentMethod: 'credit' },
     expectedSubtotal: 112,
   };
 }
@@ -36,6 +36,12 @@ describe('server price validation and the restaurant order', () => {
     expect(message).toContain('בקשות מיוחדות למנה: בלי חריף, לחתוך ל-10 יחידות');
     expect(message).toContain('₪56 × 2 = ₪112');
     expect(message).toContain('סה״כ לתשלום: ₪132');
+    expect(message).toContain('*אמצעי תשלום:* אשראי');
+  });
+  it('requires a known payment method', () => {
+    const input = payload();
+    expect(() => prepareOrder({ ...input, customer: { ...input.customer, paymentMethod: undefined } }, openTime)).toThrow('נא לבחור אמצעי תשלום');
+    expect(() => prepareOrder({ ...input, customer: { ...input.customer, paymentMethod: 'toString' } }, openTime)).toThrow('נא לבחור אמצעי תשלום');
   });
   it('rejects a forged subtotal, unknown product, invalid extras and missing required choices', async () => {
     const inputs: unknown[] = [

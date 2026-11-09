@@ -1,5 +1,6 @@
 import { configuredLine } from '../src/dishes/configuration';
 import { getDeliveryFee } from '../src/cart/delivery';
+import { isPaymentMethod } from '../src/cart/payment';
 import { getStoreStatus } from '../src/data/hours';
 import type { CustomerDetails, OrderSnapshot } from '../src/cart/types';
 
@@ -19,10 +20,11 @@ export function validateCustomer(input: unknown): CustomerDetails {
   const phone = text(source.phone, 30).replace(/[\s-]/g, '');
   if (name.length < 2 || !/^(0\d{8,9}|\+972\d{8,9})$/.test(phone)) throw new Error('נא להזין שם ומספר טלפון תקינים');
   if (source.fulfillment !== 'pickup' && source.fulfillment !== 'delivery') throw new Error('אופן קבלה לא תקין');
+  if (!isPaymentMethod(source.paymentMethod)) throw new Error('נא לבחור אמצעי תשלום');
   const delivery = source.fulfillment === 'delivery';
   if (delivery && (!text(source.address) || !['nahariya', 'other'].includes(String(source.deliveryZone)))) throw new Error('נא להזין כתובת ואזור משלוח');
   return {
-    name, phone, fulfillment: source.fulfillment,
+    name, phone, fulfillment: source.fulfillment, paymentMethod: source.paymentMethod,
     ...(delivery ? { address: text(source.address), city: text(source.city, 100), deliveryZone: source.deliveryZone as 'nahariya' | 'other', floorApartment: text(source.floorApartment, 100), courierNotes: text(source.courierNotes) } : {}),
     orderNotes: text(source.orderNotes),
   };

@@ -1,5 +1,6 @@
 import { BUSINESS } from '../data/business';
 import { NAHARIYA_DELIVERY_FEE, isDeliveryFeePending } from './delivery';
+import { PAYMENT_METHOD_LABELS } from './payment';
 import type { CartLine, CustomerDetails, OrderSnapshot } from './types';
 
 const DIVIDER = '━━━━━━━━━━━━━━';
@@ -81,6 +82,9 @@ export function buildOrderWhatsAppLink(order: OrderSnapshot): string {
       parts.push(`*דמי משלוח (נהריה): ₪${NAHARIYA_DELIVERY_FEE}*`);
     }
     parts.push(`*סה״כ לתשלום: ₪${order.total}*`);
+  }
+  if (order.customer.paymentMethod) {
+    parts.push(`*אמצעי תשלום:* ${PAYMENT_METHOD_LABELS[order.customer.paymentMethod]}`);
   }
   parts.push(DIVIDER);
 

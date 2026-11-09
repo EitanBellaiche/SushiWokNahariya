@@ -1,4 +1,5 @@
 import type { DeliveryZone } from './delivery';
+import type { PaymentMethod } from './payment';
 import type { DishCustomization } from '../dishes/types';
 
 export type FulfillmentType = 'pickup' | 'delivery';
@@ -27,6 +28,8 @@ export type CustomerDetails = {
   orderNotes?: string;
   /** Only meaningful when fulfillment === 'delivery'; determines the delivery fee — see cart/delivery.ts. */
   deliveryZone?: DeliveryZone;
+  /** Required by the server for new orders; optional here because snapshots saved in the browser before this field existed lack it. */
+  paymentMethod?: PaymentMethod;
 };
 
 // Kept broad on purpose so a future order-management dashboard can move orders

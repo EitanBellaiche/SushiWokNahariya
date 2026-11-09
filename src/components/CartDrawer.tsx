@@ -6,6 +6,7 @@ import {
   Divider,
   Drawer,
   FormControlLabel,
+  FormHelperText,
   IconButton,
   Radio,
   RadioGroup,
@@ -26,6 +27,8 @@ import { useCart } from '../cart/CartContext';
 import { buildOrderWhatsAppLink } from '../cart/whatsapp';
 import { NAHARIYA_DELIVERY_FEE, getDeliveryFee, isDeliveryFeePending } from '../cart/delivery';
 import type { DeliveryZone } from '../cart/delivery';
+import { PAYMENT_METHODS, PAYMENT_METHOD_LABELS } from '../cart/payment';
+import type { PaymentMethod } from '../cart/payment';
 import type { CartLine, CustomerDetails, FulfillmentType } from '../cart/types';
 import { DeliveryTimeNote } from './DeliveryTimeNote';
 import { StoreClosedNotice } from './StoreClosedNotice';
@@ -170,6 +173,8 @@ function CheckoutStep() {
   const [floorApartment, setFloorApartment] = React.useState('');
   const [courierNotes, setCourierNotes] = React.useState('');
   const [orderNotes, setOrderNotes] = React.useState('');
+  const [paymentMethod, setPaymentMethod] = React.useState<PaymentMethod | ''>('');
+  const paymentRef = React.useRef<HTMLDivElement>(null);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const deliveryFee = getDeliveryFee(fulfillment, deliveryZone);
@@ -185,9 +190,14 @@ function CheckoutStep() {
     if (!isValidPhone(phone)) nextErrors.phone = 'נא להזין מספר טלפון תקין';
     if (fulfillment === 'delivery' && !address.trim()) nextErrors.address = 'נא להזין כתובת למשלוח';
     if (fulfillment === 'delivery' && !deliveryZone) nextErrors.deliveryZone = 'נא לבחור אזור משלוח';
+    if (!paymentMethod) nextErrors.paymentMethod = 'נא לבחור אמצעי תשלום';
 
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    if (Object.keys(nextErrors).length > 0) {
+      // The submit button sits outside the scrolling form, so the error could otherwise be off-screen.
+      if (nextErrors.paymentMethod && Object.keys(nextErrors).length === 1) paymentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     const customer: CustomerDetails = {
       name: name.trim(),
@@ -199,6 +209,7 @@ function CheckoutStep() {
       floorApartment: fulfillment === 'delivery' ? floorApartment.trim() || undefined : undefined,
       courierNotes: fulfillment === 'delivery' ? courierNotes.trim() || undefined : undefined,
       orderNotes: orderNotes.trim() || undefined,
+      paymentMethod: paymentMethod || undefined,
     };
 
     setSubmitError('');
@@ -304,6 +315,21 @@ function CheckoutStep() {
           multiline
           minRows={2}
         />
+
+        <Box ref={paymentRef}>
+          <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', mb: 0.5 }}>אמצעי תשלום</Typography>
+          <RadioGroup
+            row
+            aria-label="אמצעי תשלום"
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
+          >
+            {PAYMENT_METHODS.map((method) => (
+              <FormControlLabel key={method} value={method} control={<Radio />} label={PAYMENT_METHOD_LABELS[method]} />
+            ))}
+          </RadioGroup>
+          {errors.paymentMethod && !paymentMethod && <FormHelperText error sx={{ textAlign: 'start' }}>{errors.paymentMethod}</FormHelperText>}
+        </Box>
 
         <Alert severity="info" icon={false} sx={{ bgcolor: alpha(COLORS.white, 0.05), color: COLORS.textSecondary }}>
           <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', color: COLORS.white }}>אין צורך בתשלום באתר</Typography>

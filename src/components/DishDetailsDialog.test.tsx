@@ -130,6 +130,7 @@ describe('dish dialog and checkout UI', () => {
     await user.click(await screen.findByRole('button', { name: 'מעבר לפרטי הזמנה' }));
     await user.type(screen.getByRole('textbox', { name: 'שם מלא' }), 'לקוח בדיקה');
     await user.type(screen.getByRole('textbox', { name: 'מספר טלפון' }), '0501234567');
+    await user.click(screen.getByRole('radio', { name: 'מזומן' }));
     await user.click(screen.getByRole('button', { name: 'שליחת ההזמנה ב-WhatsApp' }));
     await screen.findByText('הזמנה #SW-ui');
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -155,6 +156,7 @@ describe('dish dialog and checkout UI', () => {
     await user.click(await screen.findByRole('button', { name: 'מעבר לפרטי הזמנה' }));
     await user.type(screen.getByRole('textbox', { name: 'שם מלא' }), 'לקוח בדיקה');
     await user.type(screen.getByRole('textbox', { name: 'מספר טלפון' }), '0501234567');
+    await user.click(screen.getByRole('radio', { name: 'מזומן' }));
     await user.click(screen.getByRole('button', { name: 'שליחת ההזמנה ב-WhatsApp' }));
     await screen.findByText('לא ניתן לאמת את ההזמנה כרגע. הסל נשמר, נסו שוב.');
     expect(items()[0].notes).toBe('בלי חריף');

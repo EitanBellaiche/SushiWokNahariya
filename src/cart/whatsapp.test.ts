@@ -168,6 +168,25 @@ describe('buildOrderWhatsAppLink', () => {
     expect(message).not.toContain('סה״כ לתשלום');
   });
 
+  it('marks the chosen payment method on the order', () => {
+    const order = makeOrder({
+      items: [cocaColaZero],
+      subtotal: 10,
+      total: 10,
+      customer: { name: 'איתן', phone: '0586890689', fulfillment: 'pickup', paymentMethod: 'bit' },
+    });
+    const message = decodeMessage(buildOrderWhatsAppLink(order));
+
+    expect(message).toContain('*אמצעי תשלום:* ביט');
+  });
+
+  it('omits the payment line for an order saved before payment methods existed', () => {
+    const order = makeOrder({ items: [cocaColaZero], subtotal: 10, total: 10 });
+    const message = decodeMessage(buildOrderWhatsAppLink(order));
+
+    expect(message).not.toContain('אמצעי תשלום');
+  });
+
   it('shows no delivery fee line for pickup orders', () => {
     const order = makeOrder({ items: [cocaColaZero], subtotal: 10, deliveryFee: 0, total: 10 });
     const message = decodeMessage(buildOrderWhatsAppLink(order));
