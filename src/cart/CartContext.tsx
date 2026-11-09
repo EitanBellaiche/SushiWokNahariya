@@ -136,8 +136,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             body: JSON.stringify({ items, customer, expectedSubtotal: totalPrice, requestId: requestIdRef.current.id }),
             signal: AbortSignal.timeout(15000),
           });
-          const result = await response.json();
-          if (!response.ok) throw new Error(result.error ?? 'לא ניתן לאמת את ההזמנה כרגע');
+          // A host or proxy failure can return an empty or non-JSON body.
+          const result = await response.json().catch(() => null);
+          if (!response.ok || !result) throw new Error(result?.error ?? 'לא ניתן לאמת את ההזמנה כרגע');
           const order = result as OrderSnapshot;
           writeStorage(LAST_ORDER_KEY, JSON.stringify(order));
           setLastOrder(order);

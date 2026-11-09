@@ -41,13 +41,14 @@ export type MenuCategory = {
   items: MenuItem[];
 };
 
-const img = (name: string) => new URL(`../../photos-optimized/${name.replace(/\.(jpeg|png)$/, '.webp')}`, import.meta.url).href;
+// import.meta.url is undefined in the Cloudflare order function, which never renders images.
+const img = (name: string) => (import.meta.url ? new URL(`../../photos-optimized/${name.replace(/\.(jpeg|png)$/, '.webp')}`, import.meta.url).href : '');
 // Brand mark cropped from the supplied PDFs (public/logo.png), served from the site root.
 const logoUrl = '/logo.png';
 
 export const IMAGES = {
   hero: img('mokpatz123.jpeg'),
-  promo: img('promo-banner-full.jpeg'),
+  promo: '/promo-1.jpg',
   sushi1: img('sushi1.jpeg'),
   sushi2: img('sushi2.jpeg'),
   sushiCombo: img('sushiCombo.jpeg'),

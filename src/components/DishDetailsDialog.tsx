@@ -72,7 +72,7 @@ export function DishDetailsDialog({ open, onClose, productId, line }: {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 1fr) minmax(0, 1fr)' }, gap: 3, pt: 1 }}>
           <Stack spacing={2} sx={{ alignSelf: 'start' }}>
             {dish.image && <Box>
-              <MenuImage src={dish.image} alt={dish.name} aspectRatio="4 / 3" rounded={3} fit={[...drinks.items, ...sauces.items].some((item) => item.id === dish.id) ? 'contain' : 'cover'} eager />
+              <MenuImage src={dish.image} alt={dish.name} aspectRatio={dish.kind === 'promo' ? '823 / 755' : '4 / 3'} rounded={3} fit={[...drinks.items, ...sauces.items].some((item) => item.id === dish.id) ? 'contain' : 'cover'} eager />
               <ImageDisclaimer sx={{ mt: 0.5 }} />
             </Box>}
             <Typography sx={{ fontWeight: 800, fontSize: '1.45rem', color: COLORS.red }}>{dish.price}</Typography>

@@ -11,8 +11,9 @@
  * minutes), not a halachic authority, which is an accepted trade-off for
  * gating an "open for orders" banner.
  *
- * All comparisons assume the visitor's device clock/timezone matches Israel
- * local time, which holds for this site's actual audience.
+ * All comparisons use Israel local time, whatever timezone the code runs in:
+ * the same function gates the browser UI and the order API, and the API's host
+ * may run in UTC.
  */
 
 const NAHARIYA_LAT = 33.0095;
@@ -29,6 +30,24 @@ const HAVDALAH_BUFFER_MINUTES = 70;
 export type StoreStatus = { open: true } | { open: false; reopensLabel: string };
 
 const HEBREW_DAY_NAMES = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+
+const ISRAEL_CLOCK = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Jerusalem',
+  hourCycle: 'h23',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+});
+
+/** A Date whose local fields (getHours, getDay…) read what a clock in Israel shows at `instant`. */
+function inIsrael(instant: Date): Date {
+  const parts: Record<string, number> = {};
+  for (const { type, value } of ISRAEL_CLOCK.formatToParts(instant)) parts[type] = Number(value);
+  return new Date(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+}
 
 function sunsetUtc(date: Date, lat: number, lon: number): Date {
   const rad = Math.PI / 180;
@@ -75,7 +94,7 @@ function atLocalTime(date: Date, hours: number, minutes = 0): Date {
 
 function getSaturdayOpeningTime(saturday: Date): Date {
   const sunset = sunsetUtc(saturday, NAHARIYA_LAT, NAHARIYA_LON);
-  return new Date(sunset.getTime() + HAVDALAH_BUFFER_MINUTES * 60000);
+  return inIsrael(new Date(sunset.getTime() + HAVDALAH_BUFFER_MINUTES * 60000));
 }
 
 function formatHM(d: Date): string {
@@ -104,7 +123,8 @@ function nextOpeningLabel(now: Date): string {
   return '';
 }
 
-export function getStoreStatus(now: Date = new Date()): StoreStatus {
+export function getStoreStatus(instant: Date = new Date()): StoreStatus {
+  const now = inIsrael(instant);
   const day = now.getDay(); // 0=Sunday ... 5=Friday, 6=Saturday
 
   if (day >= 0 && day <= 4) {
