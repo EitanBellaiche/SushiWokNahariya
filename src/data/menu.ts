@@ -407,14 +407,14 @@ export const sauces: MenuCategory = {
   navLabel: 'רטבים',
   title: 'רטבים בתוספת תשלום',
   items: [
-    { id: 'sauce-spicy-mayo', name: 'ספייסי מיונז', price: '₪3', numericPrice: 3, image: IMAGES.sauceSpicyMayo },
-    { id: 'sauce-teriyaki', name: 'טריאקי', price: '₪3', numericPrice: 3, image: IMAGES.sauceTeriyaki },
-    { id: 'sauce-soy', name: 'סויה', price: '₪3', numericPrice: 3, image: IMAGES.sauceSoy },
-    { id: 'sauce-ginger', name: 'גינגר', price: '₪3', numericPrice: 3, image: IMAGES.sauceGinger },
-    { id: 'sauce-wasabi', name: 'ווסאבי', price: '₪3', numericPrice: 3, image: IMAGES.sauceWasabi },
-    { id: 'sauce-sweet-chili', name: 'צ׳ילי מתוק', price: '₪3', numericPrice: 3, image: IMAGES.sauceSweetChili },
-    { id: 'sauce-chili-oil', name: 'שמן צ׳ילי חריף', price: '₪3', numericPrice: 3, image: IMAGES.sauceChiliOil },
-    { id: 'sauce-sweet-sour', name: 'חמוץ מתוק', price: '₪3', numericPrice: 3, image: IMAGES.sauceSweetSour },
+    { id: 'sauce-spicy-mayo', name: 'ספייסי מיונז', price: '₪2', numericPrice: 2, image: IMAGES.sauceSpicyMayo },
+    { id: 'sauce-teriyaki', name: 'טריאקי', price: '₪2', numericPrice: 2, image: IMAGES.sauceTeriyaki },
+    { id: 'sauce-soy', name: 'סויה', price: '₪2', numericPrice: 2, image: IMAGES.sauceSoy },
+    { id: 'sauce-ginger', name: 'גינגר', price: '₪2', numericPrice: 2, image: IMAGES.sauceGinger },
+    { id: 'sauce-wasabi', name: 'ווסאבי', price: '₪2', numericPrice: 2, image: IMAGES.sauceWasabi },
+    { id: 'sauce-sweet-chili', name: 'צ׳ילי מתוק', price: '₪2', numericPrice: 2, image: IMAGES.sauceSweetChili },
+    { id: 'sauce-chili-oil', name: 'שמן צ׳ילי חריף', price: '₪2', numericPrice: 2, image: IMAGES.sauceChiliOil },
+    { id: 'sauce-sweet-sour', name: 'חמוץ מתוק', price: '₪2', numericPrice: 2, image: IMAGES.sauceSweetSour },
   ],
 };
 
